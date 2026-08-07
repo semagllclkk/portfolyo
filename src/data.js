@@ -6,7 +6,6 @@ export const personal = {
   name: "Sema Gül Çelik",
   nameFirst: "Sema Gül",
   nameLast: "Çelik",
-  initials: "S.G.Ç.",
   role: "Yazılım Geliştirici & Yapay Zeka Meraklısı",
   tagline:
     "Gerçek problemlere teknolojiyle çözüm üretmeyi seven, araştırmayı ve öğrenmeyi hiç bırakmayan biriyim.",

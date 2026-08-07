@@ -22,7 +22,7 @@ export default function Navbar() {
 
   return (
     <nav ref={navRef} className="navbar">
-      <a href="#hero" className="nav-logo">{personal.initials}</a>
+      <a href="#hero" className="nav-logo"><img width={50} height={50} src="\src\assets\pixel-rose.png"/></a>
 
       <ul className="nav-links">
         {links.map(l => (
