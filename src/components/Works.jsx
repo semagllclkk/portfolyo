@@ -64,7 +64,7 @@ export default function Works() {
     <section id="works" className="section" ref={ref}>
       <div className="section-label">— 03</div>
       <h2 className="section-title centered">Projeler</h2>
-      <p className="section-sub">Öne çıkan çalışmalardan bir seçki</p>
+      <p className="section-sub">Öne çıkan çalışmalardan bazıları</p>
 
       {/* Featured projeler — tam genişlik */}
       <div className="works-featured">

@@ -15,7 +15,7 @@ export const personal = {
     "Sürekli öğrenmeye açık, araştırmayı seven ve gerçek problemlere teknolojiyle çözüm üretmeyi hedefleyen bir yazılım geliştiricisiyim.",
   ],
   stats: [
-    { value: "3+", label: "Deneyim" },
+    { value: "3", label: "Deneyim" },
     { value: "8+", label: "Proje" },
     { value: "B2", label: "İngilizce" },
   ],

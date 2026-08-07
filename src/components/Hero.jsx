@@ -1,4 +1,5 @@
 import { personal } from '../data'
+import memeImage from '../assets/meme.png'
 
 export default function Hero() {
   return (
@@ -60,14 +61,12 @@ export default function Hero() {
       <div className="hero-visual">
         <div className="hero-meme-wrapper">
           <img
-            src="/src/assets/meme.png"
+            src={memeImage}
             alt="it works on my machine — shipping to prod anyway"
             className="hero-meme"
-            draggable="false"
           />
           <div className="meme-glow" />
         </div>
-        <div className="floating-tag tag-b">✦</div>
       </div>
 
       <div className="scroll-hint">
