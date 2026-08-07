@@ -67,7 +67,6 @@ export default function Hero() {
           />
           <div className="meme-glow" />
         </div>
-        <div className="floating-tag tag-a">İş tekliflerine açığım</div>
         <div className="floating-tag tag-b">✦</div>
       </div>
 

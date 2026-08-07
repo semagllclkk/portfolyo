@@ -95,7 +95,7 @@ export function useCursor() {
     const rmHover  = () => { dot.classList.remove('hover'); ring.classList.remove('hover') }
 
     const attachHover = () => {
-      document.querySelectorAll('a, button, .skill-tag, .work-card, .btn-primary, .btn-ghost').forEach(el => {
+      document.querySelectorAll('a, button, .skill-tag, .work-card, .btn-primary, .btn-ghost, .avail-badge').forEach(el => {
         el.addEventListener('mouseenter', addHover)
         el.addEventListener('mouseleave', rmHover)
       })

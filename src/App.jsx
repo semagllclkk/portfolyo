@@ -1,12 +1,13 @@
 import { useRef } from 'react'
-import Navbar     from './components/Navbar'
-import Hero       from './components/Hero'
-import About      from './components/About'
-import Experience from './components/Experience'
-import Works      from './components/Works'
-import Skills     from './components/Skills'
-import Contact    from './components/Contact'
-import Footer     from './components/Footer'
+import Navbar            from './components/Navbar'
+import Hero              from './components/Hero'
+import About             from './components/About'
+import Experience        from './components/Experience'
+import Works             from './components/Works'
+import Skills            from './components/Skills'
+import Contact           from './components/Contact'
+import Footer            from './components/Footer'
+import AvailabilityBadge from './components/AvailabilityBadge'
 import { useParticles, useCursor } from './hooks/useVisuals'
 
 export default function App() {
@@ -33,6 +34,9 @@ export default function App() {
       </main>
 
       <Footer />
+
+      {/* Sabit sağ-alt köşe availability badge */}
+      <AvailabilityBadge />
     </>
   )
 }
