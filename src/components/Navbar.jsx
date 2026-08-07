@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react'
 import { personal } from '../data'
+import pixelRose from '../assets/pixel-rose.png'
 
 export default function Navbar() {
   const navRef = useRef(null)
-  const [mobileOpen, setMobileOpen] = [false, () => {}]
+  const [mobileOpen, setMobileOpen] = [false, () => { }]
 
   useEffect(() => {
     const onScroll = () => {
@@ -14,15 +15,15 @@ export default function Navbar() {
   }, [])
 
   const links = [
-    { href: '#about',   label: 'Hakkımda' },
-    { href: '#works',   label: 'Projeler' },
-    { href: '#skills',  label: 'Beceriler' },
+    { href: '#about', label: 'Hakkımda' },
+    { href: '#works', label: 'Projeler' },
+    { href: '#skills', label: 'Beceriler' },
     { href: '#contact', label: 'İletişim' },
   ]
 
   return (
     <nav ref={navRef} className="navbar">
-      <a href="#hero" className="nav-logo"><img width={50} height={50} src="\src\assets\pixel-rose.png"/></a>
+      <a href="#hero" className="nav-logo"><img width={50} height={50} src={pixelRose} alt="logo" /></a>
 
       <ul className="nav-links">
         {links.map(l => (
