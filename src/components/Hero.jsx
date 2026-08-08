@@ -1,6 +1,21 @@
 import { personal } from '../data'
 import memeImage from '../assets/meme.png'
 
+// "Yazılım Geliştirici & Yapay Zeka Meraklısı" → ikinci kısmı pembe vurgula
+function AnimatedRole({ text }) {
+  const sep = text.indexOf('&')
+  if (sep === -1) return <p className="hero-role">{text}</p>
+  const before  = text.slice(0, sep + 1).trim()
+  const after   = text.slice(sep + 1).trim()
+
+  return (
+    <p className="hero-role">
+      {before}{' '}
+      <span className="hero-role-highlight">{after}</span>
+    </p>
+  )
+}
+
 export default function Hero() {
   return (
     <section id="hero" className="hero">
@@ -14,7 +29,7 @@ export default function Hero() {
           <span className="name-italic">{personal.nameLast}</span>
         </h1>
 
-        <p className="hero-role">{personal.role}</p>
+        <AnimatedRole text={personal.role} />
 
         <div className="hero-divider" />
 

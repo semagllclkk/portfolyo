@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-// Parçacık canvas sistemi
+// Yıldız canvas sistemi — pembe parçacıklar + kayan yıldızlar
 export function useParticles(canvasRef) {
   useEffect(() => {
     const canvas = canvasRef.current
@@ -14,44 +14,80 @@ export function useParticles(canvasRef) {
     resize()
     window.addEventListener('resize', resize)
 
-    const PINKS = ['233,30,140', '240,98,146', '244,143,177']
-    const COUNT = 55
+    // ── Pembe yanıp sönen parçacıklar ─────────────────────────────
+    const PINKS = ['233,30,140', '240,98,146', '244,143,177', '219,0,115', '255,105,180', '233,70,160']
+    const DOT_COUNT = 130  // Artırıldı
 
     class Dot {
       constructor() { this.reset(true) }
       reset(initial = false) {
         this.x     = Math.random() * canvas.width
         this.y     = Math.random() * canvas.height
-        this.r     = Math.random() * 1.5 + 0.3
-        this.alpha = Math.random() * 0.45 + 0.1
-        this.vx    = (Math.random() - 0.5) * 0.14
-        this.vy    = (Math.random() - 0.5) * 0.14
-        this.maxLife = Math.random() * 700 + 300
+        this.r     = Math.random() * 2.6 + 0.5
+        this.alpha = Math.random() * 0.7 + 0.2
+        this.vx    = (Math.random() - 0.5) * 0.18
+        this.vy    = (Math.random() - 0.5) * 0.18
+        this.maxLife = Math.random() * 600 + 250
         this.life  = initial ? Math.random() * this.maxLife : 0
         this.color = PINKS[Math.floor(Math.random() * PINKS.length)]
+        // yanıp sönme için faz
+        this.blinkSpeed = Math.random() * 0.04 + 0.01
+        this.blinkPhase = Math.random() * Math.PI * 2
       }
       tick() {
         this.x += this.vx
         this.y += this.vy
         this.life++
+        this.blinkPhase += this.blinkSpeed
         if (this.life > this.maxLife) this.reset()
       }
       draw() {
-        const p     = this.life / this.maxLife
-        const fade  = p < 0.1 ? p / 0.1 : p > 0.9 ? (1 - p) / 0.1 : 1
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light'
+        const p    = this.life / this.maxLife
+        const fade = p < 0.1 ? p / 0.1 : p > 0.9 ? (1 - p) / 0.1 : 1
+        const blink = (Math.sin(this.blinkPhase) + 1) / 2  // 0→1→0
+        const alphaBoost = isLight ? 1.4 : 1.0  // light mode'da daha belirgin
         ctx.beginPath()
         ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(${this.color},${this.alpha * fade})`
+        ctx.fillStyle = `rgba(${this.color},${Math.min(1, this.alpha * alphaBoost * fade * (0.4 + 0.6 * blink))})`
         ctx.fill()
       }
     }
 
-    const dots = Array.from({ length: COUNT }, () => new Dot())
+    // ── Kayan yıldızlar (starfield) ───────────────────────────
+    const STAR_COUNT = 120
+    class Star {
+      constructor() { this.reset(true) }
+      reset(initial = false) {
+        this.x  = Math.random() * canvas.width
+        this.y  = initial ? Math.random() * canvas.height : -4
+        this.r  = Math.random() * 0.9 + 0.15
+        this.vy = Math.random() * 0.4 + 0.1
+        this.alpha = Math.random() * 0.35 + 0.08
+        this.color = Math.random() > 0.6
+          ? PINKS[Math.floor(Math.random() * PINKS.length)]
+          : '255,255,255'
+      }
+      tick() {
+        this.y += this.vy
+        if (this.y > canvas.height + 4) this.reset(false)
+      }
+      draw() {
+        ctx.beginPath()
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(${this.color},${this.alpha})`
+        ctx.fill()
+      }
+    }
+
+    const dots  = Array.from({ length: DOT_COUNT },  () => new Dot())
+    const stars = Array.from({ length: STAR_COUNT }, () => new Star())
     let raf
 
     const loop = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
-      dots.forEach(d => { d.tick(); d.draw() })
+      stars.forEach(s => { s.tick(); s.draw() })
+      dots.forEach(d  => { d.tick(); d.draw() })
       raf = requestAnimationFrame(loop)
     }
     loop()
@@ -63,26 +99,30 @@ export function useParticles(canvasRef) {
   }, [])
 }
 
-// Özel imleç
+// Özel imleç — dot yerine gül görseli
 export function useCursor() {
   useEffect(() => {
-    const dot  = document.createElement('div')
+    // Gül imleci
+    const roseEl = document.createElement('img')
+    roseEl.className = 'cursor-rose'
+    roseEl.src = '/favicon.svg'
+    roseEl.setAttribute('aria-hidden', 'true')
+
     const ring = document.createElement('div')
-    dot.className  = 'cursor-dot'
     ring.className = 'cursor-ring'
-    document.body.append(dot, ring)
+    document.body.append(roseEl, ring)
 
     let mx = 0, my = 0, rx = 0, ry = 0
     const onMove = e => { mx = e.clientX; my = e.clientY }
     document.addEventListener('mousemove', onMove)
 
-    dot.style.left = '0px'
-    dot.style.top  = '0px'
+    roseEl.style.left = '0px'
+    roseEl.style.top  = '0px'
 
     let raf
     const tick = () => {
-      dot.style.left  = mx + 'px'
-      dot.style.top   = my + 'px'
+      roseEl.style.left  = mx + 'px'
+      roseEl.style.top   = my + 'px'
       rx += (mx - rx) * 0.12
       ry += (my - ry) * 0.12
       ring.style.left = rx + 'px'
@@ -91,8 +131,8 @@ export function useCursor() {
     }
     tick()
 
-    const addHover = () => { dot.classList.add('hover'); ring.classList.add('hover') }
-    const rmHover  = () => { dot.classList.remove('hover'); ring.classList.remove('hover') }
+    const addHover = () => { roseEl.classList.add('hover'); ring.classList.add('hover') }
+    const rmHover  = () => { roseEl.classList.remove('hover'); ring.classList.remove('hover') }
 
     const attachHover = () => {
       document.querySelectorAll('a, button, .skill-tag, .work-card, .btn-primary, .btn-ghost, .avail-badge').forEach(el => {
@@ -105,7 +145,7 @@ export function useCursor() {
     return () => {
       document.removeEventListener('mousemove', onMove)
       cancelAnimationFrame(raf)
-      dot.remove()
+      roseEl.remove()
       ring.remove()
     }
   }, [])
