@@ -4,6 +4,7 @@ import pixelRose from '../assets/pixel-rose.png'
 export default function Navbar() {
   const navRef = useRef(null)
   const [dark, setDark] = useState(true)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     const onScroll = () => {
@@ -18,40 +19,107 @@ export default function Navbar() {
     document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light')
   }, [dark])
 
+  // Menü açıkken body scroll'u kilitle
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
+
   const links = [
-    { href: '#about', label: 'Hakkımda' },
-    { href: '#works', label: 'Projeler' },
-    { href: '#skills', label: 'Beceriler' },
-    { href: '#contact', label: 'İletişim' },
+    { href: '#about',   label: 'Hakkımda' },
+    { href: '#works',   label: 'Projeler'  },
+    { href: '#skills',  label: 'Beceriler' },
+    { href: '#contact', label: 'İletişim'  },
   ]
 
+  const handleMobileLink = (href) => {
+    setMenuOpen(false)
+    // Kısa gecikmeyle scroll yap (drawer kapanma animasyonu tamamlansın)
+    setTimeout(() => {
+      const el = document.querySelector(href)
+      if (el) el.scrollIntoView({ behavior: 'smooth' })
+    }, 320)
+  }
+
   return (
-    <nav ref={navRef} className="navbar">
-      <a href="#hero" className="nav-logo">
-        <img width={80} height={80} src={pixelRose} alt="logo" />
-      </a>
+    <>
+      <nav ref={navRef} className="navbar">
+        <a href="#hero" className="nav-logo">
+          <img width={80} height={80} src={pixelRose} alt="logo" />
+        </a>
 
-      <ul className="nav-links">
-        {links.map(l => (
-          <li key={l.href}>
-            <a href={l.href} className="nav-link">{l.label}</a>
-          </li>
-        ))}
-      </ul>
+        <ul className="nav-links">
+          {links.map(l => (
+            <li key={l.href}>
+              <a href={l.href} className="nav-link">{l.label}</a>
+            </li>
+          ))}
+        </ul>
 
-      {/* Dark / Light mode toggle */}
-      <button
-        id="theme-toggle"
-        className="theme-toggle"
-        aria-label={dark ? 'Açık moda geç' : 'Koyu moda geç'}
-        onClick={() => setDark(d => !d)}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          {/* Dark / Light mode toggle */}
+          <button
+            id="theme-toggle"
+            className="theme-toggle"
+            aria-label={dark ? 'Açık moda geç' : 'Koyu moda geç'}
+            onClick={() => setDark(d => !d)}
+          >
+            <span className="theme-toggle-track">
+              <span className="theme-toggle-thumb" />
+              <span className="theme-toggle-icon theme-toggle-sun">☀️</span>
+              <span className="theme-toggle-icon theme-toggle-moon">🌸</span>
+            </span>
+          </button>
+
+          {/* Hamburger — sadece mobilde görünür */}
+          <button
+            id="hamburger-btn"
+            className={`hamburger${menuOpen ? ' open' : ''}`}
+            aria-label={menuOpen ? 'Menüyü kapat' : 'Menüyü aç'}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen(o => !o)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobil tam ekran drawer */}
+      <div
+        id="mobile-nav"
+        className={`mobile-nav${menuOpen ? ' open' : ''}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigasyon"
       >
-        <span className="theme-toggle-track">
-          <span className="theme-toggle-thumb" />
-          <span className="theme-toggle-icon theme-toggle-sun">☀️</span>
-          <span className="theme-toggle-icon theme-toggle-moon">🌸</span>
-        </span>
-      </button>
-    </nav>
+        {links.map((l, i) => (
+          <a
+            key={l.href}
+            href={l.href}
+            className="mobile-nav-link"
+            onClick={(e) => { e.preventDefault(); handleMobileLink(l.href) }}
+          >
+            {l.label}
+          </a>
+        ))}
+
+        {/* Mobil drawer'da tema toggle */}
+        <div className="mobile-nav-divider" />
+        <button
+          className="theme-toggle"
+          style={{ cursor: 'pointer' }}
+          aria-label={dark ? 'Açık moda geç' : 'Koyu moda geç'}
+          onClick={() => setDark(d => !d)}
+        >
+          <span className="theme-toggle-track">
+            <span className="theme-toggle-thumb" />
+            <span className="theme-toggle-icon theme-toggle-sun">☀️</span>
+            <span className="theme-toggle-icon theme-toggle-moon">🌸</span>
+          </span>
+        </button>
+      </div>
+    </>
   )
 }

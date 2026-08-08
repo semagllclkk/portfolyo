@@ -65,6 +65,9 @@ body  {
   cursor: none;
   transition: background 0.4s var(--ease), color 0.4s var(--ease);
 }
+@media (pointer: coarse) {
+  body { cursor: auto; }
+}
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 
@@ -91,6 +94,10 @@ img { display: block; max-width: 100%; }
 }
 .cursor-rose.hover  { width: 18px; height: 18px; transform: translate(-50%,-50%) rotate(10deg) scale(0.9); filter: drop-shadow(0 0 9px var(--pink)); }
 .cursor-ring.hover { width: 44px; height: 44px; border-color: var(--pink); opacity: .8; }
+/* Dokunmatik cihazlarda özel imleci gizle */
+@media (pointer: coarse) {
+  .cursor-rose, .cursor-ring { display: none !important; }
+}
 
 /* ── BACKGROUND NOISE ────────────────────────────────────────── */
 .bg-noise {
@@ -160,6 +167,72 @@ img { display: block; max-width: 100%; }
   width: 38px; height: 1px;
   background: var(--pink);
   opacity: .35;
+}
+
+/* ── HAMBURGER MENU ──────────────────────────────────────────── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px; height: 36px;
+  background: none; border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 101;
+  position: relative;
+}
+.hamburger span {
+  display: block;
+  width: 22px; height: 1.5px;
+  background: var(--pink-lt);
+  border-radius: 2px;
+  transition: transform .35s var(--ease), opacity .35s var(--ease), width .35s var(--ease);
+  transform-origin: center;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* Mobil nav drawer */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  background: rgba(9,9,9,.97);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s var(--ease);
+}
+[data-theme="light"] .mobile-nav {
+  background: rgba(253,246,249,.97);
+}
+.mobile-nav.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.mobile-nav-link {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--txt-2);
+  letter-spacing: .06em;
+  transition: color var(--t), transform var(--t);
+  text-decoration: none;
+}
+.mobile-nav-link:hover, .mobile-nav-link:active { color: var(--pink-lt); transform: translateX(4px); }
+.mobile-nav-divider {
+  width: 1px; height: 32px;
+  background: var(--pink-border);
+  opacity: .4;
 }
 
 /* ── THEME TOGGLE ────────────────────────────────────────────── */
@@ -371,7 +444,7 @@ img { display: block; max-width: 100%; }
 
 /* ── HERO ────────────────────────────────────────────────────── */
 .hero {
-  min-height: 100vh;
+  min-height: 100svh;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
@@ -445,7 +518,7 @@ img { display: block; max-width: 100%; }
 
 .hero-meme-wrapper {
   position: relative;
-  width: 420px;
+  width: min(420px, 90vw);
   border-radius: 16px;
   overflow: visible;
 }
@@ -498,8 +571,8 @@ img { display: block; max-width: 100%; }
   background: rgba(255,240,246,.95);
   color: var(--pink);
 }
-.tag-a { top:8%; left:-12%; animation-delay:0s; }
-.tag-b { bottom:12%; right:-6%; animation-delay:2.2s; }
+.tag-a { top:8%; left:-8%; animation-delay:0s; }
+.tag-b { bottom:12%; right:-2%; animation-delay:2.2s; }
 
 .scroll-hint {
   position:absolute; bottom:2.2rem; left:50%; transform:translateX(-50%);
@@ -563,7 +636,7 @@ img { display: block; max-width: 100%; }
 .edu-gpa    { font-size:.75rem; color:var(--pink-ll); margin-top:.2rem; }
 
 .about-stats {
-  display:flex; gap:2rem; align-items:center;
+  display:flex; flex-wrap:wrap; gap:1.5rem 2rem; align-items:center;
   margin-top:2rem; padding-top:2rem; border-top:1px solid var(--border);
 }
 .stat-item  { display:flex; flex-direction:column; gap:.15rem; }
@@ -735,6 +808,8 @@ img { display: block; max-width: 100%; }
   .about-grid   { grid-template-columns:1fr; gap:2.5rem; }
   .skills-layout{ grid-template-columns:1fr; gap:2.5rem; }
   .work-card.featured { grid-template-columns:1fr; }
+  /* Floating tagları küçük sarmalayıcıda gizle */
+  .floating-tag { display: none; }
 }
 @media (max-width: 768px) {
   .section  { padding:5rem 1.5rem; }
@@ -742,6 +817,11 @@ img { display: block; max-width: 100%; }
   .navbar.scrolled { padding:.85rem 1.5rem; }
   .nav-links{ display:none; }
   .nav-line { display:none; }
+  /* Hamburger göster */
+  .hamburger { display: flex; }
+  .mobile-nav { display: flex; }
+  /* Mobile nav'da tema toggle için özel imleç */
+  .theme-toggle { cursor: pointer; }
   .works-grid { grid-template-columns:1fr; }
   .exp-item { grid-template-columns:1fr; }
   .exp-left { text-align:left; margin-bottom:.5rem; }
@@ -750,9 +830,29 @@ img { display: block; max-width: 100%; }
   .footer   { padding:1.5rem; }
   .footer-inner { flex-direction:column; text-align:center; gap:.4rem; }
   .hero-img-wrapper { width:240px; height:280px; }
+  /* Availability badge küçült */
+  .avail-badge { bottom:1rem; right:1rem; padding:.4rem .85rem .4rem .55rem; }
+  .avail-text  { font-size:.66rem; }
+  /* Hero görseli düzelt */
+  .hero { padding: 6rem 1.5rem 3rem; }
+  .hero-meme-wrapper { width: min(300px, 85vw); }
+  /* About stats daha sıkışık */
+  .about-stats { gap: 1rem 1.5rem; }
+  /* İletişim bölümü */
+  .contact-inner { padding-top: 1rem; }
 }
 @media (max-width: 480px) {
-  .hero-name { font-size:2.8rem; }
-  .contact-heading { font-size:2rem; }
-  .section  { padding:4rem 1.2rem; }
+  .hero-name { font-size: clamp(2.4rem, 10vw, 3rem); }
+  .contact-heading { font-size: clamp(1.8rem, 7vw, 2.2rem); }
+  .section  { padding: 4rem 1rem; }
+  .hero { padding: 5.5rem 1rem 3rem; }
+  /* Butonlar yan yana sığmazsa alt alta */
+  .hero-cta { flex-wrap: wrap; gap:.75rem; }
+  .btn-primary, .btn-ghost { width: 100%; text-align: center; }
+  /* Stat değerleri küçült */
+  .stat-value { font-size: 1.6rem; }
+  /* Navbar logo küçült */
+  .nav-logo img { width: 60px !important; height: 60px !important; }
+  /* avail badge */
+  .avail-badge { bottom: .75rem; right: .75rem; }
 }
