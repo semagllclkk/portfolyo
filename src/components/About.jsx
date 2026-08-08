@@ -6,8 +6,6 @@ export default function About() {
 
   return (
     <section id="about" className="section" ref={ref}>
-      <div className="section-label">— 01</div>
-
       <div className="about-grid">
         <div className="about-left reveal-left">
           <h2 className="section-title">Hakkımda</h2>

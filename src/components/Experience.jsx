@@ -6,7 +6,6 @@ export default function Experience() {
 
   return (
     <section id="experience" className="section" ref={ref}>
-      <div className="section-label">— 02</div>
       <h2 className="section-title">Deneyim</h2>
 
       <div className="exp-list">

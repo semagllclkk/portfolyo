@@ -6,7 +6,6 @@ export default function Skills() {
 
   return (
     <section id="skills" className="section" ref={ref}>
-      <div className="section-label">— 04</div>
 
       <div className="skills-layout">
         <div className="skills-left reveal-left">

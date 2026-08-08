@@ -62,7 +62,6 @@ export default function Works() {
 
   return (
     <section id="works" className="section" ref={ref}>
-      <div className="section-label">— 03</div>
       <h2 className="section-title centered">Projeler</h2>
       <p className="section-sub">Öne çıkan çalışmalardan bazıları</p>
 

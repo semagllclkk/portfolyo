@@ -28,7 +28,7 @@ export default function Navbar() {
   return (
     <nav ref={navRef} className="navbar">
       <a href="#hero" className="nav-logo">
-        <img width={50} height={50} src={pixelRose} alt="logo" />
+        <img width={80} height={80} src={pixelRose} alt="logo" />
       </a>
 
       <ul className="nav-links">

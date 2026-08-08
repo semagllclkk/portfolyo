@@ -6,7 +6,6 @@ export default function Contact() {
 
   return (
     <section id="contact" className="section contact-section" ref={ref}>
-      <div className="section-label">— 05</div>
 
       <div className="contact-inner">
         <h2 className="contact-heading">
