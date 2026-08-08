@@ -7,7 +7,7 @@ import Works             from './components/Works'
 import Skills            from './components/Skills'
 import Contact           from './components/Contact'
 import Footer            from './components/Footer'
-import AvailabilityBadge from './components/AvailabilityBadge'
+
 import { useParticles, useCursor } from './hooks/useVisuals'
 
 export default function App() {
@@ -35,8 +35,6 @@ export default function App() {
 
       <Footer />
 
-      {/* Sabit sağ-alt köşe availability badge */}
-      <AvailabilityBadge />
     </>
   )
 }

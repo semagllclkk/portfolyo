@@ -1,5 +1,6 @@
 import { personal, education } from '../data'
 import { useReveal } from '../hooks/useReveal'
+import semaPhoto from '../assets/sema.png'
 
 export default function About() {
   const ref = useReveal()
@@ -7,11 +8,25 @@ export default function About() {
   return (
     <section id="about" className="section" ref={ref}>
       <div className="about-grid">
+
+        {/* Sol sütun — başlık + fotoğraf */}
         <div className="about-left reveal-left">
           <h2 className="section-title">Hakkımda</h2>
-          <div className="accent-line" />
+
+          {/* Fotoğraf kartı */}
+          <div className="about-photo-wrap">
+            <div className="about-photo-border">
+              <img
+                src={semaPhoto}
+                alt="Sema Gül Çelik"
+                className="about-photo"
+              />
+            </div>
+            <div className="about-photo-glow" />
+          </div>
         </div>
 
+        {/* Sağ sütun — içerik */}
         <div className="about-right reveal-right">
           {personal.bio.map((p, i) => (
             <p key={i} className={`about-text${i === 0 ? ' lead' : ''}`}>{p}</p>

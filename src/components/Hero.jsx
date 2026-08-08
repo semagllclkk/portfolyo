@@ -1,38 +1,95 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { personal } from '../data'
-import memeImage      from '../assets/meme.png'
+import memeImage from '../assets/meme.png'
 import memeLightImage from '../assets/meme-light.png'
 
-// "Yazılım Geliştirici & Yapay Zeka Meraklısı" → ikinci kısmı pembe vurgula
-function AnimatedRole({ text }) {
-  const sep = text.indexOf('&')
-  if (sep === -1) return <p className="hero-role">{text}</p>
-  const before = text.slice(0, sep + 1).trim()
-  const after  = text.slice(sep + 1).trim()
-
-  return (
-    <p className="hero-role">
-      {before}{' '}
-      <span className="hero-role-highlight">{after}</span>
-    </p>
-  )
-}
-
-// data-theme değişikliklerini izleyen hook
+// data-theme izleyici
 function useTheme() {
   const [isLight, setIsLight] = useState(
     () => document.documentElement.getAttribute('data-theme') === 'light'
   )
+  useEffect(() => {
+    const obs = new MutationObserver(() =>
+      setIsLight(document.documentElement.getAttribute('data-theme') === 'light')
+    )
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+    return () => obs.disconnect()
+  }, [])
+  return isLight
+}
+
+// Tek satır typewriter
+function TypewriterLine({ text, startDelay = 0, speed = 45, onDone }) {
+  const [displayed, setDisplayed] = useState('')
+  const [started, setStarted] = useState(false)
+  const [done, setDone] = useState(false)
+  const idxRef = useRef(0)
 
   useEffect(() => {
-    const observer = new MutationObserver(() => {
-      setIsLight(document.documentElement.getAttribute('data-theme') === 'light')
-    })
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
-    return () => observer.disconnect()
+    const t = setTimeout(() => setStarted(true), startDelay)
+    return () => clearTimeout(t)
+  }, [startDelay])
+
+  useEffect(() => {
+    if (!started) return
+    if (idxRef.current >= text.length) { setDone(true); onDone?.(); return }
+    const interval = setInterval(() => {
+      idxRef.current += 1
+      setDisplayed(text.slice(0, idxRef.current))
+      if (idxRef.current >= text.length) {
+        clearInterval(interval)
+        setDone(true)
+        onDone?.()
+      }
+    }, speed)
+    return () => clearInterval(interval)
+  }, [started, text, speed])
+
+  return (
+    <span>
+      {displayed}
+      {!done && <span className="rpg-caret">▮</span>}
+    </span>
+  )
+}
+
+// RPG info satırı — bir önceki bitmeden başlamaz
+function RpgLines() {
+  const [phase, setPhase] = useState(0) // 0=bekle, 1=isim, 2=bolum, 3=durum
+
+  const lines = [
+    { label: 'İSİM', value: 'Sema Gül Çelik' },
+    { label: 'BÖLÜM', value: 'Bilgisayar Mühendisliği' },
+    { label: 'DURUM', value: 'İş Tekliflerine Açık' },
+  ]
+
+  useEffect(() => {
+    // Kısa bir başlangıç gecikmesi
+    const t = setTimeout(() => setPhase(1), 600)
+    return () => clearTimeout(t)
   }, [])
 
-  return isLight
+  return (
+    <div className="rpg-lines">
+      {lines.map((line, i) => (
+        <div key={line.label} className={`rpg-line${phase > i ? ' rpg-line-visible' : ''}`}>
+          <span className="rpg-label">{line.label}</span>
+          <span className="rpg-separator">›</span>
+          <span className={`rpg-value${i === 2 ? ' rpg-value-status' : ''}`}>
+            {phase === i + 1 ? (
+              <TypewriterLine
+                text={line.value}
+                speed={i === 0 ? 60 : i === 1 ? 45 : 50}
+                onDone={() => setPhase(p => p + 1)}
+              />
+            ) : phase > i + 1 ? (
+              line.value
+            ) : null}
+          </span>
+        </div>
+      ))}
+    </div>
+  )
 }
 
 export default function Hero() {
@@ -42,15 +99,19 @@ export default function Hero() {
     <section id="hero" className="hero">
       <div className="hero-bg-glow" />
 
+      {/* SOL — İçerik */}
       <div className="hero-content">
         <p className="hero-eyebrow">Merhaba, ben</p>
 
         <h1 className="hero-name">
-          <span className="name-regular">{personal.nameFirst}</span>
-          <span className="name-italic">{personal.nameLast}</span>
+          <span className="name-pixel">{personal.nameFirst}</span>
+          <span className="name-pixel name-pixel-last">{personal.nameLast}</span>
         </h1>
 
-        <AnimatedRole text={personal.role} />
+        <p className="hero-role">
+          Yazılım Geliştirici &{' '}
+          <span className="hero-role-highlight">Yapay Zeka Meraklısı</span>
+        </p>
 
         <div className="hero-divider" />
 
@@ -62,54 +123,45 @@ export default function Hero() {
         </div>
 
         <div className="hero-socials">
-          <a
-            href={personal.contact.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hero-social-link"
-            aria-label="GitHub"
-          >
-            GitHub
-          </a>
+          <a href={personal.contact.github} target="_blank" rel="noopener noreferrer" className="hero-social-link" aria-label="GitHub">GitHub</a>
           <span className="social-dot">·</span>
-          <a
-            href={personal.contact.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hero-social-link"
-            aria-label="LinkedIn"
-          >
-            LinkedIn
-          </a>
+          <a href={personal.contact.linkedin} target="_blank" rel="noopener noreferrer" className="hero-social-link" aria-label="LinkedIn">LinkedIn</a>
           <span className="social-dot">·</span>
-          <a
-            href={personal.contact.medium}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hero-social-link"
-            aria-label="Medium"
-          >
-            Medium
-          </a>
+          <a href={personal.contact.medium} target="_blank" rel="noopener noreferrer" className="hero-social-link" aria-label="Medium">Medium</a>
         </div>
       </div>
 
+      {/* SAĞ — RPG Karakter Kartı */}
       <div className="hero-visual">
-        <div className="hero-meme-wrapper">
-          <img
-            key={isLight ? 'light' : 'dark'}
-            src={isLight ? memeLightImage : memeImage}
-            alt="it works on my machine — shipping to prod anyway"
-            className={`hero-meme${isLight ? ' hero-meme-light' : ''}`}
-          />
-          <div className="meme-glow" />
+        <div className="rpg-card">
+          {/* Piksel köşe süslemeleri */}
+          <span className="rpg-corner rpg-corner-tl" />
+          <span className="rpg-corner rpg-corner-tr" />
+          <span className="rpg-corner rpg-corner-bl" />
+          <span className="rpg-corner rpg-corner-br" />
+
+          {/* Üst başlık şeridi */}
+          <div className="rpg-card-header">
+            <span className="rpg-card-label">KARAKTER BİLGİSİ</span>
+            <span className="rpg-blink">●</span>
+          </div>
+
+          {/* Karakter görseli */}
+          <div className="rpg-portrait">
+            <img
+              key={isLight ? 'light' : 'dark'}
+              src={isLight ? memeLightImage : memeImage}
+              alt="Karakter görseli"
+              className="rpg-portrait-img"
+            />
+            <div className="rpg-portrait-glow" />
+          </div>
+
+          {/* Bilgi satırları */}
+          <RpgLines />
         </div>
       </div>
 
-      <div className="scroll-hint">
-        <div className="scroll-line" />
-        <span>Kaydır</span>
-      </div>
     </section>
   )
 }
