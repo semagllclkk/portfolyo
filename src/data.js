@@ -100,6 +100,7 @@ export const projects = [
     github: "https://github.com/semagllclkk/caretta-takibi-uygulamasi",
     live: null,
     featured: true,
+    photo: "/projects/caretta.png",
   },
   {
     id: "proj-data-middleware",
@@ -133,6 +134,7 @@ export const projects = [
     github: "https://github.com/semagllclkk/fingerjump-mobile",
     live: null,
     featured: false,
+    photo: "/projects/finger-jump.jpeg",
   },
   {
     id: "proj-techvolt",
@@ -144,6 +146,7 @@ export const projects = [
     github: null,
     live: "https://www.techvoltsolutions.com.tr",
     featured: true,
+    photo: "/projects/techvolt_light.jpeg",
   },
   {
     id: "proj-kitap",
@@ -175,6 +178,7 @@ export const projects = [
     github: "https://github.com/semagllclkk/pdl_oyun_projesi",
     live: null,
     featured: false,
+    photo: "/projects/kirmizi-baslikli-kiz.png",
   },
 ];
 

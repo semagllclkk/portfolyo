@@ -8,11 +8,18 @@ function ProjectCard({ project, index }) {
       style={{ '--delay': `${index * 0.08}s` }}
     >
       <div className="card-img-area">
-        {/* Proje görseli: src/assets/projects/<id>.jpg */}
-        {/* <img src={`/assets/projects/${project.id}.jpg`} alt={project.title} /> */}
-        <div className="card-img-placeholder">
-          <span>{project.title}</span>
-        </div>
+        {project.photo ? (
+          <img
+            src={project.photo}
+            alt={project.title}
+            className="card-img-area img"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
+        ) : (
+          <div className="card-img-placeholder">
+            <span>{project.title}</span>
+          </div>
+        )}
         <div className="card-overlay">
           <div className="card-actions">
             {project.github && (
