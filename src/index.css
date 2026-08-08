@@ -458,6 +458,11 @@ img { display: block; max-width: 100%; }
   filter: brightness(.92) saturate(1.1);
   user-select: none;
 }
+/* Light mode meme — daha parlak, sıcak ton */
+.hero-meme-light {
+  filter: brightness(1.02) saturate(1.05);
+  border-color: var(--pink-border);
+}
 .hero-meme:hover {
   transform: scale(1.025) rotate(-0.5deg);
   box-shadow: 0 24px 70px rgba(0,0,0,.55), 0 0 50px var(--pink-glow);
