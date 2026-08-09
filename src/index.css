@@ -985,21 +985,22 @@ img { display: block; max-width: 100%; }
 .contact-section { text-align:center; }
 .contact-inner   { max-width:660px; margin:0 auto; padding-top:2rem; }
 .contact-heading {
-  font-family:var(--serif);
-  font-size:clamp(2.4rem,5vw,4.2rem);
-  font-weight:300; line-height:1.15;
+  font-family: 'Press Start 2P', monospace;
+  font-size:clamp(.95rem,2.2vw,1.6rem);
+  line-height:1.7;
   margin-bottom:1.1rem;
 }
 .gradient-text {
   background:linear-gradient(135deg, var(--pink-lt), var(--pink-ll));
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  background-clip:text; font-style:italic;
+  background-clip:text;
 }
 .contact-sub   { font-size:.95rem; color:var(--txt-2); margin-bottom:2.8rem; }
 .contact-email {
   display:inline-block;
-  font-family:var(--serif); font-size:clamp(1.2rem,3vw,1.9rem);
-  font-style:italic; color:var(--pink-ll);
+  font-family: 'Press Start 2P', monospace;
+  font-size:clamp(.65rem,1.4vw,.9rem);
+  color:var(--pink-ll);
   border-bottom:1px solid var(--pink-border); padding-bottom:.35rem;
   transition:color var(--t), border-color var(--t);
   margin-bottom:2.8rem;
@@ -1061,7 +1062,7 @@ img { display: block; max-width: 100%; }
 }
 @media (max-width: 480px) {
   .hero-name { font-size: clamp(2.4rem, 10vw, 3rem); }
-  .contact-heading { font-size: clamp(1.8rem, 7vw, 2.2rem); }
+  .contact-heading { font-size: clamp(.75rem, 4vw, 1rem); }
   .section  { padding: 4rem 1rem; }
   .hero { padding: 5.5rem 1rem 3rem; }
   .hero-cta { flex-wrap: wrap; gap:.75rem; }
