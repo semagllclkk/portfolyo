@@ -145,9 +145,9 @@ img { display: block; max-width: 100%; }
   display: flex; gap: 2.5rem; list-style: none;
 }
 .nav-link {
-  font-size: .76rem;
-  font-weight: 400;
-  letter-spacing: .14em;
+  font-family: 'Press Start 2P', monospace;
+  font-size: .52rem;
+  letter-spacing: .06em;
   text-transform: uppercase;
   color: var(--txt-2);
   transition: color var(--t);
@@ -219,12 +219,11 @@ img { display: block; max-width: 100%; }
   pointer-events: all;
 }
 .mobile-nav-link {
-  font-family: var(--serif);
-  font-size: 2rem;
-  font-weight: 300;
-  font-style: italic;
+  font-family: 'Press Start 2P', monospace;
+  font-size: .85rem;
   color: var(--txt-2);
   letter-spacing: .06em;
+  line-height: 1.8;
   transition: color var(--t), transform var(--t);
   text-decoration: none;
 }
@@ -354,15 +353,24 @@ img { display: block; max-width: 100%; }
   position: relative; z-index: 2;
   border-top: 1px solid var(--border);
 }
+/* Light mode — section ayırıcıları belirgin, katmanlı arka plan */
+[data-theme="light"] .section {
+  border-top: 1px solid rgba(194,0,94,0.18);
+}
+[data-theme="light"] .section:nth-of-type(even) {
+  background: linear-gradient(180deg, rgba(194,0,94,0.03) 0%, transparent 100%);
+}
+[data-theme="light"] .section:nth-of-type(odd) {
+  background: linear-gradient(180deg, rgba(253,246,249,0.6) 0%, transparent 100%);
+}
 /* Hakkımda ile Deneyim arası boşluk azaltıldı */
 #about { padding-bottom: 4rem; }
 #experience { padding-top: 4rem; }
 .section-label { display: none; }
 .section-title {
-  font-family: var(--serif);
-  font-size: clamp(2.1rem, 4vw, 3.4rem);
-  font-weight: 300;
-  line-height: 1.12;
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(.85rem, 2vw, 1.4rem);
+  line-height: 1.6;
 }
 .section-title.centered { text-align: center; }
 .section-sub {
@@ -953,7 +961,7 @@ img { display: block; max-width: 100%; }
   padding:.22rem .65rem; border-radius:100px;
   border:1px solid var(--pink-border);
 }
-.card-title    { font-family:var(--serif); font-size:1.35rem; font-weight:300; margin-bottom:.15rem; transition:color var(--t); }
+.card-title    { font-family:'Press Start 2P', monospace; font-size:.7rem; line-height:1.7; margin-bottom:.4rem; transition:color var(--t); }
 .card-subtitle { font-size:.78rem; color:var(--pink-ll); margin-bottom:.55rem; font-style:italic; }
 .card-desc     { font-size:.83rem; color:var(--txt-2); line-height:1.72; }
 .work-card:hover .card-title { color:var(--pink-ll); }
