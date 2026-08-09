@@ -158,6 +158,7 @@ export const projects = [
     github: "https://github.com/semagllclkk/kitap-satis-uygulamasi",
     live: null,
     featured: false,
+    photo: "/projects/kitap-satis.png",
   },
   {
     id: "proj-dietitian-client",
@@ -168,6 +169,7 @@ export const projects = [
     github: "https://github.com/semagllclkk/dietitian-client",
     live: "https://dietitian-client-epxaw6mgq-sema-guls-projects.vercel.app/",
     featured: false,
+    photo: "/projects/dietitian-client.png",
   },
   {
     id: "proj-kirmizi-baslikli-kiz",
