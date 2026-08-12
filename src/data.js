@@ -28,31 +28,34 @@ export const personal = {
 
 export const skills = [
   {
-    category: "Backend",
+    category: "AI & Machine Learning",
     items: [
-      "C#", "Python", "Dart", "Java", "SQL", "C",
-      "ASP.NET Core", "FastAPI", "Nest.js",
-      "Entity Framework", "PostgreSQL", "SQLite", "PostGIS",
+      "Python", "PyTorch", "Deep Learning", "Machine Learning",
     ],
   },
   {
-    category: "Frontend",
+    category: "Computer Vision",
     items: [
-      "JavaScript", "TypeScript", "React.js",
-      "Next.js", "Flutter", "Tailwind CSS",
+      "OpenCV", "YOLO", "MediaPipe", "Image Processing",
     ],
   },
   {
-    category: "Tools & DevOps",
+    category: "Backend & AI Deployment",
     items: [
-      "Git", "GitHub", "Postman", "Vercel", "Railway", "Render",
-      "Docker", "OpenCV", "NumPy", "Pandas", "Matplotlib",
-      "PyTorch", "NetTopologySuite", "Burp Suite",
+      "FastAPI", "REST API",
     ],
   },
   {
-    category: "Yabancı Dil",
-    items: ["İngilizce — B2 (Upper Intermediate)"],
+    category: "Software",
+    items: [
+      "C#", "ASP.NET Core", "JavaScript", "TypeScript",
+    ],
+  },
+  {
+    category: "Database & Tools",
+    items: [
+      "PostgreSQL", "Git", "GitHub", "Docker", "Postman",
+    ],
   },
 ];
 
