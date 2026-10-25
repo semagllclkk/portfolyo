@@ -103,7 +103,9 @@ export const projects = [
     github: "https://github.com/semagllclkk/caretta-takibi-uygulamasi",
     live: null,
     featured: true,
-    photo: "/projects/caretta.png",
+    photo: "/projects/caretta.webp",
+    photoFit: "contain", // logo: kırpmadan sığdır
+    photoBg: "#005ab6",
   },
   {
     id: "proj-data-middleware",
@@ -137,7 +139,7 @@ export const projects = [
     github: "https://github.com/semagllclkk/fingerjump-mobile",
     live: null,
     featured: false,
-    photo: "/projects/finger-jump.jpeg",
+    photo: "/projects/finger-jump.webp",
   },
   {
     id: "proj-techvolt",
@@ -149,7 +151,9 @@ export const projects = [
     github: null,
     live: "https://www.techvoltsolutions.com.tr",
     featured: true,
-    photo: "/projects/techvolt_light.jpeg",
+    photo: "/projects/techvolt_light.webp",
+    photoFit: "contain", // logo: kırpmadan sığdır
+    photoBg: "#ffffff",
   },
   {
     id: "proj-kitap",
@@ -161,7 +165,9 @@ export const projects = [
     github: "https://github.com/semagllclkk/kitap-satis-uygulamasi",
     live: null,
     featured: false,
-    photo: "/projects/kitap-satis.png",
+    photo: "/projects/kitap-satis.webp",
+    photoFit: "contain", // logo: kırpmadan sığdır
+    photoBg: "#170e19",
   },
   {
     id: "proj-dietitian-client",
@@ -172,7 +178,9 @@ export const projects = [
     github: "https://github.com/semagllclkk/dietitian-client",
     live: "https://dietitian-client-epxaw6mgq-sema-guls-projects.vercel.app/",
     featured: false,
-    photo: "/projects/dietitian-client.png",
+    photo: "/projects/dietitian-client.webp",
+    photoFit: "contain", // logo: kırpmadan sığdır
+    photoBg: "#ffffff",
   },
   {
     id: "proj-kirmizi-baslikli-kiz",
@@ -183,7 +191,7 @@ export const projects = [
     github: "https://github.com/semagllclkk/pdl_oyun_projesi",
     live: null,
     featured: false,
-    photo: "/projects/kirmizi-baslikli-kiz.png",
+    photo: "/projects/kirmizi-baslikli-kiz.webp",
   },
 ];
 

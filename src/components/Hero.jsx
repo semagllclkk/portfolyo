@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { personal } from '../data'
-import memeImage from '../assets/meme.png'
-import memeLightImage from '../assets/meme-light.png'
+import memeImage from '../assets/meme.webp'
+import memeLightImage from '../assets/meme-light.webp'
 
 // data-theme izleyici
 function useTheme() {

@@ -7,14 +7,12 @@ function ProjectCard({ project, index }) {
       className={`work-card${project.featured ? ' featured' : ''} reveal-child`}
       style={{ '--delay': `${index * 0.08}s` }}
     >
-      <div className="card-img-area">
+      <div
+        className={`card-img-area${project.photoFit === 'contain' ? ' is-logo' : ''}`}
+        style={project.photoBg ? { background: project.photoBg } : undefined}
+      >
         {project.photo ? (
-          <img
-            src={project.photo}
-            alt={project.title}
-            className="card-img-area img"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-          />
+          <img src={project.photo} alt={project.title} loading="lazy" />
         ) : (
           <div className="card-img-placeholder">
             <span>{project.title}</span>
@@ -57,6 +55,20 @@ function ProjectCard({ project, index }) {
         <h3 className="card-title">{project.title}</h3>
         <p className="card-subtitle">{project.subtitle}</p>
         <p className="card-desc">{project.description}</p>
+        {(project.github || project.live) && (
+          <div className="card-links">
+            {project.github && (
+              <a href={project.github} target="_blank" rel="noopener noreferrer" className="card-link">
+                GitHub ↗
+              </a>
+            )}
+            {project.live && (
+              <a href={project.live} target="_blank" rel="noopener noreferrer" className="card-link">
+                Canlı ↗
+              </a>
+            )}
+          </div>
+        )}
       </div>
     </article>
   )

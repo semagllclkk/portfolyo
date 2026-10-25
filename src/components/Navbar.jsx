@@ -3,8 +3,12 @@ import pixelRose from '../assets/pixel-rose.png'
 
 export default function Navbar() {
   const navRef = useRef(null)
-  const [dark, setDark] = useState(true)
+  // index.html'deki script temayı ilk boyamadan önce ayarlıyor; buradan okuyoruz
+  const [dark, setDark] = useState(
+    () => document.documentElement.getAttribute('data-theme') !== 'light'
+  )
   const [menuOpen, setMenuOpen] = useState(false)
+  const [active, setActive] = useState('')
 
   useEffect(() => {
     const onScroll = () => {
@@ -19,6 +23,13 @@ export default function Navbar() {
     document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light')
   }, [dark])
 
+  const toggleTheme = () => {
+    setDark(d => {
+      try { localStorage.setItem('theme', d ? 'light' : 'dark') } catch { /* gizli sekme */ }
+      return !d
+    })
+  }
+
   // Menü açıkken body scroll'u kilitle
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
@@ -26,11 +37,29 @@ export default function Navbar() {
   }, [menuOpen])
 
   const links = [
-    { href: '#about',   label: 'Hakkımda' },
-    { href: '#works',   label: 'Projeler'  },
+    { href: '#about',      label: 'Hakkımda' },
+    { href: '#experience', label: 'Deneyim'  },
+    { href: '#works',      label: 'Projeler'  },
     { href: '#skills',  label: 'Beceriler' },
     { href: '#contact', label: 'İletişim'  },
   ]
+
+  // Ekranın ortasındaki bölümü menüde vurgula
+  useEffect(() => {
+    const ids = links.map(l => l.href.slice(1))
+    const onScroll = () => {
+      const mid = window.innerHeight / 2
+      let current = ''
+      ids.forEach(id => {
+        const el = document.getElementById(id)
+        if (el && el.getBoundingClientRect().top <= mid) current = id
+      })
+      setActive(current)
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleMobileLink = (href) => {
     setMenuOpen(false)
@@ -51,7 +80,7 @@ export default function Navbar() {
         <ul className="nav-links">
           {links.map(l => (
             <li key={l.href}>
-              <a href={l.href} className="nav-link">{l.label}</a>
+              <a href={l.href} className={`nav-link${active === l.href.slice(1) ? ' active' : ''}`}>{l.label}</a>
             </li>
           ))}
         </ul>
@@ -62,7 +91,7 @@ export default function Navbar() {
             id="theme-toggle"
             className="theme-toggle"
             aria-label={dark ? 'Açık moda geç' : 'Koyu moda geç'}
-            onClick={() => setDark(d => !d)}
+            onClick={toggleTheme}
           >
             <span className="theme-toggle-track">
               <span className="theme-toggle-thumb" />
@@ -111,7 +140,7 @@ export default function Navbar() {
           className="theme-toggle"
           style={{ cursor: 'pointer' }}
           aria-label={dark ? 'Açık moda geç' : 'Koyu moda geç'}
-          onClick={() => setDark(d => !d)}
+          onClick={toggleTheme}
         >
           <span className="theme-toggle-track">
             <span className="theme-toggle-thumb" />
