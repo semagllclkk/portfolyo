@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import semaPhoto from '../assets/sema.webp'
+import PixelIcon, { PixelText } from './PixelIcon'
 
 // Stardew HUD saati: gerçek gün ve saati gösterir, 30 sn'de bir güncellenir
 function useNow() {
@@ -19,7 +20,7 @@ function Hud({ meme, cls }) {
     <aside className={`${cls} meme-hud`} aria-label={meme.label}>
       <div className="meme-hud-top">
         <p className="sv-heading">{meme.days[now.getDay()]} {now.getDate()}</p>
-        <span className="meme-hud-icon" aria-hidden="true">{h >= 6 && h < 19 ? '☀️' : '🌙'}</span>
+        <PixelIcon name={h >= 6 && h < 19 ? 'sun' : 'moon'} size={22} className="meme-hud-icon" />
       </div>
       <p className="meme-hud-time">{time}</p>
       <p className="meme-hud-gold"><span>{meme.gold}</span> {meme.goldLabel}</p>
@@ -52,7 +53,7 @@ export default function Meme({ meme, className = '', reveal = true }) {
         <aside className={`${cls} meme-levelup`}>
           <p className="sv-title">{meme.title}</p>
           <div className="meme-levelup-row">
-            <span className="sv-icon" aria-hidden="true">{meme.icon}</span>
+            <span className="sv-icon"><PixelIcon name={meme.icon} /></span>
             <div>
               <p className="sv-heading">{meme.skill}</p>
               <p className="sv-text">{meme.text}</p>
@@ -66,7 +67,7 @@ export default function Meme({ meme, className = '', reveal = true }) {
       return (
         <aside className={`${cls} meme-item`}>
           <div className="meme-item-head">
-            <span className="sv-icon" aria-hidden="true">{meme.icon}</span>
+            <span className="sv-icon"><PixelIcon name={meme.icon} /></span>
             <div>
               <p className="sv-heading">{meme.name}</p>
               <p className="sv-sub">{meme.category}</p>
@@ -76,7 +77,7 @@ export default function Meme({ meme, className = '', reveal = true }) {
           <ul className="meme-item-buffs">
             {meme.buffs.map(b => <li key={b}>{b}</li>)}
           </ul>
-          <p className="sv-quality" aria-label={meme.quality}>★ {meme.quality}</p>
+          <p className="sv-quality"><PixelIcon name="star" size={16} className="pixel-icon-inline" /> {meme.quality}</p>
         </aside>
       )
 
@@ -115,7 +116,7 @@ export default function Meme({ meme, className = '', reveal = true }) {
     case 'npc':
       return (
         <aside className={`${cls} meme-npc`}>
-          <p className="sv-text meme-npc-text">{meme.text}</p>
+          <p className="sv-text meme-npc-text"><PixelText text={meme.text} /></p>
           <figure className="meme-npc-portrait">
             <img src={semaPhoto} alt="" loading="lazy" />
             <figcaption className="sv-nameplate">{meme.speaker}</figcaption>
@@ -130,7 +131,7 @@ export default function Meme({ meme, className = '', reveal = true }) {
     case 'toast':
       return (
         <aside className={`${cls} meme-toast`}>
-          <span className="sv-icon" aria-hidden="true">{meme.icon}</span>
+          <span className="sv-icon"><PixelIcon name={meme.icon} /></span>
           <div>
             <p className="sv-title">{meme.title}</p>
             <p className="sv-heading">{meme.name}</p>
@@ -147,7 +148,7 @@ export default function Meme({ meme, className = '', reveal = true }) {
           <ul className="meme-bundle-slots">
             {meme.items.map(it => (
               <li key={it.label}>
-                <span className="meme-slot" aria-hidden="true">{it.icon}<i>✓</i></span>
+                <span className="meme-slot"><PixelIcon name={it.icon} size={28} /><i><PixelIcon name="check" size={14} /></i></span>
                 <span className="sv-sub">{it.label}</span>
               </li>
             ))}
@@ -161,10 +162,10 @@ export default function Meme({ meme, className = '', reveal = true }) {
         <aside className={`${cls} meme-catch`}>
           <p className="sv-title">{meme.title}</p>
           <div className="meme-levelup-row">
-            <span className="sv-icon" aria-hidden="true">{meme.icon}</span>
+            <span className="sv-icon"><PixelIcon name={meme.icon} /></span>
             <div>
               <p className="sv-heading">{meme.name}</p>
-              <p className="sv-quality">{meme.rarity}</p>
+              <p className="sv-quality"><PixelText text={meme.rarity} /></p>
               <p className="sv-sub">{meme.size}</p>
             </div>
           </div>
@@ -178,7 +179,7 @@ export default function Meme({ meme, className = '', reveal = true }) {
           <p className="sv-text">{meme.greeting}</p>
           <p className="sv-text">{meme.text}</p>
           <p className="sv-text meme-mail-sign">{meme.sign}</p>
-          <p className="sv-note">📎 {meme.attachment}</p>
+          <p className="sv-note meme-mail-attach"><PixelIcon name="letter" size={18} className="pixel-icon-inline" /> <PixelText text={meme.attachment} /></p>
         </aside>
       )
 
@@ -188,10 +189,10 @@ export default function Meme({ meme, className = '', reveal = true }) {
           <p className="sv-title">{meme.title}</p>
           <ul>
             {meme.rows.map(r => (
-              <li key={r.item}><span className="sv-text">{r.icon} {r.item}</span><span className="sv-text">{r.price}</span></li>
+              <li key={r.item}><span className="sv-text"><PixelIcon name={r.icon} size={20} className="pixel-icon-inline" /> {r.item}</span><span className="sv-text">{r.price}</span></li>
             ))}
           </ul>
-          <p className="meme-shipping-total"><span>{meme.totalLabel}</span><span>{meme.total}</span></p>
+          <p className="meme-shipping-total"><span>{meme.totalLabel}</span><span><PixelText text={meme.total} /></span></p>
         </aside>
       )
 
