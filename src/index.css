@@ -1060,69 +1060,160 @@ img { display: block; max-width: 100%; }
 .contact-copy:hover { color:var(--pink-lt); border-color:var(--pink-border); }
 @media (pointer: coarse) { .contact-copy { cursor:pointer; } }
 
-/* ── MEME KUTULARI (RPG) ─────────────────────────────────────── */
-.meme {
+/* ── MEME KUTULARI (Stardew Valley arayüzünden esinlenildi) ──── */
+:root {
+  --pixel: 'Jersey 10', 'DM Sans', system-ui, sans-serif;
+  --sv-wood-dk: #5b3416;
+  --sv-wood:    #b5651d;
+  --sv-wood-lt: #e9a956;
+  --sv-parch:   #f9e3b4;
+  --sv-parch-2: #f1d29a;
+  --sv-ink:     #4a2a12;
+  --sv-ink-2:   #8a5a2b;
+}
+.sv-box {
   position:relative;
   max-width:440px;
-  padding:1rem 1.2rem;
-  background:var(--bg-card);
-  border:2px solid var(--pink-border);
-  border-radius:2px;
-  box-shadow:4px 4px 0 var(--pink-glow), 0 0 28px var(--pink-glow-s);
+  padding:1rem 1.15rem;
+  background:var(--sv-parch);
+  color:var(--sv-ink);
+  border:4px solid var(--sv-wood);
+  border-radius:6px;
+  box-shadow:
+    inset 0 0 0 3px var(--sv-wood-lt),
+    inset 0 0 0 5px var(--sv-parch-2),
+    0 0 0 3px var(--sv-wood-dk),
+    6px 7px 0 3px rgba(0,0,0,.35);
+  font-family:var(--pixel);
   text-align:left;
 }
-.meme-title {
-  font-family:var(--sans); font-size:.62rem; font-weight:500;
-  letter-spacing:.22em; text-transform:uppercase; color:var(--pink-lt);
-  margin-bottom:.35rem;
-}
-.meme-text { font-size:.86rem; color:var(--txt); line-height:1.6; }
-.meme-sub  { font-size:.74rem; color:var(--txt-2); margin-top:.25rem; font-style:italic; }
-
-.meme-achievement { display:flex; align-items:center; gap:.9rem; }
-.meme-trophy {
+.sv-title   { font-size:1.25rem; font-weight:400; color:var(--sv-wood-dk); margin-bottom:.45rem; }
+.sv-heading { font-size:1.3125rem; font-weight:400; color:var(--sv-ink); line-height:1.25; }
+.sv-sub     { font-size:1rem; color:var(--sv-ink-2); }
+.sv-text    { font-size:1.1875rem; line-height:1.45; color:var(--sv-ink); }
+.sv-note    { font-size:1rem; color:var(--sv-ink-2); margin-top:.45rem; }
+.sv-quality { font-size:1rem; color:#7a3fb0; margin-top:.5rem; }
+.sv-icon {
   flex-shrink:0; display:grid; place-items:center;
-  width:42px; height:42px; font-size:1.3rem;
-  background:var(--pink-glow-s); border:2px solid var(--pink-border);
+  width:46px; height:46px; font-size:1.875rem;
+  background:var(--sv-parch-2);
+  border:3px solid var(--sv-wood);
+  box-shadow:inset 0 0 0 2px var(--sv-wood-lt);
+  border-radius:4px;
 }
-.meme-achievement.visible .meme-trophy { animation:trophyPop .6s .3s both; }
-@keyframes trophyPop { 0% { transform:scale(.4) rotate(-20deg); } 60% { transform:scale(1.15) rotate(6deg); } 100% { transform:none; } }
+.sv-nameplate {
+  font-family:var(--pixel); font-size:1.0625rem; font-weight:400; text-align:center;
+  color:var(--sv-ink); background:var(--sv-parch-2);
+  border:3px solid var(--sv-wood); box-shadow:inset 0 0 0 2px var(--sv-wood-lt);
+  border-radius:3px; padding:.15rem .4rem; margin-top:.35rem;
+}
 
-.meme-dialog { padding-top:1.35rem; }
-.meme-speaker {
-  position:absolute; top:-.75rem; left:.9rem;
-  font-family:'Press Start 2P', monospace; font-size:.5rem; letter-spacing:.06em;
-  color:#fff; background:var(--pink); padding:.35rem .6rem;
+/* Seviye atlama */
+.meme-levelup { text-align:center; }
+.meme-levelup .sv-title { font-size:1.4375rem; text-align:center; letter-spacing:.02em; }
+.meme-levelup-row { display:flex; align-items:center; gap:.85rem; text-align:left; }
+.meme-levelup.visible .sv-icon { animation:svPop .6s .3s both; }
+@keyframes svPop { 0% { transform:scale(.4) rotate(-15deg); } 60% { transform:scale(1.15) rotate(5deg); } 100% { transform:none; } }
+
+/* Eşya açıklaması */
+.meme-item { max-width:320px; }
+.meme-item-head { display:flex; align-items:center; gap:.75rem; padding-bottom:.6rem; margin-bottom:.6rem; border-bottom:2px dashed var(--sv-wood-lt); }
+.meme-item-buffs { list-style:none; margin-top:.55rem; display:flex; flex-direction:column; gap:.1rem; }
+.meme-item-buffs li { font-size:1.0625rem; color:#2f7a1f; }
+.meme-item-buffs li:last-child { color:#b0322a; }
+
+/* Enerji barı */
+.meme-energy { display:flex; gap:1rem; align-items:stretch; }
+.meme-energy-bar { display:flex; flex-direction:column; align-items:center; gap:.25rem; }
+.meme-energy-letter { font-weight:400; font-size:1.1875rem; color:var(--sv-wood-dk); }
+.meme-energy-track {
+  position:relative; width:22px; flex:1; min-height:90px;
+  background:#3b2414; border:3px solid var(--sv-wood); box-shadow:inset 0 0 0 2px var(--sv-wood-dk);
+}
+.meme-energy-track span {
+  position:absolute; left:2px; right:2px; bottom:2px;
+  background:#d8392b; animation:svBlink 1.2s steps(2) infinite;
+}
+@keyframes svBlink { 50% { background:#ff6a4d; } }
+
+/* Takvim */
+.meme-calendar ul { list-style:none; display:flex; flex-direction:column; gap:.5rem; }
+.meme-calendar li { display:grid; grid-template-columns:6.5rem 1fr; gap:.6rem; align-items:baseline; }
+.meme-calendar-day {
+  font-size:1rem; font-weight:400; color:var(--sv-parch);
+  background:var(--sv-wood); border-radius:3px; padding:.12rem .4rem; text-align:center;
+}
+
+/* NPC diyalog */
+.meme-npc { max-width:560px; display:grid; grid-template-columns:1fr 112px; gap:1rem; align-items:center; padding:1.1rem 1.2rem 1.4rem; }
+.meme-npc-text { font-size:1.25rem; }
+.meme-npc-portrait { margin:0; }
+.meme-npc-portrait img {
+  width:100%; aspect-ratio:1; object-fit:cover; display:block;
+  border:3px solid var(--sv-wood); box-shadow:inset 0 0 0 2px var(--sv-wood-lt);
+  border-radius:3px; image-rendering:pixelated;
 }
 .meme-next {
-  position:absolute; right:.7rem; bottom:.35rem;
-  font-size:.6rem; color:var(--pink-lt);
+  position:absolute; left:50%; bottom:.25rem;
+  font-size:0.875rem; color:var(--sv-wood);
   animation:dialogNext 1s steps(2) infinite;
 }
 @keyframes dialogNext { 50% { transform:translateY(3px); opacity:.4; } }
 
-.meme-bar {
-  height:10px; margin-top:.7rem;
-  border:2px solid var(--pink-border); background:var(--bg-2);
-  overflow:hidden;
-}
-.meme-bar span {
-  display:block; height:100%;
-  background:repeating-linear-gradient(90deg, var(--pink) 0 6px, transparent 6px 8px);
+/* Kendi meme görselin */
+.meme-image { padding:.6rem; }
+.meme-image img { width:100%; display:block; border-radius:2px; }
+.meme-image figcaption { text-align:center; }
+
+.meme-about    { margin-top:2rem; }
+.meme-exp      { margin:0 0 0 auto; }
+.meme-works    { margin:-1.2rem auto 2.6rem; }
+.meme-skills   { margin-top:2rem; }
+.meme-contact  { margin:0 auto 3rem; }
+@media (prefers-reduced-motion: reduce) {
+  .meme-next, .meme-levelup.visible .sv-icon, .meme-energy-track span { animation:none; }
 }
 
-.meme-exp     { margin:0 0 0 auto; }
-.meme-works   { margin:-1.5rem auto 2.5rem; }
-.meme-skills  { margin-top:2rem; }
-.meme-contact { margin:0 auto 2.6rem; }
-@media (prefers-reduced-motion: reduce) {
-  .meme-next, .meme-achievement.visible .meme-trophy { animation:none; }
-}
 .contact-socials { display:flex; align-items:center; justify-content:center; gap:.6rem; flex-wrap:wrap; }
 .social-item   { display:flex; align-items:center; gap:.6rem; }
-.social-link   { font-size:.73rem; letter-spacing:.12em; text-transform:uppercase; color:var(--txt-2); transition:color var(--t); }
+.social-link   { font-size:0.9375rem; letter-spacing:.12em; text-transform:uppercase; color:var(--txt-2); transition:color var(--t); }
 .social-link:hover { color:var(--pink-lt); }
 .social-sep    { color:var(--txt-3); }
+
+/* ── Alt bölümlerde pixel yazı (etiketler, tarihler, küçük başlıklar) ──
+   :root öneki, dosyada daha sonra gelen footer/iletişim stillerini ezmek için */
+:root .exp-type, :root .exp-period, :root .exp-company,
+:root .skill-group-title, :root .skill-tag, :root .skills-intro,
+:root .card-tag, :root .card-link, :root .card-subtitle, :root .section-sub,
+:root .edu-badge, :root .edu-period, :root .edu-uni, :root .stat-label,
+:root .contact-sub, :root .contact-copy, :root .social-link,
+:root .footer-name, :root .footer-copy, :root .footer-top {
+  font-family:var(--pixel);
+  font-style:normal;
+}
+:root .exp-type, :root .skill-group-title, :root .card-tag, :root .card-link,
+:root .edu-badge, :root .stat-label, :root .social-link, :root .contact-copy {
+  letter-spacing:.06em;
+}
+:root .exp-type          { font-size:1.125rem; }
+:root .exp-period        { font-size:1.125rem; }
+:root .exp-company       { font-size:1.25rem; letter-spacing:.02em; }
+:root .skill-group-title { font-size:1.25rem; font-weight:400; text-transform:none; letter-spacing:.03em; color:var(--pink-ll); }
+:root .skill-tag         { font-size:1.125rem; letter-spacing:.02em; }
+:root .skills-intro      { font-size:1.25rem; }
+:root .card-tag          { font-size:1rem; text-transform:none; letter-spacing:.03em; }
+:root .card-link         { font-size:1.1875rem; }
+:root .card-subtitle     { font-size:1.1875rem; }
+:root .section-sub       { font-size:1.25rem; }
+:root .edu-badge         { font-size:1rem; }
+:root .edu-uni           { font-size:1.125rem; }
+:root .edu-period        { font-size:1.0625rem; }
+:root .stat-label        { font-size:1.125rem; text-transform:none; }
+:root .contact-sub       { font-size:1.3125rem; }
+:root .contact-copy      { font-size:1rem; }
+:root .social-link       { font-size:1.25rem; }
+:root .footer-name       { font-size:1.25rem; }
+:root .footer-copy, :root .footer-top { font-size:1.125rem; }
 
 /* ── FOOTER ──────────────────────────────────────────────────── */
 .footer { border-top:1px solid var(--border); padding:2rem 4rem; position:relative; z-index:2; }
