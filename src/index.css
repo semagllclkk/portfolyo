@@ -1108,6 +1108,11 @@ img { display: block; max-width: 100%; }
   border-radius:3px; padding:.15rem .4rem; margin-top:.35rem;
 }
 
+/* Pixel ikonlar (özgün 16x16 çizimler) */
+.pixel-icon { display:inline-block; flex-shrink:0; image-rendering:pixelated; }
+.pixel-icon-inline { vertical-align:-3px; }
+.sv-icon .pixel-icon { width:32px; height:32px; }
+
 /* Seviye atlama */
 .meme-levelup { text-align:center; }
 .meme-levelup .sv-title { font-size:1.4375rem; text-align:center; letter-spacing:.02em; }
@@ -1174,7 +1179,7 @@ img { display: block; max-width: 100%; }
 }
 .meme-hud-top { display:flex; align-items:center; gap:.5rem; }
 .meme-hud-top .sv-heading { flex:1; }
-.meme-hud-icon { font-size:1.05rem; }
+.meme-hud-icon { display:block; }
 .meme-hud-time { position:absolute; top:.45rem; right:2.4rem; font-size:1.35rem; line-height:1.2; color:var(--sv-ink); }
 .meme-hud-gold {
   display:flex; justify-content:flex-end; align-items:baseline; gap:.35rem; margin-top:.35rem;
@@ -1201,11 +1206,7 @@ img { display: block; max-width: 100%; }
   width:44px; height:44px; font-size:1.3rem;
   background:var(--sv-parch-2); border:3px solid var(--sv-wood); box-shadow:inset 0 0 0 2px var(--sv-wood-lt); border-radius:3px;
 }
-.meme-slot i {
-  position:absolute; right:-7px; bottom:-7px;
-  font-style:normal; font-size:.8rem; line-height:1;
-  color:#fff; background:#3f9b2f; border:2px solid var(--sv-wood-dk); border-radius:2px; padding:.05rem .2rem;
-}
+.meme-slot i { position:absolute; right:-7px; bottom:-7px; line-height:0; }
 .meme-bundle .sv-heading { color:#3f7a1f; }
 
 /* Balık tutma */

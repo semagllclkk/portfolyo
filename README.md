@@ -57,7 +57,7 @@ Sayfanın her bölümüne yerleştirilmiş, ahşap çerçeveli küçük sürpriz
 | | |
 |---|---|
 | 🎮 **RPG karakter kartı** | Hero'da daktilo efektiyle yazılan "karakter bilgisi" ve temaya göre değişen meme görseli |
-| 🌾 **Stardew meme'leri** | 12 farklı kutu türü; hero'da gerçek saati gösteren gün/saat/altın HUD'u ve "Yeni eşya alındı!" bildirimi |
+| 🌾 **Stardew meme'leri** | 12 farklı kutu türü, özgün 16×16 pixel ikonlarla; hero'da gerçek saati gösteren gün/saat/altın HUD'u ve "Yeni eşya alındı!" bildirimi |
 | 🌗 **Koyu / açık tema** | Tercih hatırlanır, sayfa ilk boyanmadan uygulanır (yanıp sönme yok) |
 | 🇹🇷 🇬🇧 **İki dil** | Tüm içerik TR ve EN; ilk ziyarette tarayıcı diline göre açılır |
 | 🌹 **Gül imleci** | Fareyi takip eden pixel gül ve halka (dokunmatik ekranlarda kapalı) |
@@ -141,7 +141,7 @@ npm run lint      # oxlint
 
 ## 🙏 Teşekkür
 
-- Arayüzdeki ahşap çerçeveli kutular, ConcernedApe'in **Stardew Valley** oyunundan esinlenmiştir. Oyunla resmi bir bağı yoktur ve oyuna ait hiçbir görsel kullanılmamıştır; tüm kutular CSS ile çizilmiştir.
+- Arayüzdeki ahşap çerçeveli kutular, ConcernedApe'in **Stardew Valley** oyunundan esinlenmiştir. Oyunla resmi bir bağı yoktur ve oyuna ait hiçbir görsel kullanılmamıştır; kutular CSS ile, 16×16 pixel ikonlar (`src/components/pixelIcons.js`) sıfırdan çizilmiştir.
 - Ücretsiz alan adı için [is-a.dev](https://is-a.dev) ekibine teşekkürler.
 
 ---
