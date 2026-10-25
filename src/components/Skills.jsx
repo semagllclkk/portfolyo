@@ -17,6 +17,7 @@ export default function Skills() {
             {c.ui.skillsIntro[0]}<br />{c.ui.skillsIntro[1]}
           </p>
           <Meme meme={c.memes.skills} className="meme-skills" />
+          <Meme meme={c.memes.skillsCatch} className="meme-skills" />
         </div>
 
         <div className="skills-right reveal-right">

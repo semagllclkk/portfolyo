@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useLang } from '../i18n'
+import Meme from './Meme'
 import memeImage from '../assets/meme.webp'
 import memeLightImage from '../assets/meme-light.webp'
 
@@ -130,37 +131,42 @@ export default function Hero() {
           <span className="social-dot">·</span>
           <a href={personal.contact.medium} target="_blank" rel="noopener noreferrer" className="hero-social-link" aria-label="Medium">Medium</a>
         </div>
+
+        <Meme meme={c.memes.heroToast} className="meme-hero-toast" reveal={false} />
       </div>
 
       {/* SAĞ — RPG Karakter Kartı */}
       <div className="hero-visual">
-        <div className="rpg-card">
-          {/* Piksel köşe süslemeleri */}
-          <span className="rpg-corner rpg-corner-tl" />
-          <span className="rpg-corner rpg-corner-tr" />
-          <span className="rpg-corner rpg-corner-bl" />
-          <span className="rpg-corner rpg-corner-br" />
+        <div className="hero-card-wrap">
+          <Meme meme={c.memes.hero} className="meme-hero-hud" reveal={false} />
+          <div className="rpg-card">
+            {/* Piksel köşe süslemeleri */}
+            <span className="rpg-corner rpg-corner-tl" />
+            <span className="rpg-corner rpg-corner-tr" />
+            <span className="rpg-corner rpg-corner-bl" />
+            <span className="rpg-corner rpg-corner-br" />
 
-          {/* Üst başlık şeridi */}
-          <div className="rpg-card-header">
-            <span className="rpg-card-label">{c.ui.rpgHeader}</span>
-            <span className="rpg-blink">●</span>
+            {/* Üst başlık şeridi */}
+            <div className="rpg-card-header">
+              <span className="rpg-card-label">{c.ui.rpgHeader}</span>
+              <span className="rpg-blink">●</span>
+            </div>
+
+            {/* Karakter görseli */}
+            <div className="rpg-portrait">
+              <img
+                key={isLight ? 'light' : 'dark'}
+                src={isLight ? memeLightImage : memeImage}
+                alt={c.ui.memeAlt}
+                className="rpg-portrait-img"
+              />
+              <div className="rpg-portrait-glow" />
+            </div>
+
+            {/* Bilgi satırları */}
+            {/* Dil değişince satırlar baştan yazılsın */}
+            <RpgLines key={lang} lines={c.ui.rpgLines} />
           </div>
-
-          {/* Karakter görseli */}
-          <div className="rpg-portrait">
-            <img
-              key={isLight ? 'light' : 'dark'}
-              src={isLight ? memeLightImage : memeImage}
-              alt={c.ui.memeAlt}
-              className="rpg-portrait-img"
-            />
-            <div className="rpg-portrait-glow" />
-          </div>
-
-          {/* Bilgi satırları */}
-          {/* Dil değişince satırlar baştan yazılsın */}
-          <RpgLines key={lang} lines={c.ui.rpgLines} />
         </div>
       </div>
 

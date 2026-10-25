@@ -66,6 +66,8 @@ export default function Contact() {
             </span>
           ))}
         </div>
+
+        <Meme meme={c.memes.contactShipping} className="meme-shipping-pos" />
       </div>
     </section>
   )
