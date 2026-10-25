@@ -1,7 +1,8 @@
-import { projects } from '../data'
 import { useReveal } from '../hooks/useReveal'
+import { useLang } from '../i18n'
+import Meme from './Meme'
 
-function ProjectCard({ project, index }) {
+function ProjectCard({ project, index, liveLabel }) {
   return (
     <article
       className={`work-card${project.featured ? ' featured' : ''} reveal-child`}
@@ -37,7 +38,7 @@ function ProjectCard({ project, index }) {
                 rel="noopener noreferrer"
                 className="card-action-btn primary"
               >
-                Canlı ↗
+                {liveLabel} ↗
               </a>
             )}
           </div>
@@ -64,7 +65,7 @@ function ProjectCard({ project, index }) {
             )}
             {project.live && (
               <a href={project.live} target="_blank" rel="noopener noreferrer" className="card-link">
-                Canlı ↗
+                {liveLabel} ↗
               </a>
             )}
           </div>
@@ -76,25 +77,29 @@ function ProjectCard({ project, index }) {
 
 export default function Works() {
   const ref = useReveal()
+  const { c } = useLang()
+  const { projects } = c
   const featured = projects.filter(p => p.featured)
   const rest = projects.filter(p => !p.featured)
 
   return (
     <section id="works" className="section" ref={ref}>
-      <h2 className="section-title centered">Projeler</h2>
-      <p className="section-sub">Öne çıkan çalışmalardan bazıları</p>
+      <h2 className="section-title centered">{c.ui.worksTitle}</h2>
+      <p className="section-sub">{c.ui.worksSub}</p>
+
+      <Meme meme={c.memes.works} className="meme-works" />
 
       {/* Featured projeler — tam genişlik */}
       <div className="works-featured">
         {featured.map((p, i) => (
-          <ProjectCard key={p.id} project={p} index={i} />
+          <ProjectCard key={p.id} project={p} index={i} liveLabel={c.ui.live} />
         ))}
       </div>
 
       {/* Diğer projeler — grid */}
       <div className="works-grid">
         {rest.map((p, i) => (
-          <ProjectCard key={p.id} project={p} index={i + featured.length} />
+          <ProjectCard key={p.id} project={p} index={i + featured.length} liveLabel={c.ui.live} />
         ))}
       </div>
     </section>

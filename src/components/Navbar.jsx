@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import pixelRose from '../assets/pixel-rose.png'
+import { useLang } from '../i18n'
+
+const SECTION_IDS = ['about', 'experience', 'works', 'skills', 'contact']
 
 export default function Navbar() {
   const navRef = useRef(null)
+  const { lang, toggleLang, c } = useLang()
   // index.html'deki script temayı ilk boyamadan önce ayarlıyor; buradan okuyoruz
   const [dark, setDark] = useState(
     () => document.documentElement.getAttribute('data-theme') !== 'light'
@@ -36,21 +40,14 @@ export default function Navbar() {
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
 
-  const links = [
-    { href: '#about',      label: 'Hakkımda' },
-    { href: '#experience', label: 'Deneyim'  },
-    { href: '#works',      label: 'Projeler'  },
-    { href: '#skills',  label: 'Beceriler' },
-    { href: '#contact', label: 'İletişim'  },
-  ]
+  const links = SECTION_IDS.map(id => ({ href: `#${id}`, label: c.ui.nav[id] }))
 
   // Ekranın ortasındaki bölümü menüde vurgula
   useEffect(() => {
-    const ids = links.map(l => l.href.slice(1))
     const onScroll = () => {
       const mid = window.innerHeight / 2
       let current = ''
-      ids.forEach(id => {
+      SECTION_IDS.forEach(id => {
         const el = document.getElementById(id)
         if (el && el.getBoundingClientRect().top <= mid) current = id
       })
@@ -59,7 +56,7 @@ export default function Navbar() {
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleMobileLink = (href) => {
     setMenuOpen(false)
@@ -86,11 +83,23 @@ export default function Navbar() {
         </ul>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <button
+            type="button"
+            className="lang-toggle"
+            onClick={toggleLang}
+            aria-label={c.ui.langSwitch}
+            title={c.ui.langSwitch}
+          >
+            <span className={lang === 'tr' ? 'on' : ''}>TR</span>
+            <span className="lang-sep">/</span>
+            <span className={lang === 'en' ? 'on' : ''}>EN</span>
+          </button>
+
           {/* Dark / Light mode toggle */}
           <button
             id="theme-toggle"
             className="theme-toggle"
-            aria-label={dark ? 'Açık moda geç' : 'Koyu moda geç'}
+            aria-label={dark ? c.ui.themeToLight : c.ui.themeToDark}
             onClick={toggleTheme}
           >
             <span className="theme-toggle-track">
@@ -104,7 +113,7 @@ export default function Navbar() {
           <button
             id="hamburger-btn"
             className={`hamburger${menuOpen ? ' open' : ''}`}
-            aria-label={menuOpen ? 'Menüyü kapat' : 'Menüyü aç'}
+            aria-label={menuOpen ? c.ui.menuClose : c.ui.menuOpen}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen(o => !o)}
           >
@@ -123,7 +132,7 @@ export default function Navbar() {
         aria-modal="true"
         aria-label="Navigasyon"
       >
-        {links.map((l, i) => (
+        {links.map(l => (
           <a
             key={l.href}
             href={l.href}
@@ -139,7 +148,7 @@ export default function Navbar() {
         <button
           className="theme-toggle"
           style={{ cursor: 'pointer' }}
-          aria-label={dark ? 'Açık moda geç' : 'Koyu moda geç'}
+          aria-label={dark ? c.ui.themeToLight : c.ui.themeToDark}
           onClick={toggleTheme}
         >
           <span className="theme-toggle-track">

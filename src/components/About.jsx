@@ -1,9 +1,11 @@
-import { personal, education } from '../data'
 import { useReveal } from '../hooks/useReveal'
+import { useLang } from '../i18n'
 import semaPhoto from '../assets/sema.webp'
 
 export default function About() {
   const ref = useReveal()
+  const { c } = useLang()
+  const { personal, education } = c
 
   return (
     <section id="about" className="section" ref={ref}>
@@ -11,7 +13,7 @@ export default function About() {
 
         {/* Sol sütun — başlık + fotoğraf */}
         <div className="about-left reveal-left">
-          <h2 className="section-title">Hakkımda</h2>
+          <h2 className="section-title">{c.ui.aboutTitle}</h2>
 
           {/* Fotoğraf kartı */}
           <div className="about-photo-wrap">
@@ -34,7 +36,7 @@ export default function About() {
 
           {/* Eğitim kartı */}
           <div className="edu-card reveal-scale" style={{'--delay': '.2s'}}>
-            <div className="edu-badge">Eğitim</div>
+            <div className="edu-badge">{education.badge}</div>
             <div className="edu-body">
               <h3 className="edu-degree">{education.degree}</h3>
               <p className="edu-uni">{education.university} — {education.city}</p>

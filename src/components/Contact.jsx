@@ -1,30 +1,50 @@
-import { personal } from '../data'
+import { useState } from 'react'
 import { useReveal } from '../hooks/useReveal'
+import { useLang } from '../i18n'
+import Meme from './Meme'
 
 export default function Contact() {
   const ref = useReveal()
+  const { c } = useLang()
+  const { personal } = c
+  const [copied, setCopied] = useState(false)
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(personal.contact.email)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1800)
+    } catch {
+      window.location.href = `mailto:${personal.contact.email}`
+    }
+  }
 
   return (
     <section id="contact" className="section contact-section" ref={ref}>
 
       <div className="contact-inner">
+        <Meme meme={c.memes.contact} className="meme-contact" />
+
         <h2 className="contact-heading">
-          Birlikte bir şey
-          <span className="gradient-text"> yaratmak</span>
-          <br />ister misiniz?
+          {c.ui.contactHeading[0]}
+          <span className="gradient-text">{c.ui.contactHeading[1]}</span>
+          <br />{c.ui.contactHeading[2]}
         </h2>
 
-        <p className="contact-sub">
-          Fırsatlar, projeler veya sadece merhaba demek için.
-        </p>
+        <p className="contact-sub">{c.ui.contactSub}</p>
 
-        <a
-          href={`mailto:${personal.contact.email}`}
-          className="contact-email"
-          id="contact-email"
-        >
-          Bana mail gönderebilirsiniz.
-        </a>
+        <div className="contact-email-row">
+          <a
+            href={`mailto:${personal.contact.email}`}
+            className="contact-email"
+            id="contact-email"
+          >
+            {personal.contact.email}
+          </a>
+          <button type="button" className="contact-copy" onClick={copyEmail} aria-live="polite">
+            {copied ? c.ui.copied : c.ui.copy}
+          </button>
+        </div>
 
         <div className="contact-socials">
           {[
