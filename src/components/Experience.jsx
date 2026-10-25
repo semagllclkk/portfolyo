@@ -1,12 +1,15 @@
-import { experience } from '../data'
 import { useReveal } from '../hooks/useReveal'
+import { useLang } from '../i18n'
+import Meme from './Meme'
 
 export default function Experience() {
   const ref = useReveal()
+  const { c } = useLang()
+  const { experience } = c
 
   return (
     <section id="experience" className="section" ref={ref}>
-      <h2 className="section-title">Deneyim</h2>
+      <h2 className="section-title">{c.ui.experienceTitle}</h2>
 
       <div className="exp-list">
         {experience.map((e, i) => (
@@ -32,6 +35,8 @@ export default function Experience() {
           </article>
         ))}
       </div>
+
+      <Meme meme={c.memes.experience} className="meme-exp" />
     </section>
   )
 }

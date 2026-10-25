@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { personal } from '../data'
+import { useLang } from '../i18n'
 import memeImage from '../assets/meme.webp'
 import memeLightImage from '../assets/meme-light.webp'
 
@@ -24,6 +24,8 @@ function TypewriterLine({ text, startDelay = 0, speed = 45, onDone }) {
   const [started, setStarted] = useState(false)
   const [done, setDone] = useState(false)
   const idxRef = useRef(0)
+  const onDoneRef = useRef(onDone)
+  useEffect(() => { onDoneRef.current = onDone })
 
   useEffect(() => {
     const t = setTimeout(() => setStarted(true), startDelay)
@@ -32,14 +34,14 @@ function TypewriterLine({ text, startDelay = 0, speed = 45, onDone }) {
 
   useEffect(() => {
     if (!started) return
-    if (idxRef.current >= text.length) { setDone(true); onDone?.(); return }
+    if (idxRef.current >= text.length) { setDone(true); onDoneRef.current?.(); return }
     const interval = setInterval(() => {
       idxRef.current += 1
       setDisplayed(text.slice(0, idxRef.current))
       if (idxRef.current >= text.length) {
         clearInterval(interval)
         setDone(true)
-        onDone?.()
+        onDoneRef.current?.()
       }
     }, speed)
     return () => clearInterval(interval)
@@ -54,14 +56,8 @@ function TypewriterLine({ text, startDelay = 0, speed = 45, onDone }) {
 }
 
 // RPG info satırı — bir önceki bitmeden başlamaz
-function RpgLines() {
+function RpgLines({ lines }) {
   const [phase, setPhase] = useState(0) // 0=bekle, 1=isim, 2=bolum, 3=durum
-
-  const lines = [
-    { label: 'İSİM', value: 'Sema Gül Çelik' },
-    { label: 'BÖLÜM', value: 'Bilgisayar Mühendisliği' },
-    { label: 'DURUM', value: 'İş Tekliflerine Açık' },
-  ]
 
   useEffect(() => {
     // Kısa bir başlangıç gecikmesi
@@ -94,6 +90,8 @@ function RpgLines() {
 
 export default function Hero() {
   const isLight = useTheme()
+  const { lang, c } = useLang()
+  const { personal } = c
 
   return (
     <section id="hero" className="hero">
@@ -101,7 +99,7 @@ export default function Hero() {
 
       {/* SOL — İçerik */}
       <div className="hero-content">
-        <p className="hero-eyebrow">Merhaba, ben</p>
+        <p className="hero-eyebrow">{c.ui.eyebrow}</p>
 
         <h1 className="hero-name">
           <span className="name-pixel">{personal.nameFirst}</span>
@@ -109,8 +107,8 @@ export default function Hero() {
         </h1>
 
         <p className="hero-role">
-          Yazılım Geliştirici &{' '}
-          <span className="hero-role-highlight">Yapay Zeka Meraklısı</span>
+          {personal.roleLead}{' '}
+          <span className="hero-role-highlight">{personal.roleHighlight}</span>
         </p>
 
         <div className="hero-divider" />
@@ -118,8 +116,11 @@ export default function Hero() {
         <p className="hero-tagline">{personal.tagline}</p>
 
         <div className="hero-cta">
-          <a href="#works" className="btn-primary">Projeleri Gör</a>
-          <a href="#contact" className="btn-ghost">İletişime Geç</a>
+          <a href="#works" className="btn-primary">{c.ui.ctaProjects}</a>
+          <a href="#contact" className="btn-ghost">{c.ui.ctaContact}</a>
+          <a href={personal.cv} className="btn-ghost btn-cv" download="Sema-Gul-Celik-CV.pdf">
+            {c.ui.ctaCv} <span aria-hidden="true">↓</span>
+          </a>
         </div>
 
         <div className="hero-socials">
@@ -142,7 +143,7 @@ export default function Hero() {
 
           {/* Üst başlık şeridi */}
           <div className="rpg-card-header">
-            <span className="rpg-card-label">KARAKTER BİLGİSİ</span>
+            <span className="rpg-card-label">{c.ui.rpgHeader}</span>
             <span className="rpg-blink">●</span>
           </div>
 
@@ -151,14 +152,15 @@ export default function Hero() {
             <img
               key={isLight ? 'light' : 'dark'}
               src={isLight ? memeLightImage : memeImage}
-              alt="Karakter görseli"
+              alt={c.ui.memeAlt}
               className="rpg-portrait-img"
             />
             <div className="rpg-portrait-glow" />
           </div>
 
           {/* Bilgi satırları */}
-          <RpgLines />
+          {/* Dil değişince satırlar baştan yazılsın */}
+          <RpgLines key={lang} lines={c.ui.rpgLines} />
         </div>
       </div>
 

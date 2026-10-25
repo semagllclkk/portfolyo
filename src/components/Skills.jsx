@@ -1,18 +1,22 @@
-import { skills } from '../data'
 import { useReveal } from '../hooks/useReveal'
+import { useLang } from '../i18n'
+import Meme from './Meme'
 
 export default function Skills() {
   const ref = useReveal()
+  const { c } = useLang()
+  const { skills } = c
 
   return (
     <section id="skills" className="section" ref={ref}>
 
       <div className="skills-layout">
         <div className="skills-left reveal-left">
-          <h2 className="section-title">Beceriler<br />& Araçlar</h2>
+          <h2 className="section-title">{c.ui.skillsTitle[0]}<br />{c.ui.skillsTitle[1]}</h2>
           <p className="skills-intro">
-            Öğrenmeyi hiç bırakmadım,<br />bırakmayacağım da.
+            {c.ui.skillsIntro[0]}<br />{c.ui.skillsIntro[1]}
           </p>
+          <Meme meme={c.memes.skills} className="meme-skills" />
         </div>
 
         <div className="skills-right reveal-right">

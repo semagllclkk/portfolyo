@@ -114,6 +114,19 @@ img { display: block; max-width: 100%; }
 [data-theme="light"] .particles-canvas { opacity: .75; }
 
 /* ── NAVBAR ──────────────────────────────────────────────────── */
+.lang-toggle {
+  display:flex; align-items:center; gap:.3rem;
+  padding:.38rem .7rem;
+  background:none; border:1px solid var(--pink-border); border-radius:100px;
+  font-family:var(--sans); font-size:.68rem; font-weight:500; letter-spacing:.12em;
+  color:var(--txt-3); cursor:none;
+  transition:border-color var(--t), background var(--t);
+}
+.lang-toggle:hover { border-color:var(--pink-lt); background:var(--pink-glow-s); }
+.lang-toggle .on { color:var(--pink-lt); }
+.lang-sep { opacity:.5; }
+@media (pointer: coarse) { .lang-toggle { cursor:pointer; } }
+
 .navbar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
@@ -541,7 +554,9 @@ img { display: block; max-width: 100%; }
   100% { transform: translateX(260%); }
 }
 .hero-tagline  { font-size:.97rem; color:var(--txt-2); max-width:360px; line-height:1.8; margin-bottom:2.4rem; animation:fadeUp .8s .65s both; }
-.hero-cta      { display:flex; gap:1rem; margin-bottom:2rem; animation:fadeUp .8s .8s both; }
+.hero-cta      { display:flex; flex-wrap:wrap; gap:1rem; margin-bottom:2rem; animation:fadeUp .8s .8s both; }
+.btn-cv span   { display:inline-block; transition:transform var(--t); }
+.btn-cv:hover span { transform:translateY(2px); }
 .hero-socials  { display:flex; align-items:center; gap:.6rem; animation:fadeUp .8s .95s both; }
 .hero-social-link { font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--txt-2); transition:color var(--t); }
 .hero-social-link:hover { color:var(--pink-lt); }
@@ -1034,6 +1049,75 @@ img { display: block; max-width: 100%; }
   margin-bottom:2.8rem;
 }
 .contact-email:hover { color:var(--pink-lt); border-color:var(--pink-lt); }
+.contact-email-row { display:flex; align-items:center; justify-content:center; gap:1rem; flex-wrap:wrap; margin-bottom:2.8rem; }
+.contact-email-row .contact-email { margin-bottom:0; }
+.contact-copy {
+  font-family:var(--sans); font-size:.66rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--txt-2); background:none; cursor:none;
+  border:1px solid var(--border); border-radius:100px; padding:.35rem .85rem;
+  transition:color var(--t), border-color var(--t);
+}
+.contact-copy:hover { color:var(--pink-lt); border-color:var(--pink-border); }
+@media (pointer: coarse) { .contact-copy { cursor:pointer; } }
+
+/* ── MEME KUTULARI (RPG) ─────────────────────────────────────── */
+.meme {
+  position:relative;
+  max-width:440px;
+  padding:1rem 1.2rem;
+  background:var(--bg-card);
+  border:2px solid var(--pink-border);
+  border-radius:2px;
+  box-shadow:4px 4px 0 var(--pink-glow), 0 0 28px var(--pink-glow-s);
+  text-align:left;
+}
+.meme-title {
+  font-family:var(--sans); font-size:.62rem; font-weight:500;
+  letter-spacing:.22em; text-transform:uppercase; color:var(--pink-lt);
+  margin-bottom:.35rem;
+}
+.meme-text { font-size:.86rem; color:var(--txt); line-height:1.6; }
+.meme-sub  { font-size:.74rem; color:var(--txt-2); margin-top:.25rem; font-style:italic; }
+
+.meme-achievement { display:flex; align-items:center; gap:.9rem; }
+.meme-trophy {
+  flex-shrink:0; display:grid; place-items:center;
+  width:42px; height:42px; font-size:1.3rem;
+  background:var(--pink-glow-s); border:2px solid var(--pink-border);
+}
+.meme-achievement.visible .meme-trophy { animation:trophyPop .6s .3s both; }
+@keyframes trophyPop { 0% { transform:scale(.4) rotate(-20deg); } 60% { transform:scale(1.15) rotate(6deg); } 100% { transform:none; } }
+
+.meme-dialog { padding-top:1.35rem; }
+.meme-speaker {
+  position:absolute; top:-.75rem; left:.9rem;
+  font-family:'Press Start 2P', monospace; font-size:.5rem; letter-spacing:.06em;
+  color:#fff; background:var(--pink); padding:.35rem .6rem;
+}
+.meme-next {
+  position:absolute; right:.7rem; bottom:.35rem;
+  font-size:.6rem; color:var(--pink-lt);
+  animation:dialogNext 1s steps(2) infinite;
+}
+@keyframes dialogNext { 50% { transform:translateY(3px); opacity:.4; } }
+
+.meme-bar {
+  height:10px; margin-top:.7rem;
+  border:2px solid var(--pink-border); background:var(--bg-2);
+  overflow:hidden;
+}
+.meme-bar span {
+  display:block; height:100%;
+  background:repeating-linear-gradient(90deg, var(--pink) 0 6px, transparent 6px 8px);
+}
+
+.meme-exp     { margin:0 0 0 auto; }
+.meme-works   { margin:-1.5rem auto 2.5rem; }
+.meme-skills  { margin-top:2rem; }
+.meme-contact { margin:0 auto 2.6rem; }
+@media (prefers-reduced-motion: reduce) {
+  .meme-next, .meme-achievement.visible .meme-trophy { animation:none; }
+}
 .contact-socials { display:flex; align-items:center; justify-content:center; gap:.6rem; flex-wrap:wrap; }
 .social-item   { display:flex; align-items:center; gap:.6rem; }
 .social-link   { font-size:.73rem; letter-spacing:.12em; text-transform:uppercase; color:var(--txt-2); transition:color var(--t); }
@@ -1079,6 +1163,8 @@ img { display: block; max-width: 100%; }
   .exp-right { padding-bottom:2.5rem; border-bottom:1px solid var(--border); margin-bottom:.5rem; }
   .footer   { padding:1.5rem; }
   .footer-inner { flex-direction:column; text-align:center; gap:.4rem; }
+  .meme-exp { margin:0; }
+  .lang-toggle { padding:.32rem .55rem; }
   /* Hero görseli düzelt */
   .hero { padding: 6rem 1.5rem 3rem; }
   .rpg-card { width: min(360px, 90vw); }
