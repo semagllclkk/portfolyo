@@ -113,8 +113,17 @@ export function useCursor() {
     document.body.append(roseEl, ring)
 
     let mx = 0, my = 0, rx = 0, ry = 0
-    const onMove = e => { mx = e.clientX; my = e.clientY }
+    // İlk hareketten önce imleci gizle (sol üst köşede beklemesin)
+    const onMove = e => {
+      mx = e.clientX; my = e.clientY
+      if (!roseEl.classList.contains('ready')) {
+        rx = mx; ry = my
+        roseEl.classList.add('ready'); ring.classList.add('ready')
+      }
+    }
+    const onLeave = () => { roseEl.classList.remove('ready'); ring.classList.remove('ready') }
     document.addEventListener('mousemove', onMove)
+    document.documentElement.addEventListener('mouseleave', onLeave)
 
     roseEl.style.left = '0px'
     roseEl.style.top  = '0px'
@@ -131,19 +140,19 @@ export function useCursor() {
     }
     tick()
 
-    const addHover = () => { roseEl.classList.add('hover'); ring.classList.add('hover') }
-    const rmHover  = () => { roseEl.classList.remove('hover'); ring.classList.remove('hover') }
-
-    const attachHover = () => {
-      document.querySelectorAll('a, button, .skill-tag, .work-card, .btn-primary, .btn-ghost, .avail-badge').forEach(el => {
-        el.addEventListener('mouseenter', addHover)
-        el.addEventListener('mouseleave', rmHover)
-      })
+    // Event delegation: sonradan eklenen öğelerde de hover efekti çalışır
+    const HOVER_SEL = 'a, button, .skill-tag, .work-card, .btn-primary, .btn-ghost, .avail-badge'
+    const onOver = e => {
+      const on = !!e.target.closest?.(HOVER_SEL)
+      roseEl.classList.toggle('hover', on)
+      ring.classList.toggle('hover', on)
     }
-    attachHover()
+    document.addEventListener('mouseover', onOver)
 
     return () => {
       document.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseover', onOver)
+      document.documentElement.removeEventListener('mouseleave', onLeave)
       cancelAnimationFrame(raf)
       roseEl.remove()
       ring.remove()
