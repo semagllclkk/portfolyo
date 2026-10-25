@@ -1,6 +1,6 @@
 import { personal, education } from '../data'
 import { useReveal } from '../hooks/useReveal'
-import semaPhoto from '../assets/sema.png'
+import semaPhoto from '../assets/sema.webp'
 
 export default function About() {
   const ref = useReveal()
