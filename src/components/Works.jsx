@@ -102,6 +102,8 @@ export default function Works() {
           <ProjectCard key={p.id} project={p} index={i + featured.length} liveLabel={c.ui.live} />
         ))}
       </div>
+
+      <Meme meme={c.memes.worksMail} className="meme-mail-pos" />
     </section>
   )
 }

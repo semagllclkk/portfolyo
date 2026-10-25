@@ -38,7 +38,7 @@
 
 ### 🌾 Stardew Valley tarzı meme kutuları
 
-Sayfanın farklı bölümlerine yerleştirilmiş, ahşap çerçeveli küçük sürprizler: seviye atlama ekranı, eşya açıklaması, gece 02:00 enerji barı, takvim ve portreli NPC diyaloğu.
+Sayfanın her bölümüne yerleştirilmiş, ahşap çerçeveli küçük sürprizler: gerçek saati gösteren HUD, "Yeni eşya alındı!" bildirimi, Topluluk Merkezi paketi, seviye atlama ekranı, eşya açıklaması, balık tutma, gece 02:00 enerji barı, takvim, CI botundan mektup, gün sonu satış kutusu ve portreli NPC diyaloğu.
 
 <img src="docs/screenshots/stardew-memes.jpg" alt="Stardew Valley tarzı meme kutuları" width="100%" />
 
@@ -57,7 +57,7 @@ Sayfanın farklı bölümlerine yerleştirilmiş, ahşap çerçeveli küçük s�
 | | |
 |---|---|
 | 🎮 **RPG karakter kartı** | Hero'da daktilo efektiyle yazılan "karakter bilgisi" ve temaya göre değişen meme görseli |
-| 🌾 **Stardew meme'leri** | Takvim, seviye atlama, eşya açıklaması, enerji barı ve NPC diyaloğu |
+| 🌾 **Stardew meme'leri** | 12 farklı kutu türü; hero'da gerçek saati gösteren gün/saat/altın HUD'u ve "Yeni eşya alındı!" bildirimi |
 | 🌗 **Koyu / açık tema** | Tercih hatırlanır, sayfa ilk boyanmadan uygulanır (yanıp sönme yok) |
 | 🇹🇷 🇬🇧 **İki dil** | Tüm içerik TR ve EN; ilk ziyarette tarayıcı diline göre açılır |
 | 🌹 **Gül imleci** | Fareyi takip eden pixel gül ve halka (dokunmatik ekranlarda kapalı) |
@@ -117,7 +117,7 @@ Neredeyse her şey **`src/data.js`** içinde:
 - **Proje eklemek:** `projectBase` dizisine linkleri/etiketleri, `tr.projects` ve `en.projects` içine metinleri ekle. Görseli `public/projects/` altına koy.
   Logo gibi kırpılmaması gereken görseller için `photoFit: "contain"` ve `photoBg: "#renk"` kullan.
 - **Deneyim / beceriler:** `experienceBase`, `skillItems` ve dil bloklarındaki karşılıkları.
-- **Meme'ler:** `memes` alanı. Türler: `levelup`, `item`, `energy`, `calendar`, `npc`, `image`.
+- **Meme'ler:** `memes` alanı. Türler: `hud`, `toast`, `levelup`, `bundle`, `item`, `catch`, `energy`, `calendar`, `mail`, `shipping`, `npc`, `image`.
   Kendi meme görselini eklemek için dosyayı `public/memes/` altına koy ve şöyle yaz:
   ```js
   works: { kind: "image", src: "/memes/benim-meme.webp", alt: "…", caption: "…" }
@@ -152,7 +152,7 @@ Personal portfolio of **Sema Gül Çelik**, a Computer Engineering student at Pa
 
 **Live:** [semagulcelik.is-a.dev](https://semagulcelik.is-a.dev)
 
-- Pixel-art / RPG aesthetic with Stardew Valley–inspired meme boxes (level-up screen, item tooltip, 2 AM energy bar, calendar, NPC dialog)
+- Pixel-art / RPG aesthetic with Stardew Valley–inspired meme boxes: a live day/time/gold HUD, "new item received" toast, Community Center bundle, level-up screen, item tooltip, fishing catch, 2 AM energy bar, calendar, a letter from the CI bot, end-of-day shipping bin and an NPC dialog
 - Turkish / English toggle, dark / light theme, custom rose cursor, canvas particle background
 - Downloadable CV, Open Graph preview image, Vercel Analytics
 - Built with React 19 + Vite 8 and plain CSS; all content lives in `src/data.js`

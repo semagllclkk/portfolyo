@@ -1165,13 +1165,83 @@ img { display: block; max-width: 100%; }
 .meme-image img { width:100%; display:block; border-radius:2px; }
 .meme-image figcaption { text-align:center; }
 
+/* HUD: gün / saat / altın */
+.hero-card-wrap { position:relative; margin-top:120px; }
+.meme-hero-hud {
+  position:absolute; right:0; bottom:calc(100% + 16px); z-index:3;
+  width:220px; padding:.5rem .75rem .6rem;
+  animation:svDrop .7s 1.3s both;
+}
+.meme-hud-top { display:flex; align-items:center; gap:.5rem; }
+.meme-hud-top .sv-heading { flex:1; }
+.meme-hud-icon { font-size:1.05rem; }
+.meme-hud-time { position:absolute; top:.45rem; right:2.4rem; font-size:1.35rem; line-height:1.2; color:var(--sv-ink); }
+.meme-hud-gold {
+  display:flex; justify-content:flex-end; align-items:baseline; gap:.35rem; margin-top:.35rem;
+  background:var(--sv-parch-2); border:3px solid var(--sv-wood); box-shadow:inset 0 0 0 2px var(--sv-wood-lt);
+  border-radius:3px; padding:.05rem .45rem; font-size:.95rem; color:var(--sv-ink-2);
+}
+.meme-hud-gold span { font-size:1.25rem; color:#c0392b; letter-spacing:.04em; }
+@keyframes svDrop { from { opacity:0; transform:translateY(-14px); } to { opacity:1; transform:none; } }
+
+/* Hero: yeni eşya bildirimi */
+.meme-hero-toast {
+  display:flex; align-items:center; gap:.85rem;
+  max-width:390px; margin-top:2.2rem;
+  animation:svSlide .6s 3.4s both;
+}
+@keyframes svSlide { from { opacity:0; transform:translateX(-24px); } to { opacity:1; transform:none; } }
+
+/* Topluluk Merkezi paketi */
+.meme-bundle { max-width:360px; }
+.meme-bundle-slots { list-style:none; display:grid; grid-template-columns:repeat(4, 1fr); gap:.5rem; margin:.7rem 0 .2rem; }
+.meme-bundle-slots li { display:flex; flex-direction:column; align-items:center; gap:.2rem; text-align:center; }
+.meme-slot {
+  position:relative; display:grid; place-items:center;
+  width:44px; height:44px; font-size:1.3rem;
+  background:var(--sv-parch-2); border:3px solid var(--sv-wood); box-shadow:inset 0 0 0 2px var(--sv-wood-lt); border-radius:3px;
+}
+.meme-slot i {
+  position:absolute; right:-7px; bottom:-7px;
+  font-style:normal; font-size:.8rem; line-height:1;
+  color:#fff; background:#3f9b2f; border:2px solid var(--sv-wood-dk); border-radius:2px; padding:.05rem .2rem;
+}
+.meme-bundle .sv-heading { color:#3f7a1f; }
+
+/* Balık tutma */
+.meme-catch .sv-title { text-align:center; font-size:1.4rem; }
+
+/* Mektup */
+.meme-mail {
+  max-width:420px;
+  background:linear-gradient(#fffaf0, #fbefd5);
+  transform:rotate(-1.2deg);
+}
+.meme-mail .sv-text + .sv-text { margin-top:.35rem; }
+.meme-mail-sign { text-align:right; color:var(--sv-ink-2); }
+
+/* Gün sonu satış kutusu */
+.meme-shipping { max-width:360px; }
+.meme-shipping ul { list-style:none; display:flex; flex-direction:column; gap:.2rem; }
+.meme-shipping li { display:flex; justify-content:space-between; gap:1rem; border-bottom:2px dotted var(--sv-wood-lt); padding:.1rem 0; }
+.meme-shipping-total {
+  display:flex; justify-content:space-between; margin-top:.5rem;
+  font-size:1.25rem; color:var(--sv-wood-dk);
+}
+
+.meme-row { display:flex; justify-content:flex-end; align-items:flex-start; flex-wrap:wrap; gap:1.6rem; margin-top:.5rem; }
+.meme-mail-pos     { margin:3rem auto 0; }
+.meme-shipping-pos { margin:3rem auto 0; }
+.meme-skills + .meme-skills { margin-top:1.6rem; }
+
 .meme-about    { margin-top:2rem; }
 .meme-exp      { margin:0 0 0 auto; }
 .meme-works    { margin:-1.2rem auto 2.6rem; }
 .meme-skills   { margin-top:2rem; }
 .meme-contact  { margin:0 auto 3rem; }
 @media (prefers-reduced-motion: reduce) {
-  .meme-next, .meme-levelup.visible .sv-icon, .meme-energy-track span { animation:none; }
+  .meme-next, .meme-levelup.visible .sv-icon, .meme-energy-track span,
+  .meme-hero-hud, .meme-hero-toast { animation:none; }
 }
 
 .contact-socials { display:flex; align-items:center; justify-content:center; gap:.6rem; flex-wrap:wrap; }
@@ -1213,6 +1283,8 @@ img { display: block; max-width: 100%; }
 :root .contact-copy      { font-size:1rem; }
 :root .social-link       { font-size:1.25rem; }
 :root .footer-name       { font-size:1.25rem; }
+:root .about-text.lead   { font-family:var(--pixel); font-style:normal; font-size:1.55rem; line-height:1.45; }
+:root .exp-title         { font-family:var(--pixel); font-weight:400; font-size:1.7rem; letter-spacing:.01em; line-height:1.2; }
 :root .footer-copy, :root .footer-top { font-size:1.125rem; }
 
 /* ── FOOTER ──────────────────────────────────────────────────── */
@@ -1236,6 +1308,10 @@ img { display: block; max-width: 100%; }
   .about-photo-wrap { margin-top: 1.5rem; }
   .skills-layout{ grid-template-columns:1fr; gap:2.5rem; }
   .work-card.featured { grid-template-columns:1fr; }
+  .hero-card-wrap { margin-top:0; }
+  .meme-hero-hud { position:relative; top:auto; right:auto; bottom:auto; margin:0 auto 1.4rem; }
+  .meme-hero-toast { margin:2rem auto 0; text-align:left; }
+  .meme-row { justify-content:center; }
   .floating-tag { display: none; }
 }
 @media (max-width: 768px) {

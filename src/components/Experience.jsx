@@ -36,7 +36,10 @@ export default function Experience() {
         ))}
       </div>
 
-      <Meme meme={c.memes.experience} className="meme-exp" />
+      <div className="meme-row">
+        <Meme meme={c.memes.experienceBundle} />
+        <Meme meme={c.memes.experience} />
+      </div>
     </section>
   )
 }
