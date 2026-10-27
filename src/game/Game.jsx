@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { TILE, HOUSE_WINDOWS, drawSprite, personFrames, bubbleSprite, arrowSprite } from './art'
+import { TILE, HOUSE_WINDOWS, drawSprite, bubbleSprite, arrowSprite } from './art'
+import { framesFor } from './frames'
 import { world, W, H, G, isWalkable, renderGround, buildDrawables } from './world'
 
 const WW = W * TILE, WH = H * TILE
@@ -58,19 +59,18 @@ function nightAlpha(h) {
 
 const NPC_AREA = { x0: 25, x1: 33, y0: 11, y1: 12 }
 
-export default function Game({ season, paused, onInteract, labelFor, keyHint, tapHint }) {
+export default function Game({ season, look, paused, onInteract, labelFor, keyHint, tapHint }) {
   const canvasRef = useRef(null)
   const labelRef = useRef(null)
   const [near, setNear] = useState(null)
   const props = useRef({})
-  props.current = { season, paused, onInteract }
+  props.current = { season, look, paused, onInteract }
   const api = useRef({})
 
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const frames = { player: personFrames('player'), sema: personFrames('sema') }
     const bubble = bubbleSprite(), arrow = arrowSprite()
 
     const spawn = center(world.spawn)
@@ -306,9 +306,9 @@ export default function Game({ season, paused, onInteract, labelFor, keyHint, ta
     }
 
     // ── Çizim ────────────────────────────────────────────────────────────
-    function personSprite(set, ent) {
+    function personSprite(look, ent) {
       const f = ent.moving ? WALK[Math.floor(ent.anim * 8) % 4] : 0
-      return frames[set][ent.dir][f]
+      return framesFor(look)[ent.dir][f]
     }
 
     function draw(dt, t) {
@@ -336,7 +336,7 @@ export default function Game({ season, paused, onInteract, labelFor, keyHint, ta
       // Y sıralı sprite'lar
       const list = art.drawables.filter(d => d.x + d.s.w > cam.x && d.x < cam.x + cam.w && d.y + d.s.h > cam.y && d.y < cam.y + cam.h)
       list.push({ s: personSprite('sema', npc), x: npc.x - 8, y: npc.y - 22, base: npc.y })
-      list.push({ s: personSprite('player', player), x: player.x - 8, y: player.y - 22, base: player.y + 0.5 })
+      list.push({ s: personSprite(props.current.look, player), x: player.x - 8, y: player.y - 22, base: player.y + 0.5 })
       list.sort((a, b) => a.base - b.base)
       for (const d of list) drawSprite(ctx, d.s, d.x - cam.x, d.y - cam.y)
 

@@ -284,6 +284,9 @@ const tr = {
       ],
       tip: "İpucu: “!” balonları henüz keşfetmediğin yerleri gösterir. Sağ üstteki tarihe tıklayarak mevsimi değiştirebilirsin.",
       start: "Keşfetmeye başla",
+      pick: "Karakterini seç",
+      girl: "Kız çiftçi",
+      boy: "Erkek çiftçi",
     },
     profile: {
       friendship: "Dostluk",
@@ -624,6 +627,9 @@ const en = {
       ],
       tip: "Tip: “!” bubbles mark places you haven't explored yet. Click the date in the top corner to change the season.",
       start: "Start exploring",
+      pick: "Choose your farmer",
+      girl: "Girl",
+      boy: "Boy",
     },
     profile: {
       friendship: "Friendship",

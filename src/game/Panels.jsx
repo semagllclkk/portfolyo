@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import semaPhoto from '../assets/sema.webp'
 import PixelIcon, { PixelText } from '../components/PixelIcon'
 import { cropSprite } from './art'
+import { framesFor } from './frames'
 
 const cropUrls = {}
 const cropUrl = (i) => (cropUrls[i] ??= cropSprite(i).img.toDataURL())
@@ -245,11 +246,32 @@ function Cv({ c }) {
   )
 }
 
-function Welcome({ c, onClose }) {
+const previewUrls = {}
+const previewUrl = (look) => (previewUrls[look] ??= framesFor(look)[0][0].img.toDataURL())
+
+// Oyuncu karakteri: kız ya da erkek çiftçi
+function CharacterPicker({ c, look, onLook }) {
+  const w = c.game.welcome
+  return (
+    <fieldset className="picker">
+      <legend>{w.pick}</legend>
+      {[['playerGirl', w.girl], ['player', w.boy]].map(([key, label]) => (
+        <label key={key} className={`pick${look === key ? ' is-active' : ''}`}>
+          <input type="radio" name="look" id={`look-${key}`} value={key} checked={look === key} onChange={() => onLook(key)} />
+          <img src={previewUrl(key)} width={54} height={81} alt="" />
+          <span>{label}</span>
+        </label>
+      ))}
+    </fieldset>
+  )
+}
+
+function Welcome({ c, onClose, look, onLook }) {
   const w = c.game.welcome
   return (
     <>
       <p>{w.text}</p>
+      <CharacterPicker c={c} look={look} onLook={onLook} />
       <table className="controls">
         <tbody>
           {w.controls.map(([k, v]) => <tr key={k}><td><kbd>{k}</kbd></td><td>{v}</td></tr>)}
@@ -320,7 +342,7 @@ function Dialogue({ c, onClose, onOpen }) {
   )
 }
 
-export default function Panels({ c, panel, onClose, onOpen }) {
+export default function Panels({ c, panel, onClose, onOpen, look, onLook }) {
   const g = c.game
   if (panel.kind === 'npc') return <Dialogue c={c} onClose={onClose} onOpen={onOpen} />
   const common = { onClose, closeLabel: g.close }
@@ -346,6 +368,6 @@ export default function Panels({ c, panel, onClose, onOpen }) {
     case 'fish':
       return <Window {...common} title={g.fish.title}><Fish c={c} /></Window>
     default:
-      return <Window {...common} title={g.welcome.title}><Welcome c={c} onClose={onClose} /></Window>
+      return <Window {...common} title={g.welcome.title}><Welcome c={c} onClose={onClose} look={look} onLook={onLook} /></Window>
   }
 }
