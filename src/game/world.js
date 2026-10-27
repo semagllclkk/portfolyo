@@ -2,8 +2,9 @@
 // 40×28 karoluk harita. Her yapı portfolyonun bir bölümünü açar:
 //   Çiftlik evi → Hakkımda · Görev panosu → Deneyim · Tarla → Projeler
 //   Sandık → Beceriler · Posta kutusu → İletişim · Satış kutusu → CV
+import { paintGround } from './ground'
 import {
-  TILE, GROUND, rng, makeCanvas, treeSprite, houseSprite, boardSprite, chestSprite,
+  TILE, TREE_ANCHOR, treeSprite, houseSprite, boardSprite, chestSprite,
   binSprite, mailboxSprite, signSprite, bushSprite, cropSprite,
 } from './art'
 
@@ -101,83 +102,9 @@ export const world = buildWorld()
 
 export const isWalkable = (x, y) => x >= 0 && y >= 0 && x < W && y < H && !world.solid[y][x]
 
-// ── Zemin katmanı: mevsim başına bir kez çizilir ─────────────────────────────
+// ── Zemin katmanı: mevsim başına bir kez çizilir (ayrıntılar ground.js'te) ──
 export function renderGround(season) {
-  const pal = GROUND[season]
-  const c = makeCanvas(W * TILE, H * TILE)
-  const ctx = c.getContext('2d')
-  const p = (col, x, y, w = 1, h = 1) => { ctx.fillStyle = col; ctx.fillRect(x, y, w, h) }
-  const at = (x, y) => (x < 0 || y < 0 || x >= W || y >= H ? G.GRASS : world.ground[y][x])
-
-  for (let ty = 0; ty < H; ty++) {
-    for (let tx = 0; tx < W; tx++) {
-      const r = rng(tx * 131 + ty * 7919)
-      const X = tx * TILE, Y = ty * TILE
-      const t = world.ground[ty][tx]
-      if (t === G.GRASS) {
-        p(pal.grass[0], X, Y, TILE, TILE)
-        for (let i = 0; i < 5; i++) {
-          const x = X + Math.floor(r() * 15), y = Y + Math.floor(r() * 14)
-          p(pal.grass[1], x, y + 1, 1, 2)
-          p(pal.grass[2], x + 1, y, 1, 2)
-        }
-        if (pal.flowers.length && r() < 0.08) {
-          const x = X + 4 + Math.floor(r() * 8), y = Y + 4 + Math.floor(r() * 8)
-          const col = pal.flowers[Math.floor(r() * pal.flowers.length)]
-          p(col, x - 1, y, 3, 1); p(col, x, y - 1, 1, 3); p('#ffd23f', x, y, 1, 1)
-        }
-      } else if (t === G.PATH || t === G.SAND) {
-        const base = t === G.SAND ? (season === 'winter' ? '#e4e0d6' : '#efdcab') : pal.path[0]
-        p(base, X, Y, TILE, TILE)
-        for (let i = 0; i < 4; i++) p(pal.path[1], X + Math.floor(r() * 15), Y + Math.floor(r() * 15), 2, 1)
-        p(pal.path[2], X + Math.floor(r() * 14), Y + Math.floor(r() * 14), 1, 1)
-        // Çimle komşu kenarlara yumuşak geçiş
-        const edge = (nx, ny, fn) => { if (at(nx, ny) === G.GRASS) fn() }
-        edge(tx, ty - 1, () => { p(pal.path[1], X, Y, TILE, 1); for (let x = 0; x < 16; x += 3) p(pal.grass[0], X + x, Y, 2, 1 + (x % 2)) })
-        edge(tx, ty + 1, () => { p(pal.path[1], X, Y + 15, TILE, 1); for (let x = 1; x < 16; x += 4) p(pal.grass[0], X + x, Y + 15, 2, 1) })
-        edge(tx - 1, ty, () => { p(pal.path[1], X, Y, 1, TILE); for (let y = 0; y < 16; y += 3) p(pal.grass[0], X, Y + y, 1 + (y % 2), 2) })
-        edge(tx + 1, ty, () => { p(pal.path[1], X + 15, Y, 1, TILE); for (let y = 1; y < 16; y += 4) p(pal.grass[0], X + 15, Y + y, 1, 2) })
-      } else if (t === G.SOIL || t === G.WET) {
-        const wet = t === G.WET
-        p(wet ? '#6e4423' : '#a06a3a', X, Y, TILE, TILE)
-        for (let y = 3; y < 16; y += 4) p(wet ? '#5a361b' : '#8a5a2e', X, Y + y, TILE, 1)
-        if (!wet) p('#b98250', X + Math.floor(r() * 14), Y + Math.floor(r() * 3) * 4 + 1, 2, 1)
-        if (wet) {
-          if (at(tx, ty - 1) !== G.WET) p('#8a5a2e', X, Y, TILE, 1)
-          if (at(tx - 1, ty) !== G.WET) p('#8a5a2e', X, Y, 1, TILE)
-        }
-      } else if (t === G.WATER) {
-        p(pal.water[0], X, Y, TILE, TILE)
-        if (at(tx, ty - 1) !== G.WATER && at(tx, ty - 1) !== G.PLANK) {
-          p('#3a7fb8', X, Y, TILE, 2)
-          p('#e9f6ff', X, Y + 2, TILE, 1)
-        }
-      } else if (t === G.PLANK) {
-        if (ty >= 24) p(pal.water[0], X, Y, TILE, TILE)
-        p('#a8703a', X, Y, TILE, TILE)
-        for (let y = 3; y < 16; y += 4) p('#7a4a26', X, Y + y, TILE, 1)
-        p('#c48a4c', X, Y, TILE, 1)
-        if (ty === 25) { p('#5a331a', X + (tx === 30 ? 1 : 12), Y + 12, 3, 4) }
-      }
-    }
-  }
-
-  // Çitler
-  for (let ty = 0; ty < H; ty++) {
-    for (let tx = 0; tx < W; tx++) {
-      if (!world.fence[ty][tx]) continue
-      const X = tx * TILE, Y = ty * TILE
-      const f = (x, y) => x >= 0 && y >= 0 && x < W && y < H && world.fence[y][x]
-      if (f(tx - 1, ty)) { p('#5a331a', X, Y + 4, 8, 3); p('#a8703a', X, Y + 4, 8, 1); p('#5a331a', X, Y + 9, 8, 3); p('#a8703a', X, Y + 9, 8, 1) }
-      if (f(tx + 1, ty)) { p('#5a331a', X + 8, Y + 4, 8, 3); p('#a8703a', X + 8, Y + 4, 8, 1); p('#5a331a', X + 8, Y + 9, 8, 3); p('#a8703a', X + 8, Y + 9, 8, 1) }
-      if (f(tx, ty - 1) || f(tx, ty + 1)) { p('#5a331a', X + 6, Y, 4, 16); p('#8a5530', X + 7, Y, 2, 16) }
-      p('#3b2414', X + 5, Y + 1, 6, 14)
-      p('#8a5530', X + 6, Y + 1, 4, 13)
-      p('#c48a4c', X + 6, Y + 1, 4, 1)
-      if (season === 'winter') p('#ffffff', X + 5, Y, 6, 2)
-    }
-  }
-  return c
+  return paintGround(world, G, W, H, season)
 }
 
 // Bir mevsimin tüm sprite'larını Y sıralamasına hazır listeye çevirir
@@ -186,7 +113,7 @@ export function buildDrawables(season) {
   const list = world.trees.map(t => {
     const key = `${t.kind}${t.variant}`
     const s = (treeCache[key] ??= treeSprite(t.kind, season, t.variant))
-    return { s, x: t.x * TILE + 8 - 17, y: t.y * TILE + 16 - 44, base: t.y * TILE + 15 }
+    return { s, x: t.x * TILE + 8 - TREE_ANCHOR[0], y: t.y * TILE + 16 - TREE_ANCHOR[1], base: t.y * TILE + 15 }
   })
   world.objects.forEach(o => {
     const s = o.make(season)

@@ -348,13 +348,19 @@ export default function Game({ season, look, paused, onInteract, labelFor, keyHi
         ctx.fillStyle = `rgba(18, 22, 64, ${na})`
         ctx.fillRect(0, 0, cam.w, cam.h)
         const hx = 21 * TILE - cam.x, hy = 3 * TILE - cam.y
+        // Camın üstüne yarı saydam sıcak ışık ve etrafına yumuşak hale
+        ctx.globalCompositeOperation = 'lighter'
         HOUSE_WINDOWS.forEach(([x, y]) => {
-          ctx.fillStyle = 'rgba(255, 200, 110, .18)'
-          ctx.fillRect(hx + x - 4, hy + y - 3, 26, 26)
-          ctx.fillStyle = '#ffd98a'
-          ctx.fillRect(hx + x + 2, hy + y + 2, 6, 6); ctx.fillRect(hx + x + 10, hy + y + 2, 6, 6)
-          ctx.fillRect(hx + x + 2, hy + y + 10, 6, 6); ctx.fillRect(hx + x + 10, hy + y + 10, 6, 6)
+          const cx = hx + x + 9, cy = hy + y + 9
+          const glow = ctx.createRadialGradient(cx, cy, 2, cx, cy, 22)
+          glow.addColorStop(0, `rgba(255, 190, 100, ${na * 0.7})`)
+          glow.addColorStop(1, 'rgba(255, 190, 100, 0)')
+          ctx.fillStyle = glow
+          ctx.fillRect(cx - 22, cy - 22, 44, 44)
+          ctx.fillStyle = `rgba(255, 200, 110, ${na * 0.9})`
+          ctx.fillRect(hx + x + 2, hy + y + 2, 14, 14)
         })
+        ctx.globalCompositeOperation = 'source-over'
       }
 
       // Henüz ziyaret edilmeyen bölümlerin üstünde "!" balonu, yakındakinde ok
