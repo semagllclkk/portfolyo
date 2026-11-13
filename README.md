@@ -6,16 +6,17 @@
 
 **Yazılım Geliştirici & Yapay Zeka Meraklısı** — Pamukkale Üniversitesi, Bilgisayar Mühendisliği
 
-[![Canlı Site](https://img.shields.io/badge/canlı_site-semagulcelik.is--a.dev-e91e8c?style=for-the-badge)](https://semagulcelik.is-a.dev)
+[![Canlı Site](https://img.shields.io/badge/canlı_site-semagulcelik.is--a.dev-e8457f?style=for-the-badge)](https://semagulcelik.is-a.dev)
 
 ![React](https://img.shields.io/badge/React_19-20232a?style=flat-square&logo=react&logoColor=61dafb)
 ![Vite](https://img.shields.io/badge/Vite_8-646cff?style=flat-square&logo=vite&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000?style=flat-square&logo=vercel&logoColor=white)
-![Dil](https://img.shields.io/badge/dil-TR%20%2F%20EN-f06292?style=flat-square)
+![Dil](https://img.shields.io/badge/dil-TR%20%2F%20EN-e8457f?style=flat-square)
+![v2](https://img.shields.io/badge/v2-oyun_sürümü_(deneme)-93c26c?style=flat-square)
 
-*Gece yarısı debug'lanan, kahveyle derlenen, Stardew Valley sevgisiyle süslenen bir portfolyo.* ☕🌾
+*Gece yarısı debug'lanan, kahveyle derlenen, pembe ve yaprak yeşiliyle süslenen bir portfolyo.* ☕🌸
 
-[English summary ↓](#-english)
+[🎮 v2: oyun sürümü ↓](#-v2--oyun-sürümü-deneme) · [English summary ↓](#-english)
 
 </div>
 
@@ -31,24 +32,23 @@
     <td width="50%"><img src="docs/screenshots/hero-en.jpg" alt="İngilizce sürüm" /></td>
   </tr>
   <tr>
-    <td align="center"><sub>🌞 Açık tema</sub></td>
+    <td align="center"><sub>🌞 Açık tema (toz pembe)</sub></td>
     <td align="center"><sub>🇬🇧 TR / EN dil düğmesi</sub></td>
   </tr>
 </table>
 
-### 🌾 Stardew Valley tarzı meme kutuları
+### 🗂️ Projeler ve Hakkımda
 
-Sayfanın her bölümüne yerleştirilmiş, ahşap çerçeveli küçük sürprizler: gerçek saati gösteren HUD, "Yeni eşya alındı!" bildirimi, Topluluk Merkezi paketi, seviye atlama ekranı, eşya açıklaması, balık tutma, gece 02:00 enerji barı, takvim, CI botundan mektup, gün sonu satış kutusu ve portreli NPC diyaloğu.
-
-<img src="docs/screenshots/stardew-memes.jpg" alt="Stardew Valley tarzı meme kutuları" width="100%" />
-
-### 🗂️ Projeler
-
-<img src="docs/screenshots/projects.jpg" alt="Projeler bölümü" width="100%" />
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/projects.jpg" alt="Projeler bölümü" /></td>
+    <td width="50%"><img src="docs/screenshots/about-light.jpg" alt="Hakkımda bölümü, açık tema" /></td>
+  </tr>
+</table>
 
 ### 📱 Mobil
 
-<img src="docs/screenshots/mobile.jpg" alt="Mobil görünüm" width="100%" />
+<img src="docs/screenshots/mobile.jpg" alt="Mobil görünüm" width="320" />
 
 ---
 
@@ -57,11 +57,11 @@ Sayfanın her bölümüne yerleştirilmiş, ahşap çerçeveli küçük sürpriz
 | | |
 |---|---|
 | 🎮 **RPG karakter kartı** | Hero'da daktilo efektiyle yazılan "karakter bilgisi" ve temaya göre değişen meme görseli |
-| 🌾 **Stardew meme'leri** | 12 farklı kutu türü, özgün 16×16 pixel ikonlarla; hero'da gerçek saati gösteren gün/saat/altın HUD'u ve "Yeni eşya alındı!" bildirimi |
+| 🎨 **Pembe-yeşil palet** | Koyu pembe ve toz pembe ağırlıklı zeminler, yaprak yeşili vurgular; siyah/beyaz yalnızca yazılarda |
 | 🌗 **Koyu / açık tema** | Tercih hatırlanır, sayfa ilk boyanmadan uygulanır (yanıp sönme yok) |
 | 🇹🇷 🇬🇧 **İki dil** | Tüm içerik TR ve EN; ilk ziyarette tarayıcı diline göre açılır |
 | 🌹 **Gül imleci** | Fareyi takip eden pixel gül ve halka (dokunmatik ekranlarda kapalı) |
-| ✨ **Parçacık arka planı** | Parlayan pembe noktalar, kayan yıldızlar ve ara sıra bir kuyrukluyıldız |
+| ✨ **Parçacık arka planı** | Parlayan pembe ve yeşil noktalar, kayan yıldızlar ve ara sıra bir kuyrukluyıldız |
 | 📄 **CV indirme** | Hero'daki butonla tek tıkla PDF |
 | 🔗 **Paylaşım önizlemesi** | LinkedIn / WhatsApp / X için 1200×630 `og:image` |
 | 📊 **Vercel Analytics** | Ziyaretçi ve tıklama istatistikleri |
@@ -71,6 +71,33 @@ Sayfanın her bölümüne yerleştirilmiş, ahşap çerçeveli küçük sürpriz
 - Parçacıklar önceden çizilmiş sprite'larla; sekme gizliyken duruyor
 - `prefers-reduced-motion` açıksa animasyonlar yerine sabit kare
 - Türkçe karakterleri doğru çizen fontlar (İ, Ş, Ğ)
+
+---
+
+## 🎮 v2 · Oyun Sürümü (deneme)
+
+Portfolyonun deneysel ikinci sürümü [`v2`](https://github.com/semagllclkk/portfolyo/tree/v2) dalında: site, Stardew Valley'den esinlenen ve karakterle dolaşılan pixel-art bir çiftliğe dönüşüyor. Bölümleri okumak yerine keşfediyorsun.
+
+**Önizleme:** [semagulcelik-git-v2-sema-guls-projects.vercel.app](https://semagulcelik-git-v2-sema-guls-projects.vercel.app)
+
+<img src="docs/screenshots/v2-farm.jpg" alt="v2 — çiftlik haritası" width="100%" />
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/v2-dialogue.jpg" alt="v2 — Sema ile diyalog" /></td>
+    <td width="50%"><img src="docs/screenshots/v2-projects.jpg" alt="v2 — proje tarlası, sonbahar" /></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>💬 Sema ile konuş, bir konu seç</sub></td>
+    <td align="center"><sub>🌾 Her ekin bir proje</sub></td>
+  </tr>
+</table>
+
+- **Her yapı bir bölüm:** çiftlik evi → Hakkımda, görev panosu → Deneyim, tarladaki ekinler → Projeler, sandık → Beceriler, posta kutusu → İletişim, satış kutusu → CV.
+- **Kız ya da erkek çiftçi** seçilebiliyor; yoldaki **Sema** ile konuşulabiliyor, iskelede "bug" balığı tutulabiliyor.
+- **Gerçek saat ve mevsim:** akşamları harita kararıyor ve pencereler yanıyor; mevsim gerçek aya göre seçiliyor, tarihe tıklayınca değişiyor.
+- **Kontroller:** WASD / ok tuşları, E / Boşluk, tıkla-yürü (mobilde dokun), 1–6 hızlı menü.
+- Bütün görseller koddan üretiliyor (`src/game/`); oyuna ait hiçbir görsel kullanılmadı.
 
 ---
 
@@ -98,7 +125,6 @@ portfoy/
 │   ├── i18n.jsx            # Dil bağlamı (useLang)
 │   ├── components/
 │   │   ├── Hero.jsx        # RPG karakter kartı
-│   │   ├── Meme.jsx        # Stardew tarzı meme kutuları
 │   │   ├── Works.jsx       # Proje kartları
 │   │   └── …
 │   ├── hooks/
@@ -117,11 +143,7 @@ Neredeyse her şey **`src/data.js`** içinde:
 - **Proje eklemek:** `projectBase` dizisine linkleri/etiketleri, `tr.projects` ve `en.projects` içine metinleri ekle. Görseli `public/projects/` altına koy.
   Logo gibi kırpılmaması gereken görseller için `photoFit: "contain"` ve `photoBg: "#renk"` kullan.
 - **Deneyim / beceriler:** `experienceBase`, `skillItems` ve dil bloklarındaki karşılıkları.
-- **Meme'ler:** `memes` alanı. Türler: `hud`, `toast`, `levelup`, `bundle`, `item`, `catch`, `energy`, `calendar`, `mail`, `shipping`, `npc`, `image`.
-  Kendi meme görselini eklemek için dosyayı `public/memes/` altına koy ve şöyle yaz:
-  ```js
-  works: { kind: "image", src: "/memes/benim-meme.webp", alt: "…", caption: "…" }
-  ```
+- **Renkler:** `src/index.css` başındaki tokenlar (`--pink`, `--pink-ll`, `--green`, `--bg` …). Koyu ve açık mod ayrı bloklarda.
 - **CV:** `public/cv.pdf` dosyasını değiştir.
 
 ---
@@ -141,7 +163,7 @@ npm run lint      # oxlint
 
 ## 🙏 Teşekkür
 
-- Arayüzdeki ahşap çerçeveli kutular, ConcernedApe'in **Stardew Valley** oyunundan esinlenmiştir. Oyunla resmi bir bağı yoktur ve oyuna ait hiçbir görsel kullanılmamıştır; kutular CSS ile, 16×16 pixel ikonlar (`src/components/pixelIcons.js`) sıfırdan çizilmiştir.
+- v2'deki oyun sürümü ConcernedApe'in **Stardew Valley** oyunundan esinlenmiştir. Oyunla resmi bir bağı yoktur ve oyuna ait hiçbir görsel kullanılmamıştır; bütün sprite'lar koddan üretilmiştir.
 - Ücretsiz alan adı için [is-a.dev](https://is-a.dev) ekibine teşekkürler.
 
 ---
@@ -152,10 +174,11 @@ Personal portfolio of **Sema Gül Çelik**, a Computer Engineering student at Pa
 
 **Live:** [semagulcelik.is-a.dev](https://semagulcelik.is-a.dev)
 
-- Pixel-art / RPG aesthetic with Stardew Valley–inspired meme boxes: a live day/time/gold HUD, "new item received" toast, Community Center bundle, level-up screen, item tooltip, fishing catch, 2 AM energy bar, calendar, a letter from the CI bot, end-of-day shipping bin and an NPC dialog
+- Pixel-art / RPG aesthetic in a pink and leaf-green palette (deep pink and dusty pink surfaces, green accents)
 - Turkish / English toggle, dark / light theme, custom rose cursor, canvas particle background
 - Downloadable CV, Open Graph preview image, Vercel Analytics
 - Built with React 19 + Vite 8 and plain CSS; all content lives in `src/data.js`
+- **v2 (experimental):** a playable Stardew Valley–inspired farm where each building opens a section. See the [`v2`](https://github.com/semagllclkk/portfolyo/tree/v2) branch and its [preview](https://semagulcelik-git-v2-sema-guls-projects.vercel.app).
 
 ```bash
 npm install && npm run dev
