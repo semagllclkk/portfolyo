@@ -1,6 +1,5 @@
 import { useReveal } from '../hooks/useReveal'
 import { useLang } from '../i18n'
-import Meme from './Meme'
 import semaPhoto from '../assets/sema.webp'
 
 export default function About() {
@@ -53,8 +52,6 @@ export default function About() {
               </div>
             ))}
           </div>
-
-          <Meme meme={c.memes.about} className="meme-about" />
         </div>
       </div>
     </section>

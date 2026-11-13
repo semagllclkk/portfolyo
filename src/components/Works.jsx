@@ -1,6 +1,5 @@
 import { useReveal } from '../hooks/useReveal'
 import { useLang } from '../i18n'
-import Meme from './Meme'
 
 function ProjectCard({ project, index, liveLabel }) {
   return (
@@ -87,8 +86,6 @@ export default function Works() {
       <h2 className="section-title centered">{c.ui.worksTitle}</h2>
       <p className="section-sub">{c.ui.worksSub}</p>
 
-      <Meme meme={c.memes.works} className="meme-works" />
-
       {/* Featured projeler — tam genişlik */}
       <div className="works-featured">
         {featured.map((p, i) => (
@@ -102,8 +99,6 @@ export default function Works() {
           <ProjectCard key={p.id} project={p} index={i + featured.length} liveLabel={c.ui.live} />
         ))}
       </div>
-
-      <Meme meme={c.memes.worksMail} className="meme-mail-pos" />
     </section>
   )
 }

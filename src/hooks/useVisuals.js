@@ -21,7 +21,8 @@ export function useParticles(canvasRef) {
     })
     themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
 
-    const PINKS = ['233,30,140', '240,98,146', '244,143,177', '219,0,115', '255,105,180']
+    // Koyu pembe, toz pembe ve yaprak yeşili; yeşil parçacıklar azınlıkta
+    const PINKS = ['232,69,127', '242,122,164', '227,165,186', '214,120,150', '147,194,108', '183,216,146']
 
     // Önceden çizilmiş parlama sprite'ları (renk başına bir tane)
     const SPRITE = 32

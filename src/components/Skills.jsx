@@ -1,6 +1,5 @@
 import { useReveal } from '../hooks/useReveal'
 import { useLang } from '../i18n'
-import Meme from './Meme'
 
 export default function Skills() {
   const ref = useReveal()
@@ -16,8 +15,6 @@ export default function Skills() {
           <p className="skills-intro">
             {c.ui.skillsIntro[0]}<br />{c.ui.skillsIntro[1]}
           </p>
-          <Meme meme={c.memes.skills} className="meme-skills" />
-          <Meme meme={c.memes.skillsCatch} className="meme-skills" />
         </div>
 
         <div className="skills-right reveal-right">
