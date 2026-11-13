@@ -1,40 +1,59 @@
-import { useRef } from 'react'
-import Navbar            from './components/Navbar'
-import Hero              from './components/Hero'
-import About             from './components/About'
-import Experience        from './components/Experience'
-import Works             from './components/Works'
-import Skills            from './components/Skills'
-import Contact           from './components/Contact'
-import Footer            from './components/Footer'
+import { useCallback, useEffect, useState } from 'react'
+import Game from './game/Game'
+import Panels from './game/Panels'
+import { Hud, TopBar, Hotbar } from './game/Hud'
+import { SEASONS } from './game/art'
+import { useLang } from './i18n'
 
-import { useParticles, useCursor } from './hooks/useVisuals'
+// Gerçek aya göre mevsim: Mar–May ilkbahar, Haz–Ağu yaz, Eyl–Kas sonbahar, Ara–Şub kış
+const realSeason = () => [3, 3, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3][new Date().getMonth()]
+
+function savedLook() {
+  try { return localStorage.getItem('farm-look') === 'player' ? 'player' : 'playerGirl' } catch { return 'playerGirl' }
+}
+
+function introSeen() {
+  try { return localStorage.getItem('farm-intro') === '1' } catch { return false }
+}
 
 export default function App() {
-  const canvasRef = useRef(null)
+  const { c, lang, toggleLang } = useLang()
+  const [season, setSeason] = useState(realSeason)
+  const [look, setLook] = useState(savedLook)
+  const [panel, setPanel] = useState(() => (introSeen() ? null : { kind: 'sign' }))
 
-  useParticles(canvasRef)
-  useCursor()
+  useEffect(() => {
+    document.title = `${c.game.title} · ${c.personal.name}`
+  }, [c])
+
+  const close = useCallback(() => {
+    try { localStorage.setItem('farm-intro', '1') } catch { /* gizli sekme */ }
+    setPanel(null)
+  }, [])
+  const chooseLook = useCallback((next) => {
+    try { localStorage.setItem('farm-look', next) } catch { /* gizli sekme */ }
+    setLook(next)
+  }, [])
+  const open = useCallback((target) => setPanel(target), [])
+  const pick = useCallback((kind) => setPanel(p => (p?.kind === kind ? null : { kind })), [])
+  const labelFor = (t) => (t.kind === 'project' ? c.projects[t.index].title : c.game.places[t.kind])
 
   return (
-    <>
-      {/* Arka plan gürültü & parçacıklar */}
-      <div className="bg-noise" aria-hidden="true" />
-      <canvas ref={canvasRef} className="particles-canvas" aria-hidden="true" />
-
-      <Navbar />
-
-      <main>
-        <Hero />
-        <About />
-        <Experience />
-        <Works />
-        <Skills />
-        <Contact />
-      </main>
-
-      <Footer />
-
-    </>
+    <div className="farm">
+      <h1 className="sr-only">{c.personal.name} · {c.personal.roleLead} {c.personal.roleHighlight}</h1>
+      <Game
+        season={SEASONS[season]}
+        look={look}
+        paused={!!panel}
+        onInteract={open}
+        labelFor={labelFor}
+        keyHint={c.game.keyHint}
+        tapHint={c.game.tapHint}
+      />
+      <Hud c={c} season={season} onSeason={() => setSeason(s => (s + 1) % 4)} />
+      <TopBar c={c} lang={lang} onLang={toggleLang} onHelp={() => setPanel({ kind: 'sign' })} />
+      <Hotbar c={c} active={panel?.kind === 'project' ? 'projects' : panel?.kind} onPick={pick} />
+      {panel && <Panels key={panel.kind} c={c} panel={panel} onClose={close} onOpen={open} look={look} onLook={chooseLook} />}
+    </div>
   )
 }

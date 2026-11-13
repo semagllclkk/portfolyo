@@ -19,6 +19,13 @@
 
 </div>
 
+> [!NOTE]
+> **v2 · Oyun teması (deneme dalı).** Bu dalda portfolyo, Stardew Valley tarzı oynanabilir bir çiftliğe dönüştü:
+> karakterle dolaşıp nesnelerle etkileşime geçerek bölümleri keşfediyorsun. Çiftlik evi → Hakkımda, görev panosu → Deneyim,
+> tarladaki her ekin → bir proje, sandık → Beceriler, posta kutusu → İletişim, satış kutusu → CV. Sema ile konuşabilir,
+> iskelede “bug” avlayabilir, tarihe tıklayıp mevsimi değiştirebilirsin. Kontroller: WASD / ok tuşları, E / Boşluk, tıkla-yürü, 1–6.
+> Kod: `src/game/` (harita, pixel-art üretimi, oyun döngüsü ve pencereler).
+
 ---
 
 ## 📸 Ekran Görüntüleri
