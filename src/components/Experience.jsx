@@ -1,6 +1,5 @@
 import { useReveal } from '../hooks/useReveal'
 import { useLang } from '../i18n'
-import Meme from './Meme'
 
 export default function Experience() {
   const ref = useReveal()
@@ -34,11 +33,6 @@ export default function Experience() {
             </div>
           </article>
         ))}
-      </div>
-
-      <div className="meme-row">
-        <Meme meme={c.memes.experienceBundle} />
-        <Meme meme={c.memes.experience} />
       </div>
     </section>
   )

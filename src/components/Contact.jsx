@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useReveal } from '../hooks/useReveal'
 import { useLang } from '../i18n'
-import Meme from './Meme'
 
 export default function Contact() {
   const ref = useReveal()
@@ -23,8 +22,6 @@ export default function Contact() {
     <section id="contact" className="section contact-section" ref={ref}>
 
       <div className="contact-inner">
-        <Meme meme={c.memes.contact} className="meme-contact" />
-
         <h2 className="contact-heading">
           {c.ui.contactHeading[0]}
           <span className="gradient-text">{c.ui.contactHeading[1]}</span>
@@ -66,8 +63,6 @@ export default function Contact() {
             </span>
           ))}
         </div>
-
-        <Meme meme={c.memes.contactShipping} className="meme-shipping-pos" />
       </div>
     </section>
   )

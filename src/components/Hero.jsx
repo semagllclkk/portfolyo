@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import { useLang } from '../i18n'
-import Meme from './Meme'
 import memeImage from '../assets/meme.webp'
 import memeLightImage from '../assets/meme-light.webp'
 
@@ -131,14 +130,11 @@ export default function Hero() {
           <span className="social-dot">·</span>
           <a href={personal.contact.medium} target="_blank" rel="noopener noreferrer" className="hero-social-link" aria-label="Medium">Medium</a>
         </div>
-
-        <Meme meme={c.memes.heroToast} className="meme-hero-toast" reveal={false} />
       </div>
 
       {/* SAĞ — RPG Karakter Kartı */}
       <div className="hero-visual">
         <div className="hero-card-wrap">
-          <Meme meme={c.memes.hero} className="meme-hero-hud" reveal={false} />
           <div className="rpg-card">
             {/* Piksel köşe süslemeleri */}
             <span className="rpg-corner rpg-corner-tl" />
