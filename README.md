@@ -162,5 +162,5 @@ npm install && npm run dev
 ```
 
 <div align="center">
-<sub>Kahveyle derlendi ☕ · Made with 🌸 in Denizli</sub>
+<sub>Kahveyle derlendi ☕</sub>
 </div>
