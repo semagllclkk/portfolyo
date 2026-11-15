@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Game from './game/Game'
 import Panels from './game/Panels'
 import { Hud, TopBar, Hotbar, CLASSIC_URL } from './game/Hud'
 import { SEASONS } from './game/art'
 import { useLang } from './i18n'
+import { createMusic } from './game/music'
 
 // Gerçek aya göre mevsim: Mar–May ilkbahar, Haz–Ağu yaz, Eyl–Kas sonbahar, Ara–Şub kış
 const realSeason = () => [3, 3, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3][new Date().getMonth()]
@@ -17,6 +18,10 @@ function houseTipSeen() {
   try { return localStorage.getItem('farm-house-tip') === '1' } catch { return false }
 }
 
+function musicWanted() {
+  try { return localStorage.getItem('farm-music') !== '0' } catch { return true }
+}
+
 function introSeen() {
   try { return localStorage.getItem('farm-intro') === '1' } catch { return false }
 }
@@ -28,6 +33,28 @@ export default function App() {
   const [panel, setPanel] = useState(() => (introSeen() ? null : { kind: 'sign' }))
   const [houseTip, setHouseTip] = useState(false)
   const [entering, setEntering] = useState(false)
+  const [music, setMusic] = useState(musicWanted)
+  const player = useRef(null)
+
+  // Müzik: açıksa ilk tıklama ya da tuşla başlar, klasik siteye geçerken susar
+  useEffect(() => {
+    const m = (player.current ??= createMusic())
+    if (!music || entering) { m.stop(); return }
+    const begin = () => m.start()
+    window.addEventListener('pointerdown', begin)
+    window.addEventListener('keydown', begin)
+    return () => {
+      window.removeEventListener('pointerdown', begin)
+      window.removeEventListener('keydown', begin)
+    }
+  }, [music, entering])
+  useEffect(() => () => player.current?.dispose(), [])
+  const toggleMusic = useCallback(() => {
+    setMusic(on => {
+      try { localStorage.setItem('farm-music', on ? '0' : '1') } catch { /* gizli sekme */ }
+      return !on
+    })
+  }, [])
 
   useEffect(() => {
     document.title = `${c.game.title} · ${c.personal.name}`
@@ -77,7 +104,7 @@ export default function App() {
         tapHint={c.game.tapHint}
       />
       <Hud c={c} season={season} onSeason={() => setSeason(s => (s + 1) % 4)} />
-      <TopBar c={c} lang={lang} onLang={toggleLang} onHelp={() => setPanel({ kind: 'sign' })} />
+      <TopBar c={c} lang={lang} onLang={toggleLang} onHelp={() => setPanel({ kind: 'sign' })} music={music} onMusic={toggleMusic} />
       <Hotbar c={c} active={panel?.kind === 'project' ? 'projects' : panel?.kind} onPick={pick} />
       {houseTip && !panel && (
         <div className="house-tip ui-box" role="status">

@@ -30,13 +30,14 @@ export function Hud({ c, season, onSeason }) {
   )
 }
 
-export function TopBar({ c, lang, onLang, onHelp }) {
+export function TopBar({ c, lang, onLang, onHelp, music, onMusic }) {
   const g = c.game
   return (
     <div className="topbar">
       <button type="button" className="ui-btn" onClick={onLang} aria-label={c.ui.langSwitch} title={c.ui.langSwitch}>
         {lang === 'tr' ? 'EN' : 'TR'}
       </button>
+      <button type="button" className={`ui-btn music-btn${music ? '' : ' is-off'}`} onClick={onMusic} aria-pressed={music} aria-label={music ? g.musicOff : g.musicOn} title={music ? g.musicOff : g.musicOn}>♪</button>
       <button type="button" className="ui-btn" onClick={onHelp} aria-label={g.help} title={g.help}>?</button>
       <a className="ui-btn ui-btn-wide" href={CLASSIC_URL} title={g.classic}>{g.classic}</a>
     </div>

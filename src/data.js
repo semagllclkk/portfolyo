@@ -272,6 +272,8 @@ const tr = {
     close: "Kapat",
     help: "Nasıl oynanır?",
     classic: "Klasik site",
+    musicOn: "Müziği aç",
+    musicOff: "Müziği kapat",
     houseTip: ["Burası çiftlik evi.", "İçeri girersen portfolyonun klasik sitesine geçersin."],
     entering: "Klasik siteye geçiliyor…",
     welcome: {
@@ -342,7 +344,7 @@ const tr = {
     },
     npc: {
       name: "Sema",
-      greeting: "Selam çiftçi! Ben Sema. Bilgisayar mühendisliği okuyorum, yapay zekaya bayılıyorum. Ne hakkında konuşmak istersin?",
+      greeting: "Selam çiftçi! Ben Sema. Bilgisayar mühendisliği okuyorum, yapay zekaya bayılıyorum. Bir de Stardew Valley oynamayı çok seviyorum, belli oluyor mu? :) Ne hakkında konuşmak istersin?",
       choices: {
         about: "Biraz kendinden bahset",
         experience: "Neler yaptın?",
@@ -617,6 +619,8 @@ const en = {
     close: "Close",
     help: "How to play",
     classic: "Classic site",
+    musicOn: "Turn music on",
+    musicOff: "Turn music off",
     houseTip: ["This is the farmhouse.", "Step inside to switch to the classic portfolio site."],
     entering: "Heading to the classic site…",
     welcome: {
@@ -687,7 +691,7 @@ const en = {
     },
     npc: {
       name: "Sema",
-      greeting: "Hi farmer! I'm Sema. I study computer engineering and I love AI. What would you like to talk about?",
+      greeting: "Hi farmer! I'm Sema. I study computer engineering and I love AI. I also really love playing Stardew Valley. Can you tell? :) What would you like to talk about?",
       choices: {
         about: "Tell me about yourself",
         experience: "What have you been up to?",

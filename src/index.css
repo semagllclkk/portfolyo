@@ -471,3 +471,11 @@ img { display: block; max-width: 100%; }
 @media (prefers-reduced-motion: reduce) {
   .house-tip, .entering { animation: none; }
 }
+
+/* Müzik düğmesi: kapalıyken notanın üstü çizili */
+.music-btn { position: relative; }
+.music-btn.is-off { color: var(--ink-2); }
+.music-btn.is-off::after {
+  content: ""; position: absolute; left: 22%; right: 22%; top: 50%; height: 2px;
+  background: currentColor; transform: rotate(-35deg);
+}
