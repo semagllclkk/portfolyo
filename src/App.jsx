@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import Navbar            from './components/Navbar'
 import Hero              from './components/Hero'
 import About             from './components/About'
@@ -16,6 +16,14 @@ export default function App() {
   useParticles(canvasRef)
   useCursor()
 
+  // Proje filtresi: Projeler bölümündeki düğmeler ve Beceriler'deki teknolojiler ortak kullanır
+  const [filter, setFilter] = useState(null)
+  const showTech = (tech) => {
+    setFilter({ type: 'tech', value: tech })
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    document.getElementById('works')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' })
+  }
+
   return (
     <>
       {/* Arka plan gürültü & parçacıklar */}
@@ -28,8 +36,8 @@ export default function App() {
         <Hero />
         <About />
         <Experience />
-        <Works />
-        <Skills />
+        <Works filter={filter} setFilter={setFilter} />
+        <Skills onPick={showTech} />
         <Contact />
       </main>
 

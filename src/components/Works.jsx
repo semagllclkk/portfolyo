@@ -1,11 +1,14 @@
 import { useReveal } from '../hooks/useReveal'
 import { useLang } from '../i18n'
+import { projectKinds } from '../data'
+import ProjectCover from './ProjectCover'
 
-function ProjectCard({ project, index, liveLabel }) {
+function ProjectCard({ project, index, liveLabel, hidden, activeTech }) {
   return (
     <article
       className={`work-card${project.featured ? ' featured' : ''} reveal-child`}
-      style={{ '--delay': `${index * 0.08}s` }}
+      style={{ '--delay': `${index * 0.06}s` }}
+      hidden={hidden}
     >
       <div
         className={`card-img-area${project.photoFit === 'contain' ? ' is-logo' : ''}`}
@@ -14,48 +17,20 @@ function ProjectCard({ project, index, liveLabel }) {
         {project.photo ? (
           <img src={project.photo} alt={project.title} loading="lazy" />
         ) : (
-          <div className="card-img-placeholder">
-            <span>{project.title}</span>
-          </div>
+          <ProjectCover type={project.cover} />
         )}
-        <div className="card-overlay">
-          <div className="card-actions">
-            {project.github && (
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="card-action-btn"
-              >
-                GitHub ↗
-              </a>
-            )}
-            {project.live && (
-              <a
-                href={project.live}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="card-action-btn primary"
-              >
-                {liveLabel} ↗
-              </a>
-            )}
-          </div>
-        </div>
       </div>
 
       <div className="card-info">
-        <div className="card-meta">
-          <div className="card-tags-row">
-            {project.tags.slice(0, 3).map(t => (
-              <span key={t} className="card-tag">{t}</span>
-            ))}
-          </div>
-        </div>
         <h3 className="card-title">{project.title}</h3>
         <p className="card-subtitle">{project.subtitle}</p>
         <p className="card-desc">{project.description}</p>
-        {(project.github || project.live) && (
+        <div className="card-foot">
+          <ul className="card-tags-row">
+            {project.tags.map(t => (
+              <li key={t} className={`card-tag${t === activeTech ? ' on' : ''}`}>{t}</li>
+            ))}
+          </ul>
           <div className="card-links">
             {project.github && (
               <a href={project.github} target="_blank" rel="noopener noreferrer" className="card-link">
@@ -68,35 +43,75 @@ function ProjectCard({ project, index, liveLabel }) {
               </a>
             )}
           </div>
-        )}
+        </div>
       </div>
     </article>
   )
 }
 
-export default function Works() {
+// filter: null | { type: 'kind' | 'tech', value }
+export default function Works({ filter, setFilter }) {
   const ref = useReveal()
   const { c } = useLang()
-  const { projects } = c
-  const featured = projects.filter(p => p.featured)
-  const rest = projects.filter(p => !p.featured)
+  const projects = [...c.projects].sort((a, b) => b.featured - a.featured)
+
+  const matches = p =>
+    !filter ||
+    (filter.type === 'kind' ? p.kinds.includes(filter.value) : p.tags.includes(filter.value))
+  const shown = projects.filter(matches).length
 
   return (
     <section id="works" className="section" ref={ref}>
-      <h2 className="section-title centered">{c.ui.worksTitle}</h2>
-      <p className="section-sub">{c.ui.worksSub}</p>
+      <div className="works-head">
+        <h2 className="section-title">{c.ui.worksTitle}</h2>
 
-      {/* Featured projeler — tam genişlik */}
-      <div className="works-featured">
-        {featured.map((p, i) => (
-          <ProjectCard key={p.id} project={p} index={i} liveLabel={c.ui.live} />
-        ))}
+        <div className="works-filter" role="group" aria-label={c.ui.filterLabel}>
+          <button
+            type="button"
+            className={`filter-btn${!filter ? ' on' : ''}`}
+            aria-pressed={!filter}
+            onClick={() => setFilter(null)}
+          >
+            {c.ui.filterAll} <span className="filter-n">{projects.length}</span>
+          </button>
+          {projectKinds.map(k => {
+            const on = filter?.type === 'kind' && filter.value === k
+            return (
+              <button
+                key={k}
+                type="button"
+                className={`filter-btn${on ? ' on' : ''}`}
+                aria-pressed={on}
+                onClick={() => setFilter(on ? null : { type: 'kind', value: k })}
+              >
+                {c.ui.kinds[k]}{' '}
+                <span className="filter-n">{projects.filter(p => p.kinds.includes(k)).length}</span>
+              </button>
+            )
+          })}
+          {filter?.type === 'tech' && (
+            <button
+              type="button"
+              className="filter-btn on tech"
+              aria-label={`${filter.value}: ${c.ui.filterClear}`}
+              onClick={() => setFilter(null)}
+            >
+              {filter.value} <span className="filter-n">{shown}</span> <span aria-hidden="true">✕</span>
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* Diğer projeler — grid */}
       <div className="works-grid">
-        {rest.map((p, i) => (
-          <ProjectCard key={p.id} project={p} index={i + featured.length} liveLabel={c.ui.live} />
+        {projects.map((p, i) => (
+          <ProjectCard
+            key={p.id}
+            project={p}
+            index={i}
+            liveLabel={c.ui.live}
+            hidden={!matches(p)}
+            activeTech={filter?.type === 'tech' ? filter.value : null}
+          />
         ))}
       </div>
     </section>

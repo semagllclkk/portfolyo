@@ -17,6 +17,7 @@ const cv = { tr: "/cv.pdf", en: "/cv.pdf" };
 const projectBase = [
   {
     id: "proj-carettatrack",
+    kinds: ["ai"],
     tags: ["PyTorch", "FastAPI", "JavaScript", "ResNet-18"],
     github: "https://github.com/semagllclkk/caretta-takibi-uygulamasi",
     live: null,
@@ -27,20 +28,25 @@ const projectBase = [
   },
   {
     id: "proj-data-middleware",
+    kinds: ["system"],
     tags: ["C#", "Docker", "TCP Sockets", "Design Patterns"],
     github: "https://github.com/semagllclkk/data-middleware",
     live: null,
     featured: false,
+    cover: "logs",
   },
   {
     id: "proj-visionstrike",
+    kinds: ["game", "ai"],
     tags: ["Python", "Pygame", "MediaPipe", "OpenCV"],
     github: "https://github.com/semagllclkk/VisionStrike",
     live: null,
     featured: false,
+    cover: "hand",
   },
   {
     id: "proj-fingerjump",
+    kinds: ["game", "ai"],
     tags: ["Flutter", "Flame", "MediaPipe"],
     github: "https://github.com/semagllclkk/fingerjump-mobile",
     live: null,
@@ -49,6 +55,7 @@ const projectBase = [
   },
   {
     id: "proj-techvolt",
+    kinds: ["web"],
     tags: ["Next.js", "Nest.js", "Tailwind", "Railway"],
     github: null,
     live: "https://www.techvoltsolutions.com.tr",
@@ -59,6 +66,7 @@ const projectBase = [
   },
   {
     id: "proj-kitap",
+    kinds: ["web"],
     tags: ["Next.js", "SQLite"],
     github: "https://github.com/semagllclkk/kitap-satis-uygulamasi",
     live: null,
@@ -69,6 +77,7 @@ const projectBase = [
   },
   {
     id: "proj-dietitian-client",
+    kinds: ["web"],
     tags: ["Nest.js", "React", "JWT", "PostgreSQL", "Tailwind CSS", "TypeScript"],
     github: "https://github.com/semagllclkk/dietitian-client",
     live: "https://dietitian-client-epxaw6mgq-sema-guls-projects.vercel.app/",
@@ -79,6 +88,7 @@ const projectBase = [
   },
   {
     id: "proj-kirmizi-baslikli-kiz",
+    kinds: ["game"],
     tags: ["Python", "Pygame"],
     github: "https://github.com/semagllclkk/pdl_oyun_projesi",
     live: null,
@@ -86,6 +96,9 @@ const projectBase = [
     photo: "/projects/kirmizi-baslikli-kiz.webp",
   },
 ];
+
+// Filtre sırası (etiketleri ui.kinds altında)
+export const projectKinds = ["ai", "web", "game", "system"];
 
 // ── Deneyim: ortak alanlar ───────────────────────────────────────────────────
 const experienceBase = [
@@ -111,25 +124,20 @@ const tr = {
     roleLead: "Yazılım Geliştirici &",
     roleHighlight: "Yapay Zeka Meraklısı",
     tagline:
-      "Gerçek problemlere teknolojiyle çözüm üretmeyi seven, araştırmayı ve öğrenmeyi hiç bırakmayan biriyim.",
+      "Deniz kaplumbağalarını fotoğraftan tanıyan bir model eğittim, el hareketiyle oynanan oyunlar yazdım. En çok yapay zeka ve bilgisayarlı görü tarafını seviyorum.",
     bio: [
-      "Pamukkale Üniversitesi Bilgisayar Mühendisliği bölümünde lisans eğitimime devam etmekteyim. Yapay zeka, veri bilimi ve makine öğrenmesi alanlarına odaklanarak kariyerimi bu yönde şekillendiriyorum.",
-      "Sürekli öğrenmeye açık, araştırmayı seven ve gerçek problemlere teknolojiyle çözüm üretmeyi hedefleyen bir yazılım geliştiricisiyim.",
+      "Pamukkale Üniversitesi'nde Bilgisayar Mühendisliği okuyorum, 2027'de mezun oluyorum.",
+      "Derslerden kalan zamanın çoğu projelere gidiyor. Başarsoft'taki stajımda bir harita modülü geliştirdim, PAUSEC'te topluluğun web sitesini yazdım, bir CTF yarışmasıyla Siber Vatan programına girdim. Kariyerimi yapay zeka ve makine öğrenmesi üzerine kurmak istiyorum.",
     ],
-    stats: [
-      { value: "8+", label: "Tamamlanan Proje" },
-      { value: "3", label: "Deneyim" },
-      { value: "B2", label: "İngilizce" },
+    facts: [
+      { label: "Okul", value: "Pamukkale Üniversitesi" },
+      { label: "Bölüm", value: "Bilgisayar Mühendisliği" },
+      { label: "Dönem", value: "Eylül 2023 — Haziran 2027" },
+      { label: "Şehir", value: "Denizli" },
+      { label: "İngilizce", value: "B2" },
     ],
     contact,
     cv: cv.tr,
-  },
-  education: {
-    badge: "Eğitim",
-    degree: "Bilgisayar Mühendisliği",
-    university: "Pamukkale Üniversitesi",
-    city: "Denizli",
-    period: "Eylül 2023 — Haziran 2027",
   },
   skillCategories: [
     "Yapay Zeka & Makine Öğrenmesi",
@@ -145,7 +153,7 @@ const tr = {
       type: "Eğitim Programı",
       period: "Şubat 2026 — Haziran 2026",
       description:
-        "Siber Vatan programında siber güvenlik ve sızma testi eğitimleri tamamlandı. Programa bir CTF yarışmasıyla hak kazanıldı.",
+        "Bir CTF yarışmasıyla hak kazandığım Siber Vatan programında siber güvenlik ve sızma testi eğitimlerini tamamladım.",
       tags: ["Siber Güvenlik", "Sızma Testi"],
     },
     "exp-2": {
@@ -154,8 +162,8 @@ const tr = {
       type: "Gönüllü",
       period: "Kasım 2025 — Haziran 2026",
       description:
-        "Topluluğun web sitesinin mimarisi (.NET ve JS) sıfırdan geliştirildi ve üniversite çapında siber güvenlik eğitim etkinlikleri organize edildi.",
-      tags: [".NET", "JavaScript", "Etkinlik Organizasyonu"],
+        "Topluluğun web sitesini (.NET ve JS) sıfırdan geliştirdim. Yönetim kurulunda sosyal medya tarafında görev aldım; topluluğun paylaşımlarıyla ilgilendim.",
+      tags: [".NET", "JavaScript", "Sosyal Medya"],
     },
     "exp-3": {
       title: "Yazılım Geliştirme Stajyeri",
@@ -163,7 +171,7 @@ const tr = {
       type: "Uzaktan Staj",
       period: "Haziran 2025 — Ağustos 2025",
       description:
-        "ASP.NET Core, React ve PostGIS teknolojilerini kullanarak coğrafi veri işleme, geometri kesişim kontrolleri ve arama optimizasyonlarını içeren full-stack bir harita modülü geliştirildi. NetTopologySuite ile snapping ve debounce mekanizmaları sisteme entegre edildi.",
+        "ASP.NET Core, React ve PostGIS ile full-stack bir harita modülü geliştirdim: coğrafi veri işleme, geometri kesişim kontrolleri ve arama optimizasyonları. NetTopologySuite ile snapping ve debounce mekanizmalarını ekledim.",
     },
   },
   projects: {
@@ -237,12 +245,16 @@ const tr = {
     aboutTitle: "Hakkımda",
     experienceTitle: "Deneyim",
     worksTitle: "Projeler",
-    worksSub: "Öne çıkan çalışmalardan bazıları",
     live: "Canlı",
+    filterAll: "Hepsi",
+    filterLabel: "Projeleri filtrele",
+    filterClear: "Filtreyi kaldır",
+    kinds: { ai: "Yapay Zeka", web: "Web", game: "Oyun", system: "Sistem" },
     skillsTitle: ["Beceriler", "& Araçlar"],
-    skillsIntro: ["Öğrenmeyi hiç bırakmadım,", "bırakmayacağım da."],
-    contactHeading: ["Birlikte bir şey", " yaratmak", "ister misiniz?"],
-    contactSub: "Fırsatlar, projeler veya sadece merhaba demek için.",
+    skillsIntro: "Sayı yazan bir teknolojiye tıklayınca onu kullandığım projeler açılır.",
+    skillShow: (name, n) => `${name}: ${n} projeyi göster`,
+    contactHeading: ["Yazın,", "konuşalım."],
+    contactSub: "Staj, iş, proje fikri ya da sadece merhaba için.",
     copy: "Kopyala",
     copied: "Kopyalandı!",
     footerRights: "Tüm haklar saklıdır.",
@@ -257,24 +269,19 @@ const en = {
     roleLead: "Software Developer &",
     roleHighlight: "AI Enthusiast",
     tagline:
-      "I love solving real problems with technology, and I never stop researching and learning.",
+      "I trained a model that recognizes sea turtles from photos and wrote games you play with hand gestures. AI and computer vision are the parts I enjoy most.",
     bio: [
-      "I'm pursuing my bachelor's degree in Computer Engineering at Pamukkale University, shaping my career around artificial intelligence, data science and machine learning.",
-      "I'm a software developer who is always open to learning, enjoys research and aims to solve real-world problems with technology.",
+      "I study Computer Engineering at Pamukkale University and graduate in 2027.",
+      "Most of my time outside classes goes into projects. I built a map module during my internship at Başarsoft, wrote the PAUSEC community website, and got into the Siber Vatan program through a CTF competition. I want to build my career around AI and machine learning.",
     ],
-    stats: [
-      { value: "8+", label: "Projects Built" },
-      { value: "3", label: "Experiences" },
-      { value: "B2", label: "English" },
+    facts: [
+      { label: "School", value: "Pamukkale University" },
+      { label: "Major", value: "Computer Engineering" },
+      { label: "Period", value: "Sep 2023 — Jun 2027" },
+      { label: "City", value: "Denizli, Türkiye" },
+      { label: "English", value: "B2" },
     ],
     cv: cv.en,
-  },
-  education: {
-    badge: "Education",
-    degree: "B.Sc. Computer Engineering",
-    university: "Pamukkale University",
-    city: "Denizli, Türkiye",
-    period: "Sep 2023 — Jun 2027",
   },
   skillCategories: [
     "AI & Machine Learning",
@@ -290,7 +297,7 @@ const en = {
       type: "Training Program",
       period: "Feb 2026 — Jun 2026",
       description:
-        "Completed cybersecurity and penetration testing training in the Siber Vatan program, which I qualified for through a CTF competition.",
+        "Completed the cybersecurity and penetration testing training of the Siber Vatan program, which I qualified for through a CTF competition.",
       tags: ["Cybersecurity", "Penetration Testing"],
     },
     "exp-2": {
@@ -299,8 +306,8 @@ const en = {
       type: "Volunteer",
       period: "Nov 2025 — Jun 2026",
       description:
-        "Built the community website's architecture (.NET and JS) from scratch and organized university-wide cybersecurity training events.",
-      tags: [".NET", "JavaScript", "Event Organization"],
+        "Built the community website (.NET and JS) from scratch. On the board I worked on the social media side, looking after the community's posts.",
+      tags: [".NET", "JavaScript", "Social Media"],
     },
     "exp-3": {
       title: "Software Development Intern",
@@ -308,7 +315,7 @@ const en = {
       type: "Remote Internship",
       period: "Jun 2025 — Aug 2025",
       description:
-        "Developed a full-stack map module with ASP.NET Core, React and PostGIS covering geospatial data processing, geometry intersection checks and search optimizations. Integrated snapping and debounce mechanisms with NetTopologySuite.",
+        "Built a full-stack map module with ASP.NET Core, React and PostGIS: geospatial data processing, geometry intersection checks and search optimizations. Added snapping and debounce mechanisms with NetTopologySuite.",
     },
   },
   projects: {
@@ -382,12 +389,16 @@ const en = {
     aboutTitle: "About",
     experienceTitle: "Experience",
     worksTitle: "Projects",
-    worksSub: "A few highlights from my work",
     live: "Live",
+    filterAll: "All",
+    filterLabel: "Filter projects",
+    filterClear: "Clear filter",
+    kinds: { ai: "AI", web: "Web", game: "Games", system: "Systems" },
     skillsTitle: ["Skills", "& Tools"],
-    skillsIntro: ["Never stopped learning,", "never will."],
-    contactHeading: ["Want to build", " something", "together?"],
-    contactSub: "For opportunities, projects, or just to say hi.",
+    skillsIntro: "Click a technology with a number to see the projects I used it in.",
+    skillShow: (name, n) => `${name}: show ${n} project${n > 1 ? "s" : ""}`,
+    contactHeading: ["Write to me,", "let's talk."],
+    contactSub: "Internships, jobs, project ideas, or just to say hi.",
     copy: "Copy",
     copied: "Copied!",
     footerRights: "All rights reserved.",
