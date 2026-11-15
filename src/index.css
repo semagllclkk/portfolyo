@@ -449,3 +449,25 @@ img { display: block; max-width: 100%; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* ── Çiftlik evi: ilk ziyaret ipucu ve içeri girerken kararma ── */
+.house-tip {
+  position: fixed; top: 4.6rem; left: 50%; z-index: 6;
+  transform: translateX(-50%);
+  width: max-content; max-width: min(26rem, calc(100vw - 2rem));
+  padding: .65rem 1rem; text-align: center; font-size: 1.15rem; line-height: 1.25;
+  pointer-events: none;
+  animation: tipIn .25s steps(4) both;
+}
+.house-tip b { font-weight: 400; color: var(--pink); }
+@keyframes tipIn { from { opacity: 0; transform: translate(-50%, -6px); } }
+.entering {
+  position: fixed; inset: 0; z-index: 20;
+  display: grid; place-items: center;
+  background: #1a0f14; color: #fff6dc; font-size: 1.4rem;
+  animation: enterFade .55s steps(8) both;
+}
+@keyframes enterFade { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .house-tip, .entering { animation: none; }
+}

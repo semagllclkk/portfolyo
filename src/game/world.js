@@ -1,6 +1,6 @@
 // ── ÇİFTLİK HARİTASI ─────────────────────────────────────────────────────────
 // 40×28 karoluk harita. Her yapı portfolyonun bir bölümünü açar:
-//   Çiftlik evi → Hakkımda · Görev panosu → Deneyim · Tarla → Projeler
+//   Çiftlik evi → klasik site (kapıdan girince) · Görev panosu → Deneyim · Tarla → Projeler
 //   Sandık → Beceriler · Posta kutusu → İletişim · Satış kutusu → CV
 import { paintGround } from './ground'
 import {
@@ -84,7 +84,7 @@ function buildWorld() {
 
   // Etkileşim noktaları: rect (karo) + oyuncunun duracağı yer (spot)
   const interactables = [
-    { id: 'about', kind: 'about', rect: [24, 8, 1, 1], click: [21, 3, 7, 6], spot: [24, 9], main: true },
+    { id: 'house', kind: 'classic', rect: [24, 8, 1, 1], click: [24, 7, 1, 2], spot: [24, 9], main: true },
     { id: 'experience', kind: 'experience', rect: [11, 7, 3, 2], spot: [12, 9], main: true },
     { id: 'skills', kind: 'skills', rect: [17, 9, 1, 1], spot: [17, 10], main: true },
     { id: 'contact', kind: 'contact', rect: [20, 9, 1, 1], click: [20, 8, 1, 2], spot: [20, 10], main: true },

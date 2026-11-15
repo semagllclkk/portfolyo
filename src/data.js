@@ -251,7 +251,7 @@ const tr = {
   game: {
     title: "Sema'nın Çiftliği",
     places: {
-      about: "Çiftlik Evi · Hakkımda",
+      classic: "Çiftlik Evi · Klasik siteye gir",
       experience: "Görev Panosu · Deneyim",
       projects: "Proje Tarlası",
       skills: "Sandık · Beceriler",
@@ -272,6 +272,8 @@ const tr = {
     close: "Kapat",
     help: "Nasıl oynanır?",
     classic: "Klasik site",
+    houseTip: ["Burası çiftlik evi.", "İçeri girersen portfolyonun klasik sitesine geçersin."],
+    entering: "Klasik siteye geçiliyor…",
     welcome: {
       title: "Sema'nın Çiftliğine Hoş Geldin!",
       text: "Burası bir portfolyo… ama biraz farklı. Çiftlikte dolaş, nesnelerle etkileşime geç: her köşede başka bir bölüm seni bekliyor.",
@@ -594,7 +596,7 @@ const en = {
   game: {
     title: "Sema's Farm",
     places: {
-      about: "Farmhouse · About",
+      classic: "Farmhouse · Enter the classic site",
       experience: "Quest Board · Experience",
       projects: "Project Field",
       skills: "Chest · Skills",
@@ -615,6 +617,8 @@ const en = {
     close: "Close",
     help: "How to play",
     classic: "Classic site",
+    houseTip: ["This is the farmhouse.", "Step inside to switch to the classic portfolio site."],
+    entering: "Heading to the classic site…",
     welcome: {
       title: "Welcome to Sema's Farm!",
       text: "This is a portfolio… just a little different. Walk around the farm and interact with things: every corner holds a different section.",

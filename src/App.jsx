@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import Game from './game/Game'
 import Panels from './game/Panels'
-import { Hud, TopBar, Hotbar } from './game/Hud'
+import { Hud, TopBar, Hotbar, CLASSIC_URL } from './game/Hud'
 import { SEASONS } from './game/art'
 import { useLang } from './i18n'
 
@@ -10,6 +10,11 @@ const realSeason = () => [3, 3, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3][new Date().getMont
 
 function savedLook() {
   try { return localStorage.getItem('farm-look') === 'player' ? 'player' : 'playerGirl' } catch { return 'playerGirl' }
+}
+
+// Ev ipucu yalnızca siteyi ilk kez gezen kişiye, eve ilk yaklaştığında gösterilir
+function houseTipSeen() {
+  try { return localStorage.getItem('farm-house-tip') === '1' } catch { return false }
 }
 
 function introSeen() {
@@ -21,6 +26,8 @@ export default function App() {
   const [season, setSeason] = useState(realSeason)
   const [look, setLook] = useState(savedLook)
   const [panel, setPanel] = useState(() => (introSeen() ? null : { kind: 'sign' }))
+  const [houseTip, setHouseTip] = useState(false)
+  const [entering, setEntering] = useState(false)
 
   useEffect(() => {
     document.title = `${c.game.title} · ${c.personal.name}`
@@ -34,7 +41,25 @@ export default function App() {
     try { localStorage.setItem('farm-look', next) } catch { /* gizli sekme */ }
     setLook(next)
   }, [])
-  const open = useCallback((target) => setPanel(target), [])
+  // Evin kapısından girmek klasik siteye götürür: kısa bir kararma, sonra yönlendirme
+  const open = useCallback((target) => {
+    if (target.kind !== 'classic') return setPanel(target)
+    setHouseTip(false)
+    setEntering(true)
+    setTimeout(() => { window.location.href = CLASSIC_URL }, 650)
+  }, [])
+  const onNear = useCallback((target) => {
+    if (target?.kind !== 'classic') return setHouseTip(false)
+    if (houseTipSeen()) return
+    try { localStorage.setItem('farm-house-tip', '1') } catch { /* gizli sekme */ }
+    setHouseTip(true)
+  }, [])
+  // Tarayıcının geri tuşuyla dönülürse kararmış ekranda kalma
+  useEffect(() => {
+    const back = (e) => { if (e.persisted) setEntering(false) }
+    window.addEventListener('pageshow', back)
+    return () => window.removeEventListener('pageshow', back)
+  }, [])
   const pick = useCallback((kind) => setPanel(p => (p?.kind === kind ? null : { kind })), [])
   const labelFor = (t) => (t.kind === 'project' ? c.projects[t.index].title : c.game.places[t.kind])
 
@@ -44,8 +69,9 @@ export default function App() {
       <Game
         season={SEASONS[season]}
         look={look}
-        paused={!!panel}
+        paused={!!panel || entering}
         onInteract={open}
+        onNear={onNear}
         labelFor={labelFor}
         keyHint={c.game.keyHint}
         tapHint={c.game.tapHint}
@@ -53,6 +79,13 @@ export default function App() {
       <Hud c={c} season={season} onSeason={() => setSeason(s => (s + 1) % 4)} />
       <TopBar c={c} lang={lang} onLang={toggleLang} onHelp={() => setPanel({ kind: 'sign' })} />
       <Hotbar c={c} active={panel?.kind === 'project' ? 'projects' : panel?.kind} onPick={pick} />
+      {houseTip && !panel && (
+        <div className="house-tip ui-box" role="status">
+          <p><b>{c.game.houseTip[0]}</b></p>
+          <p>{c.game.houseTip[1]}</p>
+        </div>
+      )}
+      {entering && <div className="entering" role="status"><p>{c.game.entering}</p></div>}
       {panel && <Panels key={panel.kind} c={c} panel={panel} onClose={close} onOpen={open} look={look} onLook={chooseLook} />}
     </div>
   )

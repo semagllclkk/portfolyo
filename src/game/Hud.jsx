@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import PixelIcon from '../components/PixelIcon'
 
+export const CLASSIC_URL = 'https://semagulcelik.is-a.dev'
+
 // Stardew HUD'u: gerçek gün ve saat, 30 sn'de bir güncellenir
 function useNow() {
   const [now, setNow] = useState(() => new Date())
@@ -36,7 +38,7 @@ export function TopBar({ c, lang, onLang, onHelp }) {
         {lang === 'tr' ? 'EN' : 'TR'}
       </button>
       <button type="button" className="ui-btn" onClick={onHelp} aria-label={g.help} title={g.help}>?</button>
-      <a className="ui-btn ui-btn-wide" href="https://semagulcelik.is-a.dev" title={g.classic}>{g.classic}</a>
+      <a className="ui-btn ui-btn-wide" href={CLASSIC_URL} title={g.classic}>{g.classic}</a>
     </div>
   )
 }

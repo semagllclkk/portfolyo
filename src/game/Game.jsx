@@ -65,12 +65,12 @@ const COOP = { x0: 32, x1: 36, y0: 13, y1: 18 }
 const CAT_AREA = { x0: 23, x1: 28, y0: 10, y1: 12 }
 const CHIMNEY = { x: 21 * TILE + 85, y: 3 * TILE }
 
-export default function Game({ season, look, paused, onInteract, labelFor, keyHint, tapHint }) {
+export default function Game({ season, look, paused, onInteract, onNear, labelFor, keyHint, tapHint }) {
   const canvasRef = useRef(null)
   const labelRef = useRef(null)
   const [near, setNear] = useState(null)
   const props = useRef({})
-  props.current = { season, look, paused, onInteract }
+  props.current = { season, look, paused, onInteract, onNear }
   const api = useRef({})
 
   useEffect(() => {
@@ -281,6 +281,7 @@ export default function Game({ season, look, paused, onInteract, labelFor, keyHi
         if (n?.id !== nearTarget?.id) {
           nearTarget = n
           setNear(n)
+          props.current.onNear?.(n)
         }
       }
 
@@ -492,7 +493,7 @@ export default function Game({ season, look, paused, onInteract, labelFor, keyHi
       for (const it of world.interactables) {
         if (!it.main || visited.has(it.id) || nearTarget?.id === it.id) continue
         const [rx, ry, rw] = it.rect
-        const top = it.id === 'contact' ? ry * TILE - 12 : it.id === 'about' ? ry * TILE - 40 : ry * TILE - 6
+        const top = it.id === 'contact' ? ry * TILE - 12 : it.id === 'house' ? ry * TILE - 40 : ry * TILE - 6
         drawSprite(ctx, bubble, (rx + rw / 2) * TILE - 4 - cam.x, top - 11 + bob - cam.y)
       }
       let labelPos = null
@@ -502,7 +503,7 @@ export default function Game({ season, look, paused, onInteract, labelFor, keyHi
         else {
           const [rx, ry, rw] = nearTarget.rect
           ax = (rx + rw / 2) * TILE
-          ay = nearTarget.id === 'contact' ? ry * TILE - 12 : nearTarget.id === 'about' ? ry * TILE - 40 : nearTarget.kind === 'project' ? ry * TILE - 2 : ry * TILE - 4
+          ay = nearTarget.id === 'contact' ? ry * TILE - 12 : nearTarget.id === 'house' ? ry * TILE - 40 : nearTarget.kind === 'project' ? ry * TILE - 2 : ry * TILE - 4
         }
         drawSprite(ctx, arrow, ax - 4 - cam.x, ay - 10 + bob - cam.y)
         labelPos = [ax - cam.x, ay - 12 - cam.y]

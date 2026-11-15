@@ -348,7 +348,7 @@ export default function Panels({ c, panel, onClose, onOpen, look, onLook }) {
   const common = { onClose, closeLabel: g.close }
   switch (panel.kind) {
     case 'about':
-      return <Window {...common} title={g.places.about} wide><About c={c} /></Window>
+      return <Window {...common} title={g.hotbar.about} wide><About c={c} /></Window>
     case 'experience':
       return <Window {...common} title={g.quests.title} wide><Experience c={c} /></Window>
     case 'projects':
