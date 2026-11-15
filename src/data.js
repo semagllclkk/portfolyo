@@ -344,7 +344,7 @@ const tr = {
     },
     npc: {
       name: "Sema",
-      greeting: "Selam çiftçi! Ben Sema. Bilgisayar mühendisliği okuyorum, yapay zekaya bayılıyorum. Bir de Stardew Valley oynamayı çok seviyorum, belli oluyor mu? :) Ne hakkında konuşmak istersin?",
+      greeting: "Selam çiftçi! Ben Sema. Bilgisayar mühendisliği okuyorum, yapay zekaya bayılıyorum. Bir de Stardew Valley oynamayı çok seviyorum, belli oluyor mu? 😄 Ne hakkında konuşmak istersin?",
       choices: {
         about: "Biraz kendinden bahset",
         experience: "Neler yaptın?",
@@ -691,7 +691,7 @@ const en = {
     },
     npc: {
       name: "Sema",
-      greeting: "Hi farmer! I'm Sema. I study computer engineering and I love AI. I also really love playing Stardew Valley. Can you tell? :) What would you like to talk about?",
+      greeting: "Hi farmer! I'm Sema. I study computer engineering and I love AI. I also really love playing Stardew Valley. Can you tell? 😄 What would you like to talk about?",
       choices: {
         about: "Tell me about yourself",
         experience: "What have you been up to?",
