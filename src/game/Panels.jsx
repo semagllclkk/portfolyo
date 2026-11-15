@@ -3,6 +3,7 @@ import semaPhoto from '../assets/sema.webp'
 import PixelIcon, { PixelText } from '../components/PixelIcon'
 import { cropSprite } from './art'
 import { framesFor } from './frames'
+import { coverUrl } from './covers'
 
 const cropUrls = {}
 const cropUrl = (i) => (cropUrls[i] ??= cropSprite(i).img.toDataURL())
@@ -137,9 +138,13 @@ function Projects({ c, index, onSelect }) {
   return (
     <div className="project">
       <p className="harvest"><CropIcon i={index} size={32} /> {f.harvest}</p>
-      {pr.photo && (
+      {pr.photo ? (
         <div className="project-photo" style={{ background: pr.photoBg ?? '#2b1a10' }}>
           <img src={pr.photo} alt={pr.title} style={{ objectFit: pr.photoFit ?? 'cover' }} />
+        </div>
+      ) : pr.cover && (
+        <div className="project-photo project-cover">
+          <img src={coverUrl(pr.cover)} alt={pr.title} />
         </div>
       )}
       <h3 className="project-title">{pr.title}</h3>

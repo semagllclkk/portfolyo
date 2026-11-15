@@ -31,6 +31,7 @@ const projectBase = [
     github: "https://github.com/semagllclkk/data-middleware",
     live: null,
     featured: false,
+    cover: "logs", // elle çizilmiş kapak (game/covers.js)
   },
   {
     id: "proj-visionstrike",
@@ -38,6 +39,7 @@ const projectBase = [
     github: "https://github.com/semagllclkk/VisionStrike",
     live: null,
     featured: false,
+    cover: "hand",
   },
   {
     id: "proj-fingerjump",

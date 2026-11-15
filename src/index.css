@@ -479,3 +479,7 @@ img { display: block; max-width: 100%; }
   content: ""; position: absolute; left: 22%; right: 22%; top: 50%; height: 2px;
   background: currentColor; transform: rotate(-35deg);
 }
+
+/* Elle çizilmiş proje kapakları: 3:1 sahne, pikseller keskin kalır */
+.project-cover { height: auto; aspect-ratio: 3 / 1; background: #1b1f3a; }
+.project-cover img { object-fit: cover; image-rendering: pixelated; }
