@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { TILE, HOUSE_WINDOWS, drawSprite, bubbleSprite, arrowSprite } from './art'
 import { framesFor } from './frames'
+import { chickenFrames } from './critters'
 import { world, W, H, G, isWalkable, renderGround, buildDrawables } from './world'
 
 const WW = W * TILE, WH = H * TILE
@@ -58,6 +59,9 @@ function nightAlpha(h) {
 }
 
 const NPC_AREA = { x0: 25, x1: 33, y0: 11, y1: 12 }
+// Tavukların gezindiği çayır (karo) ve bacanın tepesi (oyun pikseli)
+const COOP = { x0: 32, x1: 36, y0: 13, y1: 18 }
+const CHIMNEY = { x: 21 * TILE + 85, y: 3 * TILE }
 
 export default function Game({ season, look, paused, onInteract, labelFor, keyHint, tapHint }) {
   const canvasRef = useRef(null)
@@ -74,8 +78,14 @@ export default function Game({ season, look, paused, onInteract, labelFor, keyHi
     const bubble = bubbleSprite(), arrow = arrowSprite()
 
     const spawn = center(world.spawn)
-    const player = { ...spawn, dir: 0, anim: 0, moving: false, path: [], pending: null, stuck: 0 }
-    const npc = { ...center([29, 12]), dir: 0, anim: 0, moving: false, path: [], wait: 1.5 }
+    const player = { ...spawn, dir: 0, anim: 0, moving: false, path: [], pending: null, stuck: 0, blink: 0 }
+    const npc = { ...center([29, 12]), dir: 0, anim: 0, moving: false, path: [], wait: 1.5, blink: 1.9 }
+    const hens = [[33, 14, 0], [35, 16, 1], [33, 17, 0]].map(([tx, ty, coat], i) => ({
+      x: tx * TILE + 8, y: ty * TILE + 12, tx: 0, ty: 0, coat, right: i % 2 === 1, state: 'idle', wait: 1 + i * 0.8, anim: 0,
+    }))
+    const hensArt = chickenFrames()
+    const smoke = []
+    let smokeIn = 0
     const keys = new Set()
     const visited = new Set()
     const cam = { x: 0, y: 0, w: 0, h: 0, scale: 3 }
@@ -181,7 +191,7 @@ export default function Game({ season, look, paused, onInteract, labelFor, keyHi
     // Tıklanan noktaya yürü; bir nesneye tıklandıysa varınca aç
     function walkTo(wx, wy) {
       const from = tileOf(player.x, player.y)
-      if (Math.abs(wx - npc.x) < 9 && wy > npc.y - 26 && wy < npc.y + 3) {
+      if (Math.abs(wx - npc.x) < 9 && wy > npc.y - 30 && wy < npc.y + 3) {
         if (nearTarget?.kind === 'npc') return interact(nearTarget)
         const nt = tileOf(npc.x, npc.y)
         const options = [[0, 1], [0, -1], [1, 0], [-1, 0]]
@@ -270,6 +280,51 @@ export default function Game({ season, look, paused, onInteract, labelFor, keyHi
         }
       }
 
+      // Tavuklar: gezinir, yem gagalar; oyuncu yaklaşınca kaçışır
+      for (const h of hens) {
+        h.anim += dt
+        const px = h.x - player.x, py = h.y - player.y
+        const scared = !reduce && Math.hypot(px, py) < 18
+        if (scared) {
+          const len = Math.hypot(px, py) || 1
+          h.tx = h.x + (px / len) * 26
+          h.ty = h.y + (py / len) * 26
+          h.state = 'run'
+        } else if (h.state === 'idle' || h.state === 'peck') {
+          if ((h.wait -= dt) <= 0) {
+            if (h.state === 'idle' && Math.random() < 0.45) { h.state = 'peck'; h.wait = 0.9 + Math.random() }
+            else {
+              h.tx = (COOP.x0 + Math.random() * (COOP.x1 - COOP.x0 + 1)) * TILE
+              h.ty = (COOP.y0 + Math.random() * (COOP.y1 - COOP.y0 + 1)) * TILE
+              h.state = 'walk'
+            }
+          }
+        }
+        if (h.state === 'walk' || h.state === 'run') {
+          const dx = h.tx - h.x, dy = h.ty - h.y
+          const len = Math.hypot(dx, dy)
+          const v = (h.state === 'run' ? 52 : 15) * dt
+          const nx = h.x + (dx / (len || 1)) * v, ny = h.y + (dy / (len || 1)) * v
+          if (len < 1.5 || solidAt(nx, ny) || solidAt(nx - 4, ny) || solidAt(nx + 4, ny)) {
+            h.state = 'idle'
+            h.wait = 0.6 + Math.random() * 2.5
+          } else {
+            h.x = nx; h.y = ny
+            if (Math.abs(dx) > 0.5) h.right = dx > 0
+          }
+        }
+      }
+
+      // Baca dumanı
+      if (!reduce) {
+        if ((smokeIn -= dt) <= 0) {
+          smokeIn = 0.55
+          smoke.push({ x: CHIMNEY.x, y: CHIMNEY.y, t: 0, ph: Math.random() * 6 })
+        }
+        for (const s of smoke) { s.t += dt; s.y -= 7 * dt; s.x += (3 + Math.sin(s.t * 2 + s.ph) * 4) * dt }
+        while (smoke.length && smoke[0].t > 3.2) smoke.shift()
+      }
+
       // Kamera oyuncuyu izler, harita dışına taşmaz
       const clampCam = (v, size, world) => (size >= world ? (world - size) / 2 : Math.min(Math.max(v, 0), world - size))
       cam.x = Math.round(clampCam(player.x - cam.w / 2, cam.w, WW))
@@ -306,8 +361,10 @@ export default function Game({ season, look, paused, onInteract, labelFor, keyHi
     }
 
     // ── Çizim ────────────────────────────────────────────────────────────
-    function personSprite(look, ent) {
-      const f = ent.moving ? WALK[Math.floor(ent.anim * 8) % 4] : 0
+    function personSprite(look, ent, t) {
+      // Dururken birkaç saniyede bir göz kırpar
+      const blink = !reduce && (t + ent.blink) % 3.7 < 0.14
+      const f = ent.moving ? WALK[Math.floor(ent.anim * 8) % 4] : blink ? 3 : 0
       return framesFor(look)[ent.dir][f]
     }
 
@@ -335,10 +392,27 @@ export default function Game({ season, look, paused, onInteract, labelFor, keyHi
 
       // Y sıralı sprite'lar
       const list = art.drawables.filter(d => d.x + d.s.w > cam.x && d.x < cam.x + cam.w && d.y + d.s.h > cam.y && d.y < cam.y + cam.h)
-      list.push({ s: personSprite('sema', npc), x: npc.x - 8, y: npc.y - 22, base: npc.y })
-      list.push({ s: personSprite(props.current.look, player), x: player.x - 8, y: player.y - 22, base: player.y + 0.5 })
+      list.push({ s: personSprite('sema', npc, t), x: npc.x - 8, y: npc.y - 26, base: npc.y })
+      list.push({ s: personSprite(props.current.look, player, t), x: player.x - 8, y: player.y - 26, base: player.y + 0.5 })
+      for (const h of hens) {
+        const f = h.state === 'peck' ? (Math.floor(h.anim * 3) % 2 ? 2 : 0)
+          : h.state === 'idle' ? 0 : Math.floor(h.anim * (h.state === 'run' ? 14 : 7)) % 2
+        list.push({ s: hensArt[h.coat][h.right ? 1 : 0][f], x: h.x - 6, y: h.y - 10, base: h.y })
+      }
       list.sort((a, b) => a.base - b.base)
       for (const d of list) drawSprite(ctx, d.s, d.x - cam.x, d.y - cam.y)
+
+      // Duman: yükseldikçe büyüyüp solan piksel bulutları
+      for (const s of smoke) {
+        const k = s.t / 3.2
+        const r = 2 + Math.floor(k * 4)
+        ctx.globalAlpha = 0.75 * (1 - k)
+        ctx.fillStyle = art.season === 'winter' ? '#c9cfdf' : '#f4efe6'
+        const cx = Math.round(s.x - cam.x), cy = Math.round(s.y - cam.y)
+        ctx.fillRect(cx - r, cy - r + 1, r * 2, r * 2 - 2)
+        ctx.fillRect(cx - r + 1, cy - r, r * 2 - 2, r * 2)
+      }
+      ctx.globalAlpha = 1
 
       drawParticles(dt, t)
 
@@ -374,7 +448,7 @@ export default function Game({ season, look, paused, onInteract, labelFor, keyHi
       let labelPos = null
       if (nearTarget && !props.current.paused) {
         let ax, ay
-        if (nearTarget.kind === 'npc') { ax = npc.x; ay = npc.y - 26 }
+        if (nearTarget.kind === 'npc') { ax = npc.x; ay = npc.y - 30 }
         else {
           const [rx, ry, rw] = nearTarget.rect
           ax = (rx + rw / 2) * TILE

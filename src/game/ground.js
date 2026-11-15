@@ -113,8 +113,8 @@ export function paintGround(world, G, W, H, season) {
         // Kışın taban bir ton açık (kar); lekeler yumuşak
         const b0 = winter ? 3 : 2
         let k = b0
-        if (n > 0.72 && n2 > 0.35) k = b0 + 1
-        else if (n < 0.2 && n2 < 0.4) k = b0 - 1
+        // Düz zemin; yalnızca seyrek, büyük ve hafif koyu çim öbekleri
+        if (n < 0.16) k = b0 - 1
         // Kenarlar: patika/kumun üstünde koyu dudak, altında aydınlık kenar
         const below = M(x, y + 1), above = M(x, y - 1)
         if (below === G.PATH || below === G.SAND) k = 1
@@ -125,10 +125,8 @@ export function paintGround(world, G, W, H, season) {
       } else if (m === G.PATH || m === G.SAND) {
         const R = m === G.PATH ? P5 : S5
         let k = 2
-        if (n > 0.66) k = 3
-        else if (n < 0.26) k = 1
-        if (f > 0.86) k = Math.min(4, k + 1)
-        else if (f < 0.1) k = Math.max(1, k - 1)
+        if (f > 0.9) k = 3
+        else if (f < 0.07) k = 1
         // Çim kenarı altında gölge, yanlarda koyu kenar
         if (M(x, y - 1) === G.GRASS) k = 0
         else if (M(x, y - 2) === G.GRASS) k = 1
@@ -157,9 +155,7 @@ export function paintGround(world, G, W, H, season) {
         } else {
           // Sürülmemiş toprak: benekli, çakıllı
           k = 2
-          if (n > 0.68) k = 3
-          else if (n < 0.28) k = 1
-          if (f > 0.88) k = 3
+          if (f > 0.9) k = 3
           else if (f < 0.08) k = 1
         }
         set(x, y, (m === G.WET ? WET : SOIL)[k])
@@ -184,7 +180,7 @@ export function paintGround(world, G, W, H, season) {
       const X = tx * TILE, Y = ty * TILE
       const t = world.ground[ty][tx]
       if (t === G.GRASS || t === G.PATH) {
-        const tufts = winter ? 1 + Math.floor(r() * 2) : 3 + Math.floor(r() * 4)
+        const tufts = winter ? 1 + Math.floor(r() * 2) : 1 + Math.floor(r() * 3)
         for (let i = 0; i < tufts; i++) {
           const shape = winter ? SNOW_BUMPS[Math.floor(r() * SNOW_BUMPS.length)] : TUFTS[Math.floor(r() * TUFTS.length)]
           const x = X + Math.floor(r() * 14) - 1, y = Y + Math.floor(r() * 14) - 1

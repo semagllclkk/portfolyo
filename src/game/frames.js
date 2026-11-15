@@ -1,4 +1,4 @@
-import { LOOKS, personFrames } from './art'
+import { LOOKS, personFrames } from './people'
 
 // Karakter kareleri bir kez üretilir; bilinmeyen görünüm varsayılana düşer
 const frameCache = {}

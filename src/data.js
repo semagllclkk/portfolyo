@@ -154,8 +154,8 @@ const tr = {
       type: "Gönüllü",
       period: "Kasım 2025 — Haziran 2026",
       description:
-        "Topluluğun web sitesinin mimarisi (.NET ve JS) sıfırdan geliştirildi ve üniversite çapında siber güvenlik eğitim etkinlikleri organize edildi.",
-      tags: [".NET", "JavaScript", "Etkinlik Organizasyonu"],
+        "Topluluğun web sitesi (.NET ve JS) sıfırdan geliştirildi. Yönetim kurulunda sosyal medya tarafında görev alındı.",
+      tags: [".NET", "JavaScript", "Sosyal Medya"],
     },
     "exp-3": {
       title: "Yazılım Geliştirme Stajyeri",
@@ -373,7 +373,7 @@ const tr = {
       items: [
         { icon: "laptop", label: ".NET" },
         { icon: "scroll", label: "JavaScript" },
-        { icon: "mic", label: "Etkinlik" },
+        { icon: "heart", label: "Sosyal Medya" },
         { icon: "teapot", label: "Bolca çay" },
       ],
       reward: "Ödül: Ekip ruhu ×∞",
@@ -497,8 +497,8 @@ const en = {
       type: "Volunteer",
       period: "Nov 2025 — Jun 2026",
       description:
-        "Built the community website's architecture (.NET and JS) from scratch and organized university-wide cybersecurity training events.",
-      tags: [".NET", "JavaScript", "Event Organization"],
+        "Built the community website (.NET and JS) from scratch and worked on the social media side as a board member.",
+      tags: [".NET", "JavaScript", "Social Media"],
     },
     "exp-3": {
       title: "Software Development Intern",
@@ -716,7 +716,7 @@ const en = {
       items: [
         { icon: "laptop", label: ".NET" },
         { icon: "scroll", label: "JavaScript" },
-        { icon: "mic", label: "Events" },
+        { icon: "heart", label: "Social Media" },
         { icon: "teapot", label: "Lots of tea" },
       ],
       reward: "Reward: Team spirit ×∞",

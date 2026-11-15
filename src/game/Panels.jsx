@@ -258,7 +258,7 @@ function CharacterPicker({ c, look, onLook }) {
       {[['playerGirl', w.girl], ['player', w.boy]].map(([key, label]) => (
         <label key={key} className={`pick${look === key ? ' is-active' : ''}`}>
           <input type="radio" name="look" id={`look-${key}`} value={key} checked={look === key} onChange={() => onLook(key)} />
-          <img src={previewUrl(key)} width={54} height={81} alt="" />
+          <img src={previewUrl(key)} width={54} height={90} alt="" />
           <span>{label}</span>
         </label>
       ))}
