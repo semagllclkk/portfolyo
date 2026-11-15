@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { TILE, HOUSE_WINDOWS, drawSprite, bubbleSprite, arrowSprite } from './art'
 import { framesFor } from './frames'
-import { chickenFrames } from './critters'
+import { chickenFrames, catFrames } from './critters'
 import { world, W, H, G, isWalkable, renderGround, buildDrawables } from './world'
 
 const WW = W * TILE, WH = H * TILE
@@ -61,6 +61,8 @@ function nightAlpha(h) {
 const NPC_AREA = { x0: 25, x1: 33, y0: 11, y1: 12 }
 // Tavukların gezindiği çayır (karo) ve bacanın tepesi (oyun pikseli)
 const COOP = { x0: 32, x1: 36, y0: 13, y1: 18 }
+// Sarman kedinin dolaştığı ev önü (karo)
+const CAT_AREA = { x0: 23, x1: 28, y0: 10, y1: 12 }
 const CHIMNEY = { x: 21 * TILE + 85, y: 3 * TILE }
 
 export default function Game({ season, look, paused, onInteract, labelFor, keyHint, tapHint }) {
@@ -84,6 +86,8 @@ export default function Game({ season, look, paused, onInteract, labelFor, keyHi
       x: tx * TILE + 8, y: ty * TILE + 12, tx: 0, ty: 0, coat, right: i % 2 === 1, state: 'idle', wait: 1 + i * 0.8, anim: 0,
     }))
     const hensArt = chickenFrames()
+    const cat = { x: 26 * TILE + 8, y: 10 * TILE + 12, tx: 0, ty: 0, right: false, state: 'sit', wait: 4, anim: 0, love: 0 }
+    const catArt = catFrames()
     const smoke = []
     let smokeIn = 0
     const keys = new Set()
@@ -315,6 +319,31 @@ export default function Game({ season, look, paused, onInteract, labelFor, keyHi
         }
       }
 
+      // Kedi: oturur, gezinir, uyur; oyuncu yanına gelince kalp çıkar
+      cat.anim += dt
+      const nearCat = Math.hypot(cat.x - player.x, cat.y - player.y) < 20
+      cat.love = nearCat && cat.state !== 'walk' ? cat.love + dt : 0
+      if (cat.state === 'walk') {
+        const dx = cat.tx - cat.x, dy = cat.ty - cat.y
+        const len = Math.hypot(dx, dy)
+        const nx = cat.x + (dx / (len || 1)) * 22 * dt, ny = cat.y + (dy / (len || 1)) * 22 * dt
+        const hitsPlayer = Math.abs(nx - player.x) < 9 && Math.abs(ny - player.y) < 7
+        if (len < 1.5 || hitsPlayer || solidAt(nx, ny) || solidAt(nx - 6, ny) || solidAt(nx + 6, ny)) {
+          cat.state = 'sit'
+          cat.wait = 3 + Math.random() * 5
+        } else {
+          cat.x = nx; cat.y = ny
+          if (Math.abs(dx) > 0.5) cat.right = dx > 0
+        }
+      } else if (!nearCat && !reduce && (cat.wait -= dt) <= 0) {
+        if (cat.state === 'sit' && Math.random() < 0.3) { cat.state = 'sleep'; cat.wait = 8 + Math.random() * 8 }
+        else {
+          cat.tx = (CAT_AREA.x0 + Math.random() * (CAT_AREA.x1 - CAT_AREA.x0 + 1)) * TILE
+          cat.ty = (CAT_AREA.y0 + Math.random() * (CAT_AREA.y1 - CAT_AREA.y0 + 1)) * TILE
+          cat.state = 'walk'
+        }
+      }
+
       // Baca dumanı
       if (!reduce) {
         if ((smokeIn -= dt) <= 0) {
@@ -399,8 +428,29 @@ export default function Game({ season, look, paused, onInteract, labelFor, keyHi
           : h.state === 'idle' ? 0 : Math.floor(h.anim * (h.state === 'run' ? 14 : 7)) % 2
         list.push({ s: hensArt[h.coat][h.right ? 1 : 0][f], x: h.x - 6, y: h.y - 10, base: h.y })
       }
+      const cf = cat.state === 'walk' ? 1 + (Math.floor(cat.anim * 7) % 2)
+        : cat.state === 'sleep' ? 3 : !reduce && (t + 0.8) % 4.3 < 0.14 ? 4 : 0
+      list.push({ s: catArt[cat.right ? 1 : 0][cf], x: cat.x - 7, y: cat.y - 9, base: cat.y })
       list.sort((a, b) => a.base - b.base)
       for (const d of list) drawSprite(ctx, d.s, d.x - cam.x, d.y - cam.y)
+
+      // Kedinin üstünde küçük kalp (uyurken "z")
+      if (cat.love > 0.25) {
+        const hx = Math.round(cat.x - cam.x) - 2, hy = Math.round(cat.y - cam.y) - 17 - (reduce ? 0 : Math.round(Math.sin(t * 4)))
+        ctx.fillStyle = '#33203a'
+        ctx.fillRect(hx - 1, hy - 1, 7, 5); ctx.fillRect(hx, hy + 4, 5, 1); ctx.fillRect(hx + 1, hy + 5, 3, 1)
+        ctx.fillStyle = '#f0607a'
+        ctx.fillRect(hx, hy, 2, 3); ctx.fillRect(hx + 3, hy, 2, 3); ctx.fillRect(hx + 2, hy + 1, 1, 3); ctx.fillRect(hx + 1, hy + 3, 3, 1); ctx.fillRect(hx + 2, hy + 4, 1, 1)
+        ctx.fillStyle = '#ffc0cc'
+        ctx.fillRect(hx, hy, 1, 1)
+      } else if (cat.state === 'sleep' && !reduce) {
+        const k = (t * 0.7) % 1
+        ctx.globalAlpha = 1 - k
+        ctx.fillStyle = '#ffffff'
+        const zx = Math.round(cat.x - cam.x + 4 + k * 4), zy = Math.round(cat.y - cam.y - 12 - k * 7)
+        ctx.fillRect(zx, zy, 3, 1); ctx.fillRect(zx + 1, zy + 1, 1, 1); ctx.fillRect(zx, zy + 2, 3, 1)
+        ctx.globalAlpha = 1
+      }
 
       // Duman: yükseldikçe büyüyüp solan piksel bulutları
       for (const s of smoke) {

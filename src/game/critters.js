@@ -65,3 +65,67 @@ export function chickenFrames() {
     return [left, left.map(mirror)]
   }))
 }
+
+// ── SARMAN KEDİ ─────────────────────────────────────────────────────────────
+// 14×10, sola bakar. Kareler: 0 oturuş, 1–2 yürüyüş, 3 uyku, 4 oturuşta göz kırpma.
+const CAT = [
+  [
+    '..O.O.........',
+    '..OOOO........',
+    '.OEOEO........',
+    '.OOnOO........',
+    '..cccOO.......',
+    '..cOOOOO......',
+    '..cOOoOOO.....',
+    '..cOOOoOO.....',
+    '..OOOOOOOo....',
+    '..cc.OOOOOoO..',
+  ],
+  [
+    '.O.O..........',
+    '.OOOO.......oO',
+    'OEOEO.......O.',
+    'OOnOOOoOOoOOO.',
+    '.cccOOoOOoOOO.',
+    '..cOOOOOOOOOO.',
+    '..OOOOOOOOOO..',
+    '..OO.....OO...',
+    '.OO......O....',
+    '.c.......c....',
+  ],
+  [
+    '.O.O..........',
+    '.OOOO.......oO',
+    'OEOEO.......O.',
+    'OOnOOOoOOoOOO.',
+    '.cccOOoOOoOOO.',
+    '..cOOOOOOOOOO.',
+    '..OOOOOOOOOO..',
+    '...OO...OO....',
+    '...O.....OO...',
+    '...c......c...',
+  ],
+  [
+    '..............',
+    '..............',
+    '..............',
+    '..............',
+    '..............',
+    '.O.O.OOOOOO...',
+    '.OOOOOoOOoOOO.',
+    'OoOoOOoOOoOOOO',
+    'OOnOOOOOOOOOoO',
+    '.cccOOOOOoooO.',
+  ],
+]
+CAT.push(CAT[0].map((row, y) => (y === 2 ? row.replace(/E/g, 'o') : row)))
+
+const TABBY = { O: '#ec9a3c', o: '#b9662c', c: '#fde8c4', E: '#33203a', n: '#f08a9a' }
+
+let catCache = null
+export function catFrames() {
+  return (catCache ??= (() => {
+    const left = CAT.map(rows => sprite(14, 10, p => grid(p, rows, TABBY), { shadow: [7, 9, 5, 1] }))
+    return [left, left.map(mirror)]
+  })())
+}
