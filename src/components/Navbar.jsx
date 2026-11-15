@@ -83,6 +83,8 @@ export default function Navbar() {
         </ul>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <a href="/" className="farm-link" title={c.ui.farmTitle}>{c.ui.farm}</a>
+
           <button
             type="button"
             className="lang-toggle"
@@ -142,6 +144,8 @@ export default function Navbar() {
             {l.label}
           </a>
         ))}
+
+        <a href="/" className="mobile-nav-link farm">{c.ui.farm}</a>
 
         {/* Mobil drawer'da tema toggle */}
         <div className="mobile-nav-divider" />

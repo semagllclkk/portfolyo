@@ -87,8 +87,17 @@ Sayfanın her bölümüne yerleştirilmiş, ahşap çerçeveli küçük sürpriz
 
 ## 📁 Proje Yapısı
 
+Aynı alan adında iki sayfa yayınlanır:
+
+- **`/`** oynanabilir çiftlik portfolyosu (`index.html` → `src/farm/`)
+- **`/klasik/`** klasik site (`klasik/index.html` → `src/`)
+
+Çiftlikte eve girmek ya da "Klasik site" düğmesi klasik siteye, klasik sitedeki "Çiftlik" bağlantısı çiftliğe götürür. İki sayfanın içeriği ayrı dosyalarda durur: çiftlik için `src/farm/data.js`, klasik site için `src/data.js`.
+
 ```
 portfoy/
+├── index.html              # Çiftlik (ana sayfa)
+├── klasik/index.html       # Klasik site
 ├── public/
 │   ├── cv.pdf              # İndirilebilir CV
 │   ├── og.jpg              # Paylaşım önizleme görseli
@@ -105,6 +114,9 @@ portfoy/
 │   │   ├── useVisuals.js   # Parçacık sistemi + gül imleci
 │   │   └── useReveal.js    # Kaydırınca beliren animasyonlar
 │   └── index.css
+│   └── farm/               # Çiftlik: oyun döngüsü, pixel-art çizimler, müzik
+│       ├── data.js         # Çiftliğin içeriği (TR + EN)
+│       └── game/
 └── docs/screenshots/       # README görselleri
 ```
 

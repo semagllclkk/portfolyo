@@ -137,6 +137,16 @@ img { display: block; max-width: 100%; }
   color:var(--txt-3); cursor:none;
   transition:border-color var(--t), background var(--t);
 }
+.farm-link {
+  padding:.38rem .8rem;
+  border:1px solid var(--green-border); border-radius:100px;
+  font-family:var(--sans); font-size:.68rem; font-weight:500; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--green-lt);
+  transition:border-color var(--t), background var(--t);
+}
+.farm-link:hover { border-color:var(--green-lt); background:var(--green-glow-s); }
+.mobile-nav-link.farm { color:var(--green-lt); }
+@media (max-width: 768px) { .farm-link { display:none; } }
 .lang-toggle:hover { border-color:var(--pink-lt); background:var(--pink-glow-s); }
 .lang-toggle .on { color:var(--pink-lt); }
 .lang-sep { opacity:.5; }
