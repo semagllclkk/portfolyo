@@ -333,22 +333,56 @@ function Dialogue({ c, onClose, onOpen, onBye }) {
     return () => clearInterval(t)
   }, [text])
   const ref = useRef(null)
-  useEffect(() => {
-    ref.current?.querySelector('button')?.focus({ preventScroll: true })
-    const onKey = (e) => { if (e.key === 'Escape') onClose() }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
   const done = shown >= text.length
+  const doneRef = useRef(done)
+  doneRef.current = done
+
+  // Klavye: yazı bitmeden Enter / Boşluk / E yazıyı tamamlar; bittikten sonra
+  // seçili seçeneği onaylar. Yukarı/aşağı ok ve W/S seçenekler arasında gezer.
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') { onClose(); return }
+      // Basılı tutulan tuşun tekrarı yazıyı geçip bir seçeneği de onaylamasın
+      const confirm = !e.repeat && (e.key === 'Enter' || e.key === ' ' || e.key === 'e' || e.key === 'E')
+      if (!doneRef.current) {
+        if (confirm) { e.preventDefault(); e.stopPropagation(); setShown(text.length) }
+        return
+      }
+      const buttons = [...(ref.current?.querySelectorAll('.choices button') ?? [])]
+      const at = buttons.indexOf(document.activeElement)
+      const move = { ArrowDown: 1, s: 1, S: 1, ArrowUp: -1, w: -1, W: -1 }[e.key]
+      if (move) {
+        e.preventDefault()
+        buttons[(Math.max(at, 0) + (at < 0 ? 0 : move) + buttons.length) % buttons.length]?.focus()
+      } else if (e.repeat && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault()
+      } else if (confirm && at < 0 && buttons.length) {
+        // Odak seçeneklerde değilse ilk seçenek onaylanır
+        e.preventDefault()
+        buttons[0].click()
+      } else if (confirm && (e.key === 'e' || e.key === 'E') && at >= 0) {
+        e.preventDefault()
+        buttons[at].click()
+      }
+    }
+    window.addEventListener('keydown', onKey, true)
+    return () => window.removeEventListener('keydown', onKey, true)
+  }, [onClose, text])
+
+  // Seçenekler yalnızca yazı bitince odaklanır; böylece erken basılan Enter bir seçeneği açmaz
+  useEffect(() => {
+    if (done) ref.current?.querySelector('.choices button')?.focus({ preventScroll: true })
+    else ref.current?.focus({ preventScroll: true })
+  }, [done])
   return (
     <div className="win-backdrop dialogue-backdrop" onPointerDown={e => e.target === e.currentTarget && onClose()}>
-      <section ref={ref} className="dialogue ui-box" role="dialog" aria-modal="true" aria-label={n.name}>
+      <section ref={ref} className="dialogue ui-box" role="dialog" aria-modal="true" aria-label={n.name} tabIndex={-1}>
         <div className="dialogue-text" onClick={() => setShown(text.length)}>
           <p aria-live="polite">{text.slice(0, shown)}<span className="sr-only">{text.slice(shown)}</span></p>
           <ul className={`choices${done ? ' is-ready' : ''}`}>
             {Object.entries(n.choices).map(([k, label]) => (
               <li key={k}>
-                <button type="button" onClick={() => (k === 'bye' ? onBye() : onOpen({ kind: k }))}>▸ {label}</button>
+                <button type="button" tabIndex={done ? 0 : -1} onClick={() => (k === 'bye' ? onBye() : onOpen({ kind: k }))}>▸ {label}</button>
               </li>
             ))}
           </ul>

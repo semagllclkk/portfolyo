@@ -406,7 +406,9 @@ img { display: block; max-width: 100%; }
 .choices { list-style: none; margin-top: .7rem; display: grid; gap: .1rem; opacity: 0; transition: opacity .2s; }
 .choices.is-ready { opacity: 1; }
 .choices button { font-size: 1.2rem; color: var(--ink-2); text-align: left; padding: .05em .3em; border-radius: 3px; }
-.choices button:hover, .choices button:focus-visible { color: var(--ink); background: #f6dba6; }
+.choices button:hover, .choices button:focus { color: var(--ink); background: #f6dba6; outline: none; }
+.choices:not(.is-ready) { pointer-events: none; }
+.dialogue:focus { outline: none; }
 .dialogue-portrait {
   border-left: 4px solid var(--wood);
   padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem;
