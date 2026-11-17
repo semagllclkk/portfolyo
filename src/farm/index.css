@@ -320,10 +320,13 @@ img { display: block; max-width: 100%; }
 .inv-row h3 { font-weight: 400; font-size: 1.15rem; color: var(--ink-2); margin-bottom: .3rem; }
 .inv { list-style: none; display: flex; flex-wrap: wrap; gap: 4px; }
 .inv-slot {
-  min-width: 64px; min-height: 48px; padding: .25em .55em;
+  min-width: 64px; min-height: 48px; padding: .15em .35em;
   display: grid; place-items: center; text-align: center;
-  background: #f6dba6; border: 2px solid var(--parch-3); border-radius: 3px;
-  box-shadow: inset 2px 2px 0 rgba(138, 90, 43, .2);
+  background: #f6dba6 padding-box;
+  /* Pembe çiçekli sarmaşık çerçeve (game/vines.js) */
+  border: var(--vine-w, 14px) solid transparent;
+  border-image: var(--vine) 14 / var(--vine-w, 14px) round;
+  image-rendering: pixelated;
   font-size: 1.05rem; line-height: 1;
 }
 .energy { align-items: stretch; }
@@ -483,3 +486,32 @@ img { display: block; max-width: 100%; }
 /* Elle çizilmiş proje kapakları: 3:1 sahne, pikseller keskin kalır */
 .project-cover { height: auto; aspect-ratio: 3 / 1; background: #1b1f3a; }
 .project-cover img { object-fit: cover; image-rendering: pixelated; }
+
+/* Satış kutusu: GitHub'dan gelen adet ve not */
+.ship-count { text-align: right; color: var(--ink-2); white-space: nowrap; }
+.ship-note { margin-top: .5rem; font-size: 1rem; color: var(--ink-2); text-align: right; }
+.ship-note.is-error { color: #b23a3a; }
+
+/* Sema'nın konuşma baloncuğu */
+.npc-bubble {
+  position: absolute; left: 0; top: 0; z-index: 3;
+  max-width: min(15rem, 70vw); width: max-content;
+  padding: .35em .7em .4em;
+  background: #fff8e6; color: var(--ink);
+  border: 3px solid #5b3a1e; border-radius: 6px;
+  box-shadow: 0 3px 0 rgba(43, 26, 16, .35);
+  font-size: 1.05rem; line-height: 1.15; text-align: center;
+  pointer-events: none;
+  opacity: 0; transition: opacity .2s steps(3);
+}
+.npc-bubble::after {
+  content: ""; position: absolute; left: 50%; bottom: -10px; margin-left: -6px;
+  border-style: solid; border-color: #5b3a1e transparent transparent;
+  border-width: 10px 7px 0;
+}
+.npc-bubble::before {
+  content: ""; position: absolute; left: 50%; bottom: -5px; margin-left: -4px; z-index: 1;
+  border-style: solid; border-color: #fff8e6 transparent transparent; border-width: 6px 4px 0;
+}
+.npc-bubble.is-on { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .npc-bubble { transition: none; } }

@@ -3,7 +3,7 @@ import { useLang } from '../i18n'
 import { projectKinds } from '../data'
 import ProjectCover from './ProjectCover'
 
-function ProjectCard({ project, index, liveLabel, hidden, activeTech }) {
+function ProjectCard({ project, index, liveLabel, hidden }) {
   return (
     <article
       className={`work-card${project.featured ? ' featured' : ''} reveal-child`}
@@ -28,7 +28,7 @@ function ProjectCard({ project, index, liveLabel, hidden, activeTech }) {
         <div className="card-foot">
           <ul className="card-tags-row">
             {project.tags.map(t => (
-              <li key={t} className={`card-tag${t === activeTech ? ' on' : ''}`}>{t}</li>
+              <li key={t} className="card-tag">{t}</li>
             ))}
           </ul>
           <div className="card-links">
@@ -49,16 +49,13 @@ function ProjectCard({ project, index, liveLabel, hidden, activeTech }) {
   )
 }
 
-// filter: null | { type: 'kind' | 'tech', value }
+// filter: null | { type: 'kind', value }
 export default function Works({ filter, setFilter }) {
   const ref = useReveal()
   const { c } = useLang()
   const projects = [...c.projects].sort((a, b) => b.featured - a.featured)
 
-  const matches = p =>
-    !filter ||
-    (filter.type === 'kind' ? p.kinds.includes(filter.value) : p.tags.includes(filter.value))
-  const shown = projects.filter(matches).length
+  const matches = p => !filter || p.kinds.includes(filter.value)
 
   return (
     <section id="works" className="section" ref={ref}>
@@ -89,16 +86,6 @@ export default function Works({ filter, setFilter }) {
               </button>
             )
           })}
-          {filter?.type === 'tech' && (
-            <button
-              type="button"
-              className="filter-btn on tech"
-              aria-label={`${filter.value}: ${c.ui.filterClear}`}
-              onClick={() => setFilter(null)}
-            >
-              {filter.value} <span className="filter-n">{shown}</span> <span aria-hidden="true">✕</span>
-            </button>
-          )}
         </div>
       </div>
 
@@ -110,7 +97,6 @@ export default function Works({ filter, setFilter }) {
             index={i}
             liveLabel={c.ui.live}
             hidden={!matches(p)}
-            activeTech={filter?.type === 'tech' ? filter.value : null}
           />
         ))}
       </div>

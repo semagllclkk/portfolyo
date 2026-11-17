@@ -14,7 +14,7 @@ function useNow() {
   return now
 }
 
-export function Hud({ c, season, onSeason }) {
+export function Hud({ c, season, onSeason, commits }) {
   const now = useNow()
   const g = c.game
   const h = now.getHours()
@@ -26,7 +26,7 @@ export function Hud({ c, season, onSeason }) {
         <span className="hud-time">{time}</span>
         <PixelIcon name={h >= 6 && h < 19 ? 'sun' : 'moon'} size={24} className="hud-icon" />
       </button>
-      <p className="hud-gold ui-box"><b>{g.gold}</b> {g.goldLabel}</p>
+      <p className="hud-gold ui-box" title={g.goldHint}><b>{commits == null ? '…' : commits.toLocaleString(c.locale)}</b> {g.goldLabel}</p>
     </div>
   )
 }

@@ -270,7 +270,7 @@ const tr = {
     seasons: ["İlkbahar", "Yaz", "Sonbahar", "Kış"],
     seasonHint: "Mevsimi değiştir",
     goldLabel: "commit",
-    gold: "1.337",
+    goldHint: "Son 12 ayda GitHub'a atılan commit'ler",
     close: "Kapat",
     help: "Nasıl oynanır?",
     classic: "Klasik site",
@@ -355,6 +355,19 @@ const tr = {
         contact: "Seninle nasıl iletişime geçerim?",
         bye: "Sonra görüşürüz!",
       },
+      // Konuşma bitince ve çiftlikte kendi kendine konuşurken baloncukta çıkanlar
+      bye: "Görüşürüz! 👋",
+      chatter: [
+        "Acaba bugün kahve içtim mi?",
+        "Bu bug dün yoktu… yemin ederim.",
+        "Bir commit daha atayım, sonra uyurum. Belki.",
+        "Sarman yine klavyemin üstüne yattı.",
+        "Model eğitiliyor. Ben de bir çay koyayım.",
+        "Bu tarlada domates mi yetişiyor, bug mı?",
+        "Tavuklar da code review yapsa keşke.",
+        "Kendime not: README'yi yaz. Yarın. Kesin.",
+        "Benim makinemde çalışıyordu ama…",
+      ],
     },
   },
   memes: {
@@ -404,13 +417,17 @@ const tr = {
       kind: "shipping",
       title: "Günün satışları",
       rows: [
-        { icon: "crate", item: "Commit", price: "0g" },
-        { icon: "merge", item: "Merge edilen PR", price: "0g" },
-        { icon: "ladybug", item: "Kapanan issue", price: "0g" },
-        { icon: "moon", item: "Uykusuz gece", price: "0g" },
+        { key: "commits", icon: "crate", item: "Commit", price: "0g" },
+        { key: "prs", icon: "merge", item: "Merge edilen PR", price: "0g" },
+        { key: "issues", icon: "ladybug", item: "Kapanan issue", price: "0g" },
+        { key: "nights", icon: "moon", item: "Uykusuz gece", price: "0g" },
       ],
       totalLabel: "Toplam",
       total: "0g · açık kaynak ♥",
+      live: "Son 12 ay · GitHub'dan canlı",
+      loading: "GitHub'dan sayılıyor…",
+      error: "GitHub'a şu an ulaşılamadı. Biraz sonra tekrar dene.",
+      nightsNote: "Gece 00.00 – 05.00 arası atılan commit'ler",
     },
     about: {
       kind: "calendar",
@@ -617,7 +634,7 @@ const en = {
     seasons: ["Spring", "Summer", "Fall", "Winter"],
     seasonHint: "Change season",
     goldLabel: "commits",
-    gold: "1,337",
+    goldHint: "Commits pushed to GitHub in the last 12 months",
     close: "Close",
     help: "How to play",
     classic: "Classic site",
@@ -702,6 +719,18 @@ const en = {
         contact: "How can I reach you?",
         bye: "See you later!",
       },
+      bye: "See you! 👋",
+      chatter: [
+        "Wait… did I have coffee today?",
+        "This bug wasn't here yesterday. I swear.",
+        "One more commit, then bed. Maybe.",
+        "The cat is sleeping on my keyboard again.",
+        "The model is training. Time for some tea.",
+        "Are those tomatoes growing in this field, or bugs?",
+        "If only the chickens did code reviews.",
+        "Note to self: write the README. Tomorrow. For sure.",
+        "But it worked on my machine…",
+      ],
     },
   },
   memes: {
@@ -751,13 +780,17 @@ const en = {
       kind: "shipping",
       title: "Today's shipments",
       rows: [
-        { icon: "crate", item: "Commits", price: "0g" },
-        { icon: "merge", item: "Merged PRs", price: "0g" },
-        { icon: "ladybug", item: "Closed issues", price: "0g" },
-        { icon: "moon", item: "Sleepless nights", price: "0g" },
+        { key: "commits", icon: "crate", item: "Commits", price: "0g" },
+        { key: "prs", icon: "merge", item: "Merged PRs", price: "0g" },
+        { key: "issues", icon: "ladybug", item: "Closed issues", price: "0g" },
+        { key: "nights", icon: "moon", item: "Sleepless nights", price: "0g" },
       ],
       totalLabel: "Total",
       total: "0g · open source ♥",
+      live: "Last 12 months · live from GitHub",
+      loading: "Counting on GitHub…",
+      error: "Couldn't reach GitHub right now. Try again in a bit.",
+      nightsNote: "Commits made between midnight and 5 AM",
     },
     about: {
       kind: "calendar",
@@ -811,4 +844,4 @@ function build(lang) {
   };
 }
 
-export const content = { tr: build(tr), en: build(en) };
+export const content = { tr: { ...build(tr), locale: "tr-TR" }, en: { ...build(en), locale: "en-US" } };

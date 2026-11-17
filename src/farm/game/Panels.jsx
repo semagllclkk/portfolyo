@@ -4,6 +4,8 @@ import PixelIcon, { PixelText } from '../components/PixelIcon'
 import { cropSprite } from './art'
 import { framesFor } from './frames'
 import { coverUrl } from './covers'
+import { PRICES } from './github'
+import { vineUrl, VINE_SLICE } from './vines'
 
 const cropUrls = {}
 const cropUrl = (i) => (cropUrls[i] ??= cropSprite(i).img.toDataURL())
@@ -176,7 +178,9 @@ function Skills({ c }) {
       {c.skills.map(s => (
         <section className="inv-row" key={s.category}>
           <h3>{s.category}</h3>
-          <ul className="inv">{s.items.map(it => <li className="inv-slot" key={it}>{it}</li>)}</ul>
+          <ul className="inv" style={{ '--vine': `url(${vineUrl()})`, '--vine-w': `${VINE_SLICE}px` }}>
+            {s.items.map(it => <li className="inv-slot" key={it}>{it}</li>)}
+          </ul>
         </section>
       ))}
       <div className="toast energy">
@@ -227,25 +231,36 @@ function Contact({ c }) {
   )
 }
 
-function Cv({ c }) {
+// Satış kutusu: son 12 ayın GitHub sayıları, Stardew fiyatlarıyla
+function Cv({ c, gh }) {
   const b = c.game.bin, sh = c.memes.contactShipping
+  const fmt = (n) => n.toLocaleString(c.locale)
+  const s = gh.stats
+  const total = s ? sh.rows.reduce((sum, r) => sum + s[r.key] * PRICES[r.key], 0) : 0
   return (
     <>
       <p>{b.text}</p>
-      <table className="ship">
+      <table className="ship" aria-busy={gh.status === 'loading'}>
         <tbody>
           {sh.rows.map(r => (
-            <tr key={r.item}>
+            <tr key={r.key} title={r.key === 'nights' ? sh.nightsNote : undefined}>
               <td><PixelIcon name={r.icon} size={24} /></td>
               <td>{r.item}</td>
-              <td className="ship-price">{r.price}</td>
+              <td className="ship-count">{s ? `×${fmt(s[r.key])}` : '…'}</td>
+              <td className="ship-price">{s ? `${fmt(s[r.key] * PRICES[r.key])}g` : '—'}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
-          <tr><td /><td>{sh.totalLabel}</td><td className="ship-price"><PixelText text={sh.total} /></td></tr>
+          <tr>
+            <td /><td>{sh.totalLabel}</td><td />
+            <td className="ship-price"><PixelText text={s ? `${fmt(total)}g` : '—'} /></td>
+          </tr>
         </tfoot>
       </table>
+      <p className={`ship-note${gh.status === 'error' ? ' is-error' : ''}`} role="status">
+        {gh.status === 'ready' ? `${sh.live} · ${sh.total.split('·').pop().trim()}` : gh.status === 'error' ? sh.error : sh.loading}
+      </p>
       <a className="ui-btn ui-btn-wide ui-btn-gold big-btn" href={c.personal.cv} download>{b.button} ↓</a>
     </>
   )
@@ -307,7 +322,7 @@ function Fish({ c }) {
 }
 
 // Sema ile diyalog: daktilo efektiyle yazılan metin ve seçenekler
-function Dialogue({ c, onClose, onOpen }) {
+function Dialogue({ c, onClose, onOpen, onBye }) {
   const n = c.game.npc
   const [shown, setShown] = useState(0)
   const text = n.greeting
@@ -333,7 +348,7 @@ function Dialogue({ c, onClose, onOpen }) {
           <ul className={`choices${done ? ' is-ready' : ''}`}>
             {Object.entries(n.choices).map(([k, label]) => (
               <li key={k}>
-                <button type="button" onClick={() => (k === 'bye' ? onClose() : onOpen({ kind: k }))}>▸ {label}</button>
+                <button type="button" onClick={() => (k === 'bye' ? onBye() : onOpen({ kind: k }))}>▸ {label}</button>
               </li>
             ))}
           </ul>
@@ -347,9 +362,9 @@ function Dialogue({ c, onClose, onOpen }) {
   )
 }
 
-export default function Panels({ c, panel, onClose, onOpen, look, onLook }) {
+export default function Panels({ c, panel, onClose, onOpen, onBye, look, onLook, gh }) {
   const g = c.game
-  if (panel.kind === 'npc') return <Dialogue c={c} onClose={onClose} onOpen={onOpen} />
+  if (panel.kind === 'npc') return <Dialogue c={c} onClose={onClose} onOpen={onOpen} onBye={onBye} />
   const common = { onClose, closeLabel: g.close }
   switch (panel.kind) {
     case 'about':
@@ -369,7 +384,7 @@ export default function Panels({ c, panel, onClose, onOpen, look, onLook }) {
     case 'contact':
       return <Window {...common} title={g.mail.title}><Contact c={c} /></Window>
     case 'cv':
-      return <Window {...common} title={g.bin.title}><Cv c={c} /></Window>
+      return <Window {...common} title={g.bin.title}><Cv c={c} gh={gh} /></Window>
     case 'fish':
       return <Window {...common} title={g.fish.title}><Fish c={c} /></Window>
     default:

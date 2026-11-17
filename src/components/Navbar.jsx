@@ -83,7 +83,10 @@ export default function Navbar() {
         </ul>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <a href="/" className="farm-link" title={c.ui.farmTitle}>{c.ui.farm}</a>
+          {/* Çiftlik evi: oynanabilir çiftlik sürümüne döner */}
+          <a href="/" className="farm-link" aria-label={c.ui.farmTitle} data-tip={c.ui.farmTitle}>
+            <img src="/farmhouse.png" width={57} height={49} alt="" />
+          </a>
 
           <button
             type="button"
@@ -145,7 +148,10 @@ export default function Navbar() {
           </a>
         ))}
 
-        <a href="/" className="mobile-nav-link farm">{c.ui.farm}</a>
+        <a href="/" className="mobile-nav-link farm">
+          <img src="/farmhouse.png" width={57} height={49} alt="" />
+          {c.ui.farmTitle}
+        </a>
 
         {/* Mobil drawer'da tema toggle */}
         <div className="mobile-nav-divider" />

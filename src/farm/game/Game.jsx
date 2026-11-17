@@ -65,12 +65,13 @@ const COOP = { x0: 32, x1: 36, y0: 13, y1: 18 }
 const CAT_AREA = { x0: 23, x1: 28, y0: 10, y1: 12 }
 const CHIMNEY = { x: 21 * TILE + 85, y: 3 * TILE }
 
-export default function Game({ season, look, paused, onInteract, onNear, labelFor, keyHint, tapHint }) {
+export default function Game({ season, look, paused, onInteract, onNear, labelFor, keyHint, tapHint, npcLines, npcBye, byeSignal }) {
   const canvasRef = useRef(null)
   const labelRef = useRef(null)
+  const bubbleRef = useRef(null)
   const [near, setNear] = useState(null)
   const props = useRef({})
-  props.current = { season, look, paused, onInteract, onNear }
+  props.current = { season, look, paused, onInteract, onNear, npcLines, npcBye, byeSignal }
   const api = useRef({})
 
   useEffect(() => {
@@ -89,6 +90,8 @@ export default function Game({ season, look, paused, onInteract, onNear, labelFo
     const cat = { x: 26 * TILE + 8, y: 10 * TILE + 12, tx: 0, ty: 0, right: false, state: 'sit', wait: 4, anim: 0, love: 0 }
     const catArt = catFrames()
     const smoke = []
+    // Sema'nın konuşma baloncuğu: veda ya da ara sıra kendi kendine söylenme
+    const speech = { text: '', until: 0, next: 9 + Math.random() * 8, bye: props.current.byeSignal, last: -1, isBye: false }
     let smokeIn = 0
     const keys = new Set()
     const visited = new Set()
@@ -345,6 +348,27 @@ export default function Game({ season, look, paused, onInteract, onNear, labelFo
         }
       }
 
+      // Sema konuşur: "görüşürüz" hemen, kendi kendine söylenme 20–40 sn'de bir
+      const clock = performance.now() / 1000
+      if (props.current.byeSignal !== speech.bye) {
+        speech.bye = props.current.byeSignal
+        speech.text = props.current.npcBye
+        speech.isBye = true
+        speech.until = clock + 2.8
+        speech.next = clock + 14
+      } else if (!paused && nearTarget?.kind !== 'npc' && clock > speech.next && clock > speech.until) {
+        const lines = props.current.npcLines ?? []
+        if (lines.length) {
+          let i = Math.floor(Math.random() * lines.length)
+          if (i === speech.last) i = (i + 1) % lines.length
+          speech.last = i
+          speech.text = lines[i]
+          speech.isBye = false
+          speech.until = clock + 4.5
+        }
+        speech.next = clock + 20 + Math.random() * 20
+      }
+
       // Baca dumanı
       if (!reduce) {
         if ((smokeIn -= dt) <= 0) {
@@ -513,9 +537,22 @@ export default function Game({ season, look, paused, onInteract, onNear, labelFo
         ctx.strokeRect(marker.x - 5 - cam.x + 0.5, marker.y - 5 - cam.y + 0.5, 10, 10)
       }
 
+      // Baloncuk Sema'nın başının üstünde durur; pencere açıkken ya da konuşurken gizlenir
+      const bub = bubbleRef.current
+      const now = performance.now() / 1000
+      const speaking = !!speech.text && now < speech.until && !props.current.paused && (speech.isBye || nearTarget?.kind !== 'npc')
+      if (bub) {
+        const show = speaking
+        if (show) {
+          if (bub.textContent !== speech.text) bub.textContent = speech.text
+          bub.style.transform = `translate(${(npc.x - cam.x) * cam.scale}px, ${(npc.y - 30 - cam.y) * cam.scale}px) translate(-50%, -100%)`
+        }
+        bub.classList.toggle('is-on', !!show)
+      }
+
       const label = labelRef.current
       if (label) {
-        if (labelPos) {
+        if (labelPos && !(speaking && nearTarget?.kind === 'npc')) {
           label.style.transform = `translate(${labelPos[0] * cam.scale}px, ${labelPos[1] * cam.scale}px) translate(-50%, -100%)`
           label.style.opacity = '1'
         } else {
@@ -581,6 +618,7 @@ export default function Game({ season, look, paused, onInteract, onNear, labelFo
   return (
     <div className="game">
       <canvas ref={canvasRef} className="game-canvas" aria-hidden="true" />
+      <p ref={bubbleRef} className="npc-bubble" aria-live="polite" />
       <button
         ref={labelRef}
         type="button"
