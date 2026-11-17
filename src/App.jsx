@@ -16,13 +16,8 @@ export default function App() {
   useParticles(canvasRef)
   useCursor()
 
-  // Proje filtresi: Projeler bölümündeki düğmeler ve Beceriler'deki teknolojiler ortak kullanır
+  // Projeler bölümündeki tür filtresi
   const [filter, setFilter] = useState(null)
-  const showTech = (tech) => {
-    setFilter({ type: 'tech', value: tech })
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    document.getElementById('works')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' })
-  }
 
   return (
     <>
@@ -37,7 +32,7 @@ export default function App() {
         <About />
         <Experience />
         <Works filter={filter} setFilter={setFilter} />
-        <Skills onPick={showTech} />
+        <Skills />
         <Contact />
       </main>
 

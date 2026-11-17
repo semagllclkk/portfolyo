@@ -5,6 +5,7 @@ import { Hud, TopBar, Hotbar, CLASSIC_URL } from './game/Hud'
 import { SEASONS } from './game/art'
 import { useLang } from './i18n'
 import { createMusic } from './game/music'
+import { useGithubStats } from './game/github'
 
 // Gerçek aya göre mevsim: Mar–May ilkbahar, Haz–Ağu yaz, Eyl–Kas sonbahar, Ara–Şub kış
 const realSeason = () => [3, 3, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3][new Date().getMonth()]
@@ -34,6 +35,8 @@ export default function App() {
   const [houseTip, setHouseTip] = useState(false)
   const [entering, setEntering] = useState(false)
   const [music, setMusic] = useState(musicWanted)
+  const [byeSignal, setByeSignal] = useState(0)
+  const gh = useGithubStats()
   const player = useRef(null)
 
   // Müzik: açıksa ilk tıklama ya da tuşla başlar, klasik siteye geçerken susar
@@ -87,6 +90,8 @@ export default function App() {
     window.addEventListener('pageshow', back)
     return () => window.removeEventListener('pageshow', back)
   }, [])
+  // "Sonra görüşürüz": pencere kapanır, Sema çiftlikte el sallar
+  const bye = useCallback(() => { close(); setByeSignal(n => n + 1) }, [close])
   const pick = useCallback((kind) => setPanel(p => (p?.kind === kind ? null : { kind })), [])
   const labelFor = (t) => (t.kind === 'project' ? c.projects[t.index].title : c.game.places[t.kind])
 
@@ -99,11 +104,14 @@ export default function App() {
         paused={!!panel || entering}
         onInteract={open}
         onNear={onNear}
+        npcLines={c.game.npc.chatter}
+        npcBye={c.game.npc.bye}
+        byeSignal={byeSignal}
         labelFor={labelFor}
         keyHint={c.game.keyHint}
         tapHint={c.game.tapHint}
       />
-      <Hud c={c} season={season} onSeason={() => setSeason(s => (s + 1) % 4)} />
+      <Hud c={c} season={season} onSeason={() => setSeason(s => (s + 1) % 4)} commits={gh.stats?.commits} />
       <TopBar c={c} lang={lang} onLang={toggleLang} onHelp={() => setPanel({ kind: 'sign' })} music={music} onMusic={toggleMusic} />
       <Hotbar c={c} active={panel?.kind === 'project' ? 'projects' : panel?.kind} onPick={pick} />
       {houseTip && !panel && (
@@ -113,7 +121,7 @@ export default function App() {
         </div>
       )}
       {entering && <div className="entering" role="status"><p>{c.game.entering}</p></div>}
-      {panel && <Panels key={panel.kind} c={c} panel={panel} onClose={close} onOpen={open} look={look} onLook={chooseLook} />}
+      {panel && <Panels key={panel.kind} c={c} panel={panel} onClose={close} onOpen={open} onBye={bye} look={look} onLook={chooseLook} gh={gh} />}
     </div>
   )
 }
