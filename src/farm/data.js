@@ -356,7 +356,7 @@ const tr = {
         bye: "Sonra görüşürüz!",
       },
       // Konuşma bitince ve çiftlikte kendi kendine konuşurken baloncukta çıkanlar
-      bye: "Görüşürüz! 👋",
+      bye: "Görüşürüz!",
       chatter: [
         "Acaba bugün kahve içtim mi?",
         "Bu bug dün yoktu… yemin ederim.",
@@ -719,7 +719,7 @@ const en = {
         contact: "How can I reach you?",
         bye: "See you later!",
       },
-      bye: "See you! 👋",
+      bye: "See you!",
       chatter: [
         "Wait… did I have coffee today?",
         "This bug wasn't here yesterday. I swear.",
