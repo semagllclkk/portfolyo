@@ -24,8 +24,7 @@ export default function Contact() {
       <div className="contact-inner">
         <h2 className="contact-heading">
           {c.ui.contactHeading[0]}
-          <span className="gradient-text">{c.ui.contactHeading[1]}</span>
-          <br />{c.ui.contactHeading[2]}
+          <br /><span className="contact-heading-2">{c.ui.contactHeading[1]}</span>
         </h2>
 
         <p className="contact-sub">{c.ui.contactSub}</p>

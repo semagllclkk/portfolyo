@@ -5,7 +5,7 @@ import semaPhoto from '../assets/sema.webp'
 export default function About() {
   const ref = useReveal()
   const { c } = useLang()
-  const { personal, education } = c
+  const { personal } = c
 
   return (
     <section id="about" className="section" ref={ref}>
@@ -24,7 +24,6 @@ export default function About() {
                 className="about-photo"
               />
             </div>
-            <div className="about-photo-glow" />
           </div>
         </div>
 
@@ -34,24 +33,14 @@ export default function About() {
             <p key={i} className={`about-text${i === 0 ? ' lead' : ''}`}>{p}</p>
           ))}
 
-          {/* Eğitim kartı */}
-          <div className="edu-card reveal-scale" style={{'--delay': '.2s'}}>
-            <div className="edu-badge">{education.badge}</div>
-            <div className="edu-body">
-              <h3 className="edu-degree">{education.degree}</h3>
-              <p className="edu-uni">{education.university} — {education.city}</p>
-              <p className="edu-period">{education.period}</p>
-            </div>
-          </div>
-
-          <div className="about-stats">
-            {personal.stats.map((s, i) => (
-              <div key={i} className="stat-item">
-                <span className="stat-value">{s.value}</span>
-                <span className="stat-label">{s.label}</span>
+          <dl className="fact-sheet reveal-scale" style={{'--delay': '.2s'}}>
+            {personal.facts.map(f => (
+              <div key={f.label} className="fact-row">
+                <dt>{f.label}</dt>
+                <dd>{f.value}</dd>
               </div>
             ))}
-          </div>
+          </dl>
         </div>
       </div>
     </section>

@@ -1,10 +1,12 @@
 import { useReveal } from '../hooks/useReveal'
 import { useLang } from '../i18n'
 
-export default function Skills() {
+export default function Skills({ onPick }) {
   const ref = useReveal()
   const { c } = useLang()
-  const { skills } = c
+  const { skills, projects } = c
+
+  const usedIn = name => projects.filter(p => p.tags.includes(name)).length
 
   return (
     <section id="skills" className="section" ref={ref}>
@@ -12,9 +14,7 @@ export default function Skills() {
       <div className="skills-layout">
         <div className="skills-left reveal-left">
           <h2 className="section-title">{c.ui.skillsTitle[0]}<br />{c.ui.skillsTitle[1]}</h2>
-          <p className="skills-intro">
-            {c.ui.skillsIntro[0]}<br />{c.ui.skillsIntro[1]}
-          </p>
+          <p className="skills-intro">{c.ui.skillsIntro}</p>
         </div>
 
         <div className="skills-right reveal-right">
@@ -22,13 +22,26 @@ export default function Skills() {
             <div
               key={group.category}
               className="skill-group reveal-child"
-              style={{ '--delay': `${gi * 0.1}s` }}
+              style={{ '--delay': `${gi * 0.08}s` }}
             >
-              <h4 className="skill-group-title">{group.category}</h4>
+              <h3 className="skill-group-title">{group.category}</h3>
               <div className="skill-tags">
-                {group.items.map(item => (
-                  <span key={item} className="skill-tag">{item}</span>
-                ))}
+                {group.items.map(item => {
+                  const n = usedIn(item)
+                  return n ? (
+                    <button
+                      key={item}
+                      type="button"
+                      className="skill-tag linked"
+                      aria-label={c.ui.skillShow(item, n)}
+                      onClick={() => onPick(item)}
+                    >
+                      {item}<span className="skill-n" aria-hidden="true">{n}</span>
+                    </button>
+                  ) : (
+                    <span key={item} className="skill-tag">{item}</span>
+                  )
+                })}
               </div>
             </div>
           ))}
